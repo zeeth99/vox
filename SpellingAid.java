@@ -427,7 +427,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	private void updateStatsTable(String type, String word) {
 		for (int i = 0; i < statsTable.getRowCount(); i++) {
-			if (statsTable.getValueAt(i, 1).equals(word)) {
+			if (statsTable.getValueAt(i, 0).equals(word)) {
 				int column, aValue;
 				if (type.equals("mastered")) {
 					column = 1;
@@ -436,8 +436,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 				} else {
 					column = 3;
 				}
-				aValue = (Integer)statsTable.getValueAt(i, column);
-				statsTable.setValueAt(aValue, i, column);
+				aValue = Integer.parseInt((String)statsTable.getValueAt(i, column));
+				statsTable.setValueAt(""+aValue, i, column);
 			}
 		}
 	}
