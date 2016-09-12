@@ -87,7 +87,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		_wordNumber = 0;
-		
+
 
 		cards.setLayout(layout);
 
@@ -167,7 +167,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 			cards.add(quiz, "Quiz");
 		}
-		
+
 
 
 		// Set up Stats screen
@@ -272,18 +272,27 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
-	private List<String> randomWords(File f) {
+	private List<String> randomWords(File f, int level) {
 		List<String> tempList = new ArrayList<String>();
 		List<String> wordList = new ArrayList<String>();
 		try {
 			Scanner sc = new Scanner(f);
 			while (sc.hasNextLine()) {
-				tempList.add(sc.nextLine());
+				if (sc.nextLine().equals("%Level "+level)) {
+						break;
+				}
+			}
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				if (line.charAt(0) == '%') {
+					break;
+				}
+				tempList.add(line);
 			}
 			sc.close();
-			if (tempList.size() > 3) {
+			if (tempList.size() > 10) {
 				Random rnd = new Random();
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 10; i++) {
 					String word = tempList.get(rnd.nextInt(tempList.size()));
 					tempList.remove(word);
 					wordList.add(word);
@@ -370,7 +379,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 
-
 	}
 
 	private void checkWord() {
@@ -433,10 +441,10 @@ public class SpellingAid extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
-	private void SpellingQuiz(File f) {
+
+	private void SpellingQuiz(File f, int level) {
 		_firstAttempt = true;
-		_testingWords = randomWords(f);
+		_testingWords = randomWords(f, level);
 		layout.show(cards, "Quiz");
 		festival("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
@@ -472,51 +480,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
-	public static void main(String[] args) {
-
-		createStatsFiles();
-
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new SpellingAid(args);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		/*
-		try {
-
-			String command = ("/home/max/Documents/206/spelling_aid.sh");
-			ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-
-			Process process = pb.start();
-
-			BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-			int exitStatus = process.waitFor();
-
-			if (exitStatus == 0) {
-				String line;
-				while ((line = stdout.readLine()) != null) {
-				System.out.println(line);
-				}
-			} else {
-				String line;
-				while ((line = stderr.readLine()) != null) {
-					System.err.println(line);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
-
-	}
-
 	private static void createStatsFiles() {
 		// Initialise .history
 		File f = new File(".history");
@@ -534,4 +497,21 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 
 	}
+
+	public static void main(String[] args) {
+
+		createStatsFiles();
+
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new SpellingAid(args);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
+
 }
