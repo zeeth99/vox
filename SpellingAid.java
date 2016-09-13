@@ -48,13 +48,16 @@ import javax.swing.JInternalFrame;
 public class SpellingAid extends JFrame implements ActionListener {
 
 	private CardLayout layout = new CardLayout();
-
 	private JPanel cards = new JPanel();
+
+	// Cards
 	private JPanel menu = new JPanel();
+	private JPanel levelSelect = new JPanel();
 	private JPanel quiz = new JPanel();
 	private JPanel stats = new JPanel();
 
 	private JLabel menuLabel;
+	private JLabel levelSelectLabel;
 	private JLabel quizLabel;
 	private JLabel quizInstrLabel;
 	private JLabel statsLabel;
@@ -92,7 +95,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		cards.setLayout(layout);
 
 		// Set up Menu screen
-		//
 		{
 			menuLabel = new JLabel("Welcome to the Spelling Aid");
 			menuLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -124,8 +126,18 @@ public class SpellingAid extends JFrame implements ActionListener {
 			menu.add(newSpellingQuiz);
 		}
 
+		// Set up Level Select screen
+		{
+			levelSelectLabel = new JLabel("Select Your Quiz Level");
+			levelSelectLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			levelSelectLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
+			levelSelectLabel.setBounds(0, 0, 500, 60);
+			cards.add(levelSelect, "Level Select");
+
+			levelSelect.add(levelSelectLabel);
+		}
+
 		// Set up Quiz screen
-		//
 		{
 			quizLabel = new JLabel();
 			quizLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
@@ -168,10 +180,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			cards.add(quiz, "Quiz");
 		}
 
-
-
 		// Set up Stats screen
-		//
 		{
 			statsLabel = new JLabel("Spelling Statistics");
 			statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -221,7 +230,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 		setVisible(true);
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
