@@ -1,3 +1,5 @@
+package voxspell;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -33,6 +35,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
+import voxspell.cards.Quiz;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -44,8 +48,13 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JInternalFrame;
 
+
 @SuppressWarnings({ "serial", "unused" })
 public class SpellingAid extends JFrame implements ActionListener {
+
+	final public static File WORDLIST = new File("wordlist");
+	final public static File REVIEWLIST = new File(".history/failed");
+
 
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
@@ -53,7 +62,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	// Cards
 	private JPanel menu = new JPanel();
 	private JPanel levelSelect = new JPanel();
-	private JPanel quiz = new JPanel();
+	private JPanel quiz = new Quiz(this);
 	private JPanel stats = new JPanel();
 
 	private JLabel menuLabel;
@@ -68,8 +77,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	private JTable statsTable;
 
-	private JButton newSpellingQuiz;
-	private JButton reviewMistakes;
+	public JButton newSpellingQuiz;
+	public JButton reviewMistakes;
 	private JButton viewStatistics;
 	private JButton clearStatistics;
 	private JButton repeatWord;
@@ -77,19 +86,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private JButton backToMenuQuiz;
 	private JButton backToMenuStats;
 
-	private boolean _firstAttempt;
-	private boolean _reviewMode;
-	private int _wordNumber;
-	private List<String> _testingWords;
-
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
 		setTitle("Spelling Aid");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		_wordNumber = 0;
 
 
 		cards.setLayout(layout);
@@ -104,10 +106,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 			newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 			newSpellingQuiz.setBounds(100, 90, 300, 50);
 			newSpellingQuiz.addActionListener(this);
+			newSpellingQuiz.addActionListener((ActionListener) quiz);
 			reviewMistakes = new JButton("Review Mistakes");
 			reviewMistakes.setFont(new Font("Dialog", Font.BOLD, 16));
 			reviewMistakes.setBounds(100, 150, 300, 50);
 			reviewMistakes.addActionListener(this);
+			reviewMistakes.addActionListener((ActionListener) quiz);
 			viewStatistics = new JButton("View Statistics");
 			viewStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 			viewStatistics.setBounds(100, 210, 300, 50);
@@ -139,44 +143,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 		// Set up Quiz screen
 		{
-			quizLabel = new JLabel();
-			quizLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-			quizLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			quizLabel.setText("Quiz");
-			quizLabel.setBounds(0, 0, 500, 60);
-			quizLabel.setPreferredSize(new Dimension(300, 100));
-			quizInstrLabel = new JLabel("Please type the word you hear:");
-			quizInstrLabel.setBounds(125, 90, 250, 15);
-
-			repeatWord = new JButton("Repeat");
-			repeatWord.setBounds(135, 175, 85, 25);
-			repeatWord.addActionListener(this);
-			submitWord = new JButton("Submit");
-			submitWord.setBounds(280, 175, 85, 25);
-			submitWord.addActionListener(this);
-			quizInputBox = new JFormattedTextField();
-			quizInputBox.setToolTipText("Type here.");
-			quizInputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
-			quizInputBox.setBounds(125, 120, 250, 30);
-			quizInputBox.setColumns(20);
-			quizInputBox.addKeyListener(new KeyAdapter(){ // Only letters can be inputed
-	            public void keyTyped(KeyEvent e){
-	            	String text = quizInputBox.getText();
-	                char ch = e.getKeyChar();
-	                if(!Character.isLetter(ch)){
-	                    quizInputBox.setText(text);
-	                    e.consume();
-	                }
-	            }
-	        });
-
-			quiz.setLayout(null);
-			quiz.add(quizInputBox);
-			quiz.add(repeatWord);
-			quiz.add(submitWord);
-			quiz.add(quizLabel);
-			quiz.add(quizInstrLabel);
-
 			cards.add(quiz, "Quiz");
 		}
 
@@ -226,7 +192,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 
 		getContentPane().add(cards);
-		layout.show(cards, "Menu");
+		returnToMenu();
 
 		setVisible(true);
 	}
@@ -234,84 +200,22 @@ public class SpellingAid extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newSpellingQuiz) {
-			newQuiz();
+			layout.show(cards, "Quiz");
 		} else if (e.getSource() == reviewMistakes) {
-			review();
+			if (REVIEWLIST.length() > 0) {
+				layout.show(cards, "Quiz");
+			} else {
+				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
+			}
 		} else if (e.getSource() == viewStatistics) {
 			layout.show(cards, "Stats");
 			statsTable.repaint();
 		} else if (e.getSource() == clearStatistics) {
 			clearStats();
 		} else if (e.getSource() == backToMenuQuiz || e.getSource() == backToMenuStats) {
-			layout.show(cards, "Menu");
-		} else if (e.getSource() == repeatWord) {
-			festival(_testingWords.get(_wordNumber));
-		} else if (e.getSource() == submitWord) {
-			checkWord();
+			returnToMenu();
 		}
 
-	}
-
-	private void festival(String message) {
-		try {
-
-			ProcessBuilder pb = new ProcessBuilder("bash", "-c", "echo \"" + message + "\" | festival --tts");
-
-			Process process = pb.start();
-
-			BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-			int exitStatus = process.waitFor();
-
-			if (exitStatus == 0) {
-				String line;
-				while ((line = stdout.readLine()) != null) {
-				System.out.println(line);
-				}
-			} else {
-				String line;
-				while ((line = stderr.readLine()) != null) {
-					System.err.println(line);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private List<String> randomWords(File f, int level) {
-		List<String> tempList = new ArrayList<String>();
-		List<String> wordList = new ArrayList<String>();
-		try {
-			Scanner sc = new Scanner(f);
-			while (sc.hasNextLine()) {
-				if (sc.nextLine().equals("%Level "+level)) {
-						break;
-				}
-			}
-			while (sc.hasNextLine()) {
-				String line = sc.nextLine();
-				if (line.charAt(0) == '%') {
-					break;
-				}
-				tempList.add(line);
-			}
-			sc.close();
-			if (tempList.size() > 10) {
-				Random rnd = new Random();
-				for (int i = 0; i < 10; i++) {
-					String word = tempList.get(rnd.nextInt(tempList.size()));
-					tempList.remove(word);
-					wordList.add(word);
-				}
-			} else {
-				return tempList;
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return wordList;
 	}
 
 	private void updateStats(String type, String word) {
@@ -389,51 +293,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
-	private void checkWord() {
-		String input = quizInputBox.getText();
-		String word = _testingWords.get(_wordNumber);
-		quizInputBox.setText("");
-		quizInputBox.grabFocus();
-
-
-		if (_firstAttempt) {
-			if (input.equals(word)) {
-				updateStats("mastered", word);
-				festival("correct");
-			} else {
-				_firstAttempt = false;
-				festival("incorrect");
-				festival("Please spell" + _testingWords.get(_wordNumber));
-				return;
-			}
-		} else {
-			if (input.equals(word)) {
-				updateStats("faulted", word);
-				festival("correct");
-			} else {
-				updateStats("failed", word);
-				festival("incorrect");
-				if (_reviewMode) {
-					String spellOutWord = "";
-					for (int i = 0; i < word.length(); i++) {
-						spellOutWord += word.charAt(i) + ". ";
-					}
-					festival(spellOutWord);
-				}
-			}
-		}
-		_firstAttempt = true;
-		if (_wordNumber + 1 == _testingWords.size()) {
-			layout.show(cards, "Menu");
-			_wordNumber = 0;
-		} else {
-			_wordNumber++;
-			festival("Please spell " + _testingWords.get(_wordNumber));
-		}
-
-	}
-
-	private void updateStatsTable(String type, String word) {
+	//TODO: Move to Stats.java
+	public void updateStatsTable(String type, String word) {
 		for (int i = 0; i < statsTable.getRowCount(); i++) {
 			if (statsTable.getValueAt(i, 0).equals(word)) {
 				int column, aValue;
@@ -447,30 +308,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 				aValue = Integer.parseInt((String)statsTable.getValueAt(i, column));
 				statsTable.setValueAt(""+aValue, i, column);
 			}
-		}
-	}
-
-	private void SpellingQuiz(File f, int level) {
-		_firstAttempt = true;
-		_testingWords = randomWords(f, level);
-		layout.show(cards, "Quiz");
-		festival("Please spell " + _testingWords.get(_wordNumber));
-		quizInputBox.grabFocus();
-	}
-
-	protected void newQuiz() {
-		quizLabel.setText("New Quiz");
-		SpellingQuiz(new File("wordlist"));
-		_reviewMode = false;
-	}
-
-	protected void review() {
-		if ((new File(".history/failed")).length() != 0) {
-			quizLabel.setText("Review Quiz");
-			SpellingQuiz(new File(".history/failed"));
-			_reviewMode = true;
-		} else {
-			JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -520,6 +357,10 @@ public class SpellingAid extends JFrame implements ActionListener {
 			}
 		});
 
+	}
+
+	public void returnToMenu() {
+		layout.show(cards, "Menu");
 	}
 
 }
