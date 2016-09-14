@@ -26,7 +26,12 @@ public class LevelSelect extends JPanel implements ActionListener{
 		levelSelectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		levelSelectLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
 		levelSelectLabel.setBounds(0, 0, 500, 60);
-
+		
+		for (int i = 0; i < 11; i++) {
+			levels[i] = new JButton(""+i);
+			add(levels[i]);
+			levels[i].addActionListener(this);
+		}
 		add(levelSelectLabel);
 	}
 
