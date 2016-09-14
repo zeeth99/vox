@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,21 +33,17 @@ public class Quiz extends JPanel implements ActionListener {
 
 	private JLabel quizLabel;
 	private JLabel quizInstrLabel;
-
 	private JFormattedTextField quizInputBox;
-
 	private JButton repeatWord;
 	private JButton submitWord;
-
 
 	private boolean _firstAttempt;
 	private boolean _reviewMode;
 	private int _wordNumber;
 	private List<String> _testingWords;
 
-
-	public Quiz(SpellingAid sAid) {
-		spellingAid = sAid;
+	public Quiz(SpellingAid sp) {
+		spellingAid = sp;
 		_wordNumber = 0;
 
 		quizLabel = new JLabel();
@@ -90,20 +85,7 @@ public class Quiz extends JPanel implements ActionListener {
 		add(quizInstrLabel);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == spellingAid.newSpellingQuiz) {
-			newQuiz();
-		} else if (e.getSource() == spellingAid.reviewMistakes) {
-			review();
-		} else if (e.getSource() == repeatWord) {
-			festival(_testingWords.get(_wordNumber));
-		} else if (e.getSource() == submitWord) {
-			checkWord();
-		}
-	}
-
-	private void festival(String message) {
+	private static void festival(String message) {
 		ProcessBuilder pb = new ProcessBuilder("bash", "-c", "echo \"" + message + "\" | festival --tts");
 		try {
 
@@ -127,6 +109,19 @@ public class Quiz extends JPanel implements ActionListener {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == spellingAid.newSpellingQuiz) {
+			newQuiz();
+		} else if (e.getSource() == spellingAid.reviewMistakes) {
+			review();
+		} else if (e.getSource() == repeatWord) {
+			festival(_testingWords.get(_wordNumber));
+		} else if (e.getSource() == submitWord) {
+			checkWord();
 		}
 	}
 
@@ -228,12 +223,6 @@ public class Quiz extends JPanel implements ActionListener {
 			tempFile.renameTo(inputFile);
 			reader.close();
 			writer.close();
-
-			spellingAid.updateStatsTable(type, word);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

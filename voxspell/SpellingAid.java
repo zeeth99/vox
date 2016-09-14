@@ -36,6 +36,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import voxspell.cards.Quiz;
+import voxspell.cards.Stats;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -63,28 +64,14 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private JPanel menu = new JPanel();
 	private JPanel levelSelect = new JPanel();
 	private JPanel quiz = new Quiz(this);
-	private JPanel stats = new JPanel();
 
 	private JLabel menuLabel;
 	private JLabel levelSelectLabel;
-	private JLabel quizLabel;
-	private JLabel quizInstrLabel;
-	private JLabel statsLabel;
-
-	private JFormattedTextField quizInputBox;
-
-	private JScrollPane scrollPane;
-
-	private JTable statsTable;
 
 	public JButton newSpellingQuiz;
 	public JButton reviewMistakes;
 	private JButton viewStatistics;
 	private JButton clearStatistics;
-	private JButton repeatWord;
-	private JButton submitWord;
-	private JButton backToMenuQuiz;
-	private JButton backToMenuStats;
 
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
@@ -146,51 +133,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			cards.add(quiz, "Quiz");
 		}
 
-		// Set up Stats screen
-		{
-			statsLabel = new JLabel("Spelling Statistics");
-			statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			statsLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-			statsLabel.setBounds(0, 0, 500, 60);
-			backToMenuStats = new JButton("Menu");
-			backToMenuStats.setBounds(12, 18, 73, 25);
-			backToMenuStats.addActionListener(this);
-			statsTable = new JTable();
-			statsTable.setShowGrid(true);
-			stats.setLayout(null);
-
-			stats.add(backToMenuStats);
-			stats.add(statsLabel);
-
-			int lineCount = 0;
-			Scanner scanCount = new Scanner(new File(".history/all"));
-			while (scanCount.hasNextLine()) {
-				lineCount++;
-				scanCount.nextLine();
-			}
-			scanCount.close();
-
-			String[] tableHeadings = {"Word", "Times Mastered", "Times Faulted", "Time Failed"};
-			String[][] tableContents = new String[lineCount][4];
-			Scanner sc = new Scanner(new File(".history/all"));
-			for (int i = 0; i < lineCount; i++) {
-				for (int j = 0; j < 4; j++) {
-					tableContents[i][j] = sc.next();
-				}
-			}
-			sc.close();
-
-			statsTable = new JTable(tableContents, tableHeadings);
-			statsTable.setEnabled(false);
-			statsTable.setAutoCreateRowSorter(true);
-
-			scrollPane = new JScrollPane(statsTable);
-			scrollPane.setBounds(0, 60, 500, 320);
-			stats.add(scrollPane);
-
-			cards.add(stats, "Stats");
-		}
-
 		getContentPane().add(cards);
 		returnToMenu();
 
@@ -208,14 +150,15 @@ public class SpellingAid extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
 		} else if (e.getSource() == viewStatistics) {
-			layout.show(cards, "Stats");
-			statsTable.repaint();
+			try {
+				cards.add(new Stats(this), "Stats");
+				layout.show(cards, "Stats");
+			} catch (FileNotFoundException e1) {
+				createStatsFiles();
+			}
 		} else if (e.getSource() == clearStatistics) {
 			clearStats();
-		} else if (e.getSource() == backToMenuQuiz || e.getSource() == backToMenuStats) {
-			returnToMenu();
 		}
-
 	}
 
 	private void updateStats(String type, String word) {
@@ -282,7 +225,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			reader.close();
 			writer.close();
 
-			updateStatsTable(type, word);
+			//updateStatsTable(type, word);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
@@ -291,24 +234,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 
-	}
-
-	//TODO: Move to Stats.java
-	public void updateStatsTable(String type, String word) {
-		for (int i = 0; i < statsTable.getRowCount(); i++) {
-			if (statsTable.getValueAt(i, 0).equals(word)) {
-				int column, aValue;
-				if (type.equals("mastered")) {
-					column = 1;
-				} else if (type.equals("faulted")) {
-					column = 2;
-				} else {
-					column = 3;
-				}
-				aValue = Integer.parseInt((String)statsTable.getValueAt(i, column));
-				statsTable.setValueAt(""+aValue, i, column);
-			}
-		}
 	}
 
 	protected void clearStats() {
@@ -320,8 +245,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			String[] historyFileList = {"mastered", "faulted", "failed", "all"};
 			for (int i = 0; i < 4; i++) (new File(".history/" + historyFileList[i])).delete();
 			createStatsFiles();
-			statsTable.selectAll();
-			statsTable.clearSelection();
 		}
 	}
 
