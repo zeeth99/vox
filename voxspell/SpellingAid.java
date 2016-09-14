@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
+import voxspell.cards.LevelSelect;
 import voxspell.cards.Menu;
 import voxspell.cards.Quiz;
 import voxspell.cards.Stats;
@@ -57,16 +58,13 @@ public class SpellingAid extends JFrame implements ActionListener {
 	final public static File WORDLIST = new File("wordlist");
 	final public static File REVIEWLIST = new File(".history/failed");
 
-
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
 
 	// Cards
-	private JPanel menu = new Menu(this);
-	private JPanel levelSelect = new JPanel();
-	private JPanel quiz = new Quiz(this);
-
-	private JLabel levelSelectLabel;
+	private Menu menu = new Menu(this);
+	private Quiz quiz = new Quiz(this);
+	private LevelSelect levelSelect = new LevelSelect(this);
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
@@ -74,29 +72,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-
 		cards.setLayout(layout);
 
-		// Set up Menu screen
-		{
-			cards.add(menu, "Menu");
-		}
-
-		// Set up Level Select screen
-		{
-			levelSelectLabel = new JLabel("Select Your Quiz Level");
-			levelSelectLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			levelSelectLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-			levelSelectLabel.setBounds(0, 0, 500, 60);
-			cards.add(levelSelect, "Level Select");
-
-			levelSelect.add(levelSelectLabel);
-		}
-
-		// Set up Quiz screen
-		{
-			cards.add(quiz, "Quiz");
-		}
+		// Set up cards
+		cards.add(menu, "Menu");
+		cards.add(levelSelect, "Level Select");
+		cards.add(quiz, "Quiz");
 
 		getContentPane().add(cards);
 		returnToMenu();
@@ -107,12 +88,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
-			((Quiz)quiz).newQuiz();
-			layout.show(cards, "Quiz");
+			quiz.setReviewMode(true);
+			layout.show(cards, "Level Select");
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
 			if (REVIEWLIST.length() > 0) {
-				layout.show(cards, "Quiz");
-				((Quiz)quiz).review();
+				quiz.setReviewMode(true);
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
@@ -128,7 +108,34 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
-	private void updateStats(String type, String word) {
+	public static void festival(String message) {
+		ProcessBuilder pb = new ProcessBuilder("bash", "-c", "echo \"" + message + "\" | festival --tts");
+		try {
+
+			Process process = pb.start();
+
+			BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+			int exitStatus = process.waitFor();
+
+			if (exitStatus == 0) {
+				String line;
+				while ((line = stdout.readLine()) != null) {
+					System.out.println(line);
+				}
+			} else {
+				String line;
+				while ((line = stderr.readLine()) != null) {
+					System.err.println(line);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateStats(String type, String word) {
 		try {
 			String[] files = {"mastered", "faulted", "failed"};
 			File inputFile;
@@ -249,6 +256,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
+	public void startQuiz(int level) {
+		layout.show(cards, "Quiz");
+		quiz.startQuiz(level);
+	}
+	
 	public void returnToMenu() {
 		layout.show(cards, "Menu");
 	}
