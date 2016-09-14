@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
+import voxspell.cards.Menu;
 import voxspell.cards.Quiz;
 import voxspell.cards.Stats;
 
@@ -61,18 +62,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private JPanel cards = new JPanel();
 
 	// Cards
-	private JPanel menu = new JPanel();
+	private JPanel menu = new Menu(this);
 	private JPanel levelSelect = new JPanel();
 	private JPanel quiz = new Quiz(this);
 
-	private JLabel menuLabel;
 	private JLabel levelSelectLabel;
-
-	public JButton newSpellingQuiz;
-	public JButton reviewMistakes;
-	private JButton viewStatistics;
-	private JButton clearStatistics;
-
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
@@ -85,36 +79,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 		// Set up Menu screen
 		{
-			menuLabel = new JLabel("Welcome to the Spelling Aid");
-			menuLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			menuLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-			menuLabel.setBounds(0, 0, 500, 60);
-			newSpellingQuiz = new JButton("New Spelling Quiz");
-			newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
-			newSpellingQuiz.setBounds(100, 90, 300, 50);
-			newSpellingQuiz.addActionListener(this);
-			newSpellingQuiz.addActionListener((ActionListener) quiz);
-			reviewMistakes = new JButton("Review Mistakes");
-			reviewMistakes.setFont(new Font("Dialog", Font.BOLD, 16));
-			reviewMistakes.setBounds(100, 150, 300, 50);
-			reviewMistakes.addActionListener(this);
-			reviewMistakes.addActionListener((ActionListener) quiz);
-			viewStatistics = new JButton("View Statistics");
-			viewStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
-			viewStatistics.setBounds(100, 210, 300, 50);
-			viewStatistics.addActionListener(this);
-			clearStatistics = new JButton("Clear Statistics");
-			clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
-			clearStatistics.setBounds(100, 270, 300, 50);
-			clearStatistics.addActionListener(this);
 			cards.add(menu, "Menu");
-
-			menu.setLayout(null);
-			menu.add(menuLabel);
-			menu.add(reviewMistakes);
-			menu.add(viewStatistics);
-			menu.add(clearStatistics);
-			menu.add(newSpellingQuiz);
 		}
 
 		// Set up Level Select screen
@@ -141,22 +106,24 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == newSpellingQuiz) {
+		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
+			((Quiz)quiz).newQuiz();
 			layout.show(cards, "Quiz");
-		} else if (e.getSource() == reviewMistakes) {
+		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
 			if (REVIEWLIST.length() > 0) {
 				layout.show(cards, "Quiz");
+				((Quiz)quiz).review();
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
-		} else if (e.getSource() == viewStatistics) {
+		} else if (e.getSource() == ((Menu)menu).viewStatistics) {
 			try {
 				cards.add(new Stats(this), "Stats");
 				layout.show(cards, "Stats");
 			} catch (FileNotFoundException e1) {
 				createStatsFiles();
 			}
-		} else if (e.getSource() == clearStatistics) {
+		} else if (e.getSource() == ((Menu)menu).clearStatistics) {
 			clearStats();
 		}
 	}

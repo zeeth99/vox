@@ -114,11 +114,7 @@ public class Quiz extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == spellingAid.newSpellingQuiz) {
-			newQuiz();
-		} else if (e.getSource() == spellingAid.reviewMistakes) {
-			review();
-		} else if (e.getSource() == repeatWord) {
+		if (e.getSource() == repeatWord) {
 			festival(_testingWords.get(_wordNumber));
 		} else if (e.getSource() == submitWord) {
 			checkWord();
@@ -281,13 +277,13 @@ public class Quiz extends JPanel implements ActionListener {
 		quizInputBox.grabFocus();
 	}
 
-	protected void newQuiz() {
+	public void newQuiz() {
 		quizLabel.setText("New Quiz");
 		startQuiz(SpellingAid.WORDLIST, 0); //TODO: level select
 		_reviewMode = false;
 	}
 
-	protected void review() {
+	public void review() {
 		if (SpellingAid.REVIEWLIST.length() > 0) {
 			quizLabel.setText("Review Quiz");
 			startQuiz(SpellingAid.REVIEWLIST, 0); //TODO: level select
