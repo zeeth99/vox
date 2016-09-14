@@ -88,11 +88,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
-			quiz.setReviewMode(true);
+			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
 			if (REVIEWLIST.length() > 0) {
 				quiz.setReviewMode(true);
+				startQuiz(0);
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}

@@ -35,7 +35,7 @@ public class LevelSelect extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < 11; i++) {
 			if (e.getSource() == levels[i]) {
-				spellingAid.startQuiz(i);
+				spellingAid.startQuiz(i+1);
 			}
 		}
 	}
