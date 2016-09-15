@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-import voxspell.cards.LevelSelect;
+import voxspell.cards.ModeSelect;
 import voxspell.cards.Menu;
 import voxspell.cards.Quiz;
 import voxspell.cards.Stats;
@@ -64,7 +64,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	// Cards
 	private Menu menu = new Menu(this);
 	private Quiz quiz = new Quiz(this);
-	private LevelSelect levelSelect = new LevelSelect(this);
+	private ModeSelect modeSelect = new ModeSelect(this);
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
@@ -76,7 +76,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 		// Set up cards
 		cards.add(menu, "Menu");
-		cards.add(levelSelect, "Level Select");
+		cards.add(modeSelect, "Level Select");
 		cards.add(quiz, "Quiz");
 
 		getContentPane().add(cards);
