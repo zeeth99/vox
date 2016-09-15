@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import voxspell.SpellingAid;
+import voxspell.Festival;
 
 @SuppressWarnings("serial")
 public class Quiz extends JPanel implements ActionListener {
@@ -35,6 +36,9 @@ public class Quiz extends JPanel implements ActionListener {
 	private boolean _reviewMode;
 	private int _wordNumber;
 	private List<String> _testingWords;
+	
+	// Object used for text to speech. Could be an instance variable or local
+	private Festival _festival;
 
 	public Quiz(SpellingAid sp) {
 		spellingAid = sp;
@@ -82,7 +86,8 @@ public class Quiz extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == repeatWord) {
-			SpellingAid.festival(_testingWords.get(_wordNumber));
+			_festival = new Festival(_testingWords.get(_wordNumber));
+			_festival.execute();
 		} else if (e.getSource() == submitWord) {
 			checkWord();
 		}
@@ -130,13 +135,15 @@ public class Quiz extends JPanel implements ActionListener {
 		quizInputBox.grabFocus();
 
 		String festivalMessage;
+		
 		if (_firstAttempt) {
 			if (input.equals(word)) {
 				((SpellingAid) spellingAid).updateStats("mastered", word);
 				festivalMessage = "correct";
 			} else {
 				_firstAttempt = false;
-				SpellingAid.festival("Incorrect. Please spell" + _testingWords.get(_wordNumber));
+				_festival = new Festival("Incorrect. The word is" + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
+				_festival.execute();
 				return;
 			}
 		} else {
@@ -156,14 +163,16 @@ public class Quiz extends JPanel implements ActionListener {
 				}
 			}
 		}
-		SpellingAid.festival(festivalMessage);
+		_festival = new Festival(festivalMessage);
+		_festival.execute();
 		_firstAttempt = true;
 		if (_wordNumber + 1 == _testingWords.size()) {
 			spellingAid.returnToMenu();
 			_wordNumber = 0;
 		} else {
 			_wordNumber++;
-			SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
+			_festival.setMessage("Please spell " + _testingWords.get(_wordNumber));
+			_festival.execute();
 		}
 
 	}
@@ -179,7 +188,8 @@ public class Quiz extends JPanel implements ActionListener {
 		}
 		_firstAttempt = true;
 		_testingWords = randomWords(f, level);
-		SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
+		_festival = new Festival("Please spell " + _testingWords.get(_wordNumber));
+		_festival.execute();
 		quizInputBox.grabFocus();
 	}
 
