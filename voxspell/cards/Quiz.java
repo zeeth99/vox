@@ -99,16 +99,20 @@ public class Quiz extends JPanel implements ActionListener {
 		List<String> wordList = new ArrayList<String>();
 		try {
 			Scanner sc = new Scanner(f);
-			// while (sc.hasNextLine()) {
-			// 	if (sc.nextLine().equals("%Level "+level)) {
-			// 			break;
-			// 	}
-			// }
+			if (!_reviewMode) {
+				while (sc.hasNextLine()) {
+					if (sc.nextLine().equals("%Level "+level)) {
+						break;
+					}
+				}
+			}
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
-				// if (line.charAt(0) == '%') {
-				// 	break;
-				// }
+				if (!_reviewMode) {
+					 if (line.charAt(0) == '%') {
+					 	break;
+					 }
+				}
 				tempList.add(line);
 			}
 			sc.close();
@@ -132,22 +136,22 @@ public class Quiz extends JPanel implements ActionListener {
 		String input = quizInputBox.getText();
 		String word = _testingWords.get(_wordNumber);
 		quizInputBox.setText("");
-		quizInputBox.grabFocus();
 
 		String festivalMessage;
 		
 		if (_firstAttempt) {
-			if (input.equals(word)) {
+			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats("mastered", word);
 				festivalMessage = "correct";
 			} else {
 				_firstAttempt = false;
 				_festival = new Festival("Incorrect. The word is" + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
 				_festival.execute();
+				quizInputBox.grabFocus();
 				return;
 			}
 		} else {
-			if (input.equals(word)) {
+			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats("faulted", word);
 				festivalMessage = "correct";
 			} else {
@@ -167,29 +171,26 @@ public class Quiz extends JPanel implements ActionListener {
 		_festival.execute();
 		_firstAttempt = true;
 		if (_wordNumber + 1 == _testingWords.size()) {
-			spellingAid.returnToMenu();
 			_wordNumber = 0;
+			spellingAid.returnToMenu();
 		} else {
 			_wordNumber++;
-			_festival.setMessage("Please spell " + _testingWords.get(_wordNumber));
-			_festival.execute();
+			SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
 		}
 
 	}
 
 	public void startQuiz(int level) {
-		File f;
 		if (_reviewMode) {
 			quizLabel.setText("Review Quiz");
-			f = SpellingAid.REVIEWLIST;
+			_testingWords = randomWords(SpellingAid.REVIEWLIST, level);
 		} else {
 			quizLabel.setText("New Quiz");
-			f = SpellingAid.WORDLIST;
+			_testingWords = randomWords(SpellingAid.WORDLIST, level);
 		}
 		_firstAttempt = true;
 		_testingWords = randomWords(f, level);
-		_festival = new Festival("Please spell " + _testingWords.get(_wordNumber));
-		_festival.execute();
+		SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
 	}
 
