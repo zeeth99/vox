@@ -55,7 +55,7 @@ import javax.swing.JInternalFrame;
 @SuppressWarnings({ "serial", "unused" })
 public class SpellingAid extends JFrame implements ActionListener {
 
-	final public static File WORDLIST = new File("wordlist");
+	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
 	final public static File REVIEWLIST = new File(".history/failed");
 
 	private CardLayout layout = new CardLayout();
@@ -89,7 +89,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
 			quiz.setReviewMode(false);
-			layout.show(cards, "Level Select");
+			//TODO: change when level select works
+			startQuiz(1);
+			//layout.show(cards, "Level Select");
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
 			if (REVIEWLIST.length() > 0) {
 				quiz.setReviewMode(true);
