@@ -13,8 +13,7 @@ import javax.swing.SwingConstants;
 import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
-public class ModeSelect extends JPanel implements ActionListener{
-	SpellingAid spellingAid;
+public class ModeSelect extends Card implements ActionListener{
 
 	private JLabel levelSelectLabel;
 	private JButton[] levels = new JButton[11];
@@ -22,16 +21,7 @@ public class ModeSelect extends JPanel implements ActionListener{
 
 	
 	public ModeSelect(SpellingAid sp) {
-		spellingAid = sp;		
-		
-		setLayout(null);
-		
-		levelSelectLabel = new JLabel("Select Your Mode");
-		levelSelectLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		levelSelectLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-		levelSelectLabel.setBounds(0, 0, 500, 60);
-		
-		add(levelSelectLabel);
+		super(sp, "Select Your Mode");
 		
 		int[] levelButtonsX = {50, 190, 330};
 		int[] levelButtonsY = {70, 120, 170, 220};
