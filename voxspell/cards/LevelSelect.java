@@ -22,17 +22,24 @@ public class LevelSelect extends JPanel implements ActionListener{
 	public LevelSelect(SpellingAid sp) {
 		spellingAid = sp;		
 		
-		levelSelectLabel = new JLabel("Select Your Quiz Level");
+		setLayout(null);
+		
+		levelSelectLabel = new JLabel("Select Your Mode");
 		levelSelectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		levelSelectLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
 		levelSelectLabel.setBounds(0, 0, 500, 60);
 		
+		add(levelSelectLabel);
+		
+		int[] levelButtonsX = {50, 190, 330};
+		int[] levelButtonsY = {70, 120, 170, 220};
+		
 		for (int i = 0; i < 11; i++) {
-			levels[i] = new JButton(String.valueOf(i+1));
+			levels[i] = new JButton("Level" + String.valueOf(i+1));
+			levels[i].setBounds(levelButtonsX[i%3], levelButtonsY[(int) (i / 3)], 120, 30);
 			add(levels[i]);
 			levels[i].addActionListener(this);
 		}
-		add(levelSelectLabel);
 	}
 
 
