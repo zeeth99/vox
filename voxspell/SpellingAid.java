@@ -89,9 +89,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
 			quiz.setReviewMode(false);
-			//TODO: change when level select works
-			startQuiz(1);
-			//layout.show(cards, "Level Select");
+			layout.show(cards, "Level Select");
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
 			if (REVIEWLIST.length() > 0) {
 				quiz.setReviewMode(true);

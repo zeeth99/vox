@@ -175,7 +175,8 @@ public class Quiz extends JPanel implements ActionListener {
 			spellingAid.returnToMenu();
 		} else {
 			_wordNumber++;
-			SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
+			//TODO: fix
+			//SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
 		}
 
 	}
@@ -189,8 +190,8 @@ public class Quiz extends JPanel implements ActionListener {
 			_testingWords = randomWords(SpellingAid.WORDLIST, level);
 		}
 		_firstAttempt = true;
-		_testingWords = randomWords(f, level);
-		SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
+		//TODO fix:
+		//SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
 	}
 
