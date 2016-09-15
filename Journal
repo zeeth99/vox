@@ -5,3 +5,6 @@ We are using Git to handle version control.
 So far the main work has gone into refactoring the code from assignment 2. Ray has started working on the new version of the stats page while I have been seperating the different screens into different classes. This refactoring should make it easier for us to work on the project at the same time. This is because merging work from two people on the same file is more difficult than if they are working on diffreent files. 
 The new stats screen will have tabs for the statistics of each level, making the statistics more visually accessible.
 
+16/09/2016 R
+Working on implementing and fixing a SwingWorker class which handles text to speech so that the GUI is responsive while it reads out
+the word to spell.
