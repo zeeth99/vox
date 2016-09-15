@@ -28,7 +28,7 @@ public class LevelSelect extends JPanel implements ActionListener{
 		levelSelectLabel.setBounds(0, 0, 500, 60);
 		
 		for (int i = 0; i < 11; i++) {
-			levels[i] = new JButton(""+i);
+			levels[i] = new JButton(String.valueOf(i+1));
 			add(levels[i]);
 			levels[i].addActionListener(this);
 		}

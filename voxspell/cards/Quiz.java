@@ -190,8 +190,8 @@ public class Quiz extends JPanel implements ActionListener {
 			_testingWords = randomWords(SpellingAid.WORDLIST, level);
 		}
 		_firstAttempt = true;
-		//TODO fix:
-		//SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
+		_festival = new Festival("Please spell " + _testingWords.get(_wordNumber));
+		_festival.execute();
 		quizInputBox.grabFocus();
 	}
 
