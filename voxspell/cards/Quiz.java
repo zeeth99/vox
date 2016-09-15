@@ -85,6 +85,7 @@ public class Quiz extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		quizInputBox.grabFocus();
 		if (e.getSource() == repeatWord) {
 			_festival = new Festival(_testingWords.get(_wordNumber));
 			_festival.execute();
@@ -147,7 +148,6 @@ public class Quiz extends JPanel implements ActionListener {
 				_firstAttempt = false;
 				_festival = new Festival("Incorrect. The word is" + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
 				_festival.execute();
-				quizInputBox.grabFocus();
 				return;
 			}
 		} else {
