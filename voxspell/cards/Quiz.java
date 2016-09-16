@@ -34,6 +34,7 @@ public class Quiz extends JPanel implements ActionListener {
 
 	private boolean _firstAttempt;
 	private boolean _reviewMode;
+	private boolean _reviewSpellOut;
 	private int _wordNumber;
 	private List<String> _testingWords;
 	
@@ -140,7 +141,16 @@ public class Quiz extends JPanel implements ActionListener {
 
 		String festivalMessage;
 		
-		if (_firstAttempt) {
+		if (_reviewSpellOut) { // Check if word is spelt correctly on thier last chance
+			_reviewSpellOut = false;
+			if (input.equalsIgnoreCase(word)) {
+				// TODO: Remove word from failed list. Not sure whether word is mastered or faulted
+				// ((SpellingAid) spellingAid).updateStats("faulted", word);
+				festivalMessage = "correct";
+			} else {
+				festivalMessage = "incorrect";
+			}
+		} else if (_firstAttempt) {
 			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats("mastered", word);
 				festivalMessage = "correct";
@@ -156,27 +166,35 @@ public class Quiz extends JPanel implements ActionListener {
 				festivalMessage = "correct";
 			} else {
 				((SpellingAid) spellingAid).updateStats("failed", word);
-				festivalMessage = "incorrect.";
-				if (_reviewMode) {
+				festivalMessage = "incorrect.. ";
+				if (_reviewMode && !_reviewSpellOut) {
+					_reviewSpellOut = true;
+					festivalMessage += "the word is spelt.. ";
 					// Spell out word if reviewing
 					String spellOutWord = "";
 					for (int i = 0; i < word.length(); i++) {
-						spellOutWord += word.charAt(i) + ". ";
+						spellOutWord += word.charAt(i) + ".. ";
 					}
 					festivalMessage += spellOutWord;
+					_festival = new Festival(festivalMessage);
+					_festival.execute();
+					return;
 				}
 			}
 		}
-		_festival = new Festival(festivalMessage);
-		_festival.execute();
 		_firstAttempt = true;
+		_festival = new Festival(festivalMessage);
 		if (_wordNumber + 1 == _testingWords.size()) {
+			
+			// TODO: Add level progression when user gets 
+			// 9/10 words correct in a given level
+			_festival.execute();
 			_wordNumber = 0;
 			spellingAid.returnToMenu();
 		} else {
 			_wordNumber++;
-			//TODO: fix
-			//SpellingAid.festival("Please spell " + _testingWords.get(_wordNumber));
+			_festival.setMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
+			_festival.execute();
 		}
 
 	}
@@ -190,6 +208,7 @@ public class Quiz extends JPanel implements ActionListener {
 			_testingWords = randomWords(SpellingAid.WORDLIST, level);
 		}
 		_firstAttempt = true;
+		_reviewSpellOut = false;
 		_festival = new Festival("Please spell " + _testingWords.get(_wordNumber));
 		_festival.execute();
 		quizInputBox.grabFocus();
