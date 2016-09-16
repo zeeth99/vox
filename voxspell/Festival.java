@@ -2,15 +2,14 @@ package voxspell;
 
 import javax.swing.SwingWorker;
 
+import voxspell.cards.Quiz;
+
+
 public class Festival extends SwingWorker<Void,Void> {
 	
 	private String _message;
 	
 	public Festival(String message) {
-		_message = message;
-	}
-	
-	public void setMessage(String message) {
 		_message = message;
 	}
 	
@@ -25,5 +24,9 @@ public class Festival extends SwingWorker<Void,Void> {
 		} catch (Exception e) { }
 		return null;
 	}
-
+	
+	@Override
+	protected void done() {
+		Quiz.enableButtons();
+	}
 }

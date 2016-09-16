@@ -1,5 +1,6 @@
 package voxspell.cards;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,8 +30,8 @@ public class Quiz extends JPanel implements ActionListener {
 	private JLabel quizLabel;
 	private JLabel quizInstrLabel;
 	private JFormattedTextField quizInputBox;
-	private JButton repeatWord;
-	private JButton submitWord;
+	public static JButton repeatWord;
+	public static JButton submitWord;
 
 	private boolean _firstAttempt;
 	private boolean _reviewMode;
@@ -82,14 +83,14 @@ public class Quiz extends JPanel implements ActionListener {
 		add(submitWord);
 		add(quizLabel);
 		add(quizInstrLabel);
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		quizInputBox.grabFocus();
 		if (e.getSource() == repeatWord) {
-			_festival = new Festival(_testingWords.get(_wordNumber));
-			_festival.execute();
+			sayMessage(_testingWords.get(_wordNumber));
 		} else if (e.getSource() == submitWord) {
 			checkWord();
 		}
@@ -156,8 +157,7 @@ public class Quiz extends JPanel implements ActionListener {
 				festivalMessage = "correct";
 			} else {
 				_firstAttempt = false;
-				_festival = new Festival("Incorrect. The word is" + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
-				_festival.execute();
+				sayMessage("Incorrect. The word is " + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
 				return;
 			}
 		} else {
@@ -176,25 +176,22 @@ public class Quiz extends JPanel implements ActionListener {
 						spellOutWord += word.charAt(i) + ".. ";
 					}
 					festivalMessage += spellOutWord;
-					_festival = new Festival(festivalMessage);
-					_festival.execute();
+					sayMessage(festivalMessage);
 					return;
 				}
 			}
 		}
 		_firstAttempt = true;
-		_festival = new Festival(festivalMessage);
 		if (_wordNumber + 1 == _testingWords.size()) {
 			
 			// TODO: Add level progression when user gets 
 			// 9/10 words correct in a given level
-			_festival.execute();
+			sayMessage(festivalMessage);
 			_wordNumber = 0;
 			spellingAid.returnToMenu();
 		} else {
 			_wordNumber++;
-			_festival.setMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
-			_festival.execute();
+			sayMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
 		}
 
 	}
@@ -209,13 +206,31 @@ public class Quiz extends JPanel implements ActionListener {
 		}
 		_firstAttempt = true;
 		_reviewSpellOut = false;
-		_festival = new Festival("Please spell " + _testingWords.get(_wordNumber));
-		_festival.execute();
+		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
 	}
 
 	public void setReviewMode(boolean isTrue) {
 		_reviewMode = isTrue;
 	}
-
+	
+	private void sayMessage(String message) {
+		disableButtons();
+		_festival = new Festival(message);
+		_festival.execute();
+	}
+	
+	private void disableButtons() {
+		repeatWord.setBackground(Color.GRAY);
+		submitWord.setBackground(Color.GRAY);
+		repeatWord.setEnabled(false);
+		submitWord.setEnabled(false);
+	}
+	
+	public static void enableButtons() {
+		repeatWord.setBackground(Color.WHITE);
+		submitWord.setBackground(Color.WHITE);
+		repeatWord.setEnabled(true);
+		submitWord.setEnabled(true);
+	}
 }
