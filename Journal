@@ -10,3 +10,6 @@ Our next tasks are tweaking festival calls, adding level differentiation to the 
 
 
 
+16/09/2016 R
+Working on implementing and fixing a SwingWorker class which handles text to speech so that the GUI is responsive while it reads out
+the word to spell.
