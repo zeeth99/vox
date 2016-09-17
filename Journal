@@ -8,3 +8,7 @@ The new stats screen will have tabs for the statistics of each level, making the
 16/09/2016 R
 Working on implementing and fixing a SwingWorker class which handles text to speech so that the GUI is responsive while it reads out
 the word to spell.
+
+18/09/2016 R
+Added level progression to the quiz which allows user to go from one level to the next when they get 9 out of 10 words correct. Still need to add video reward at the end of completing a level as well as decided on whether to 'complete' the quiz before giving the options
+of progressing, retrying or the video.
