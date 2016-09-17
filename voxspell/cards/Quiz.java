@@ -17,6 +17,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -25,10 +26,14 @@ import voxspell.Festival;
 
 @SuppressWarnings("serial")
 public class Quiz extends JPanel implements ActionListener {
+	
+	private static final int MAXWORDS = 10;
+	
 	private SpellingAid spellingAid;
 
 	private JLabel quizLabel;
 	private JLabel quizInstrLabel;
+	private JLabel levelLabel;
 	private JFormattedTextField quizInputBox;
 	public static JButton repeatWord;
 	public static JButton submitWord;
@@ -37,14 +42,20 @@ public class Quiz extends JPanel implements ActionListener {
 	private boolean _reviewMode;
 	private boolean _reviewSpellOut;
 	private int _wordNumber;
+	private int _wordsCorrect;
 	private List<String> _testingWords;
+	
+	private int _level;
 	
 	// Object used for text to speech. Could be an instance variable or local
 	private Festival _festival;
-
+	
+	// TODO: Have a button which leads to statistics for that given session (all levels) which can be pressed during the quiz
+	// TODO: Have feedback during the quiz (a label) which tells the user how many words they have gotten correct so far, on a given level.
 	public Quiz(SpellingAid sp) {
 		spellingAid = sp;
 		_wordNumber = 0;
+		_wordsCorrect = 0;
 
 		quizLabel = new JLabel();
 		quizLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
@@ -52,8 +63,10 @@ public class Quiz extends JPanel implements ActionListener {
 		quizLabel.setText("Quiz");
 		quizLabel.setBounds(0, 0, 500, 60);
 		quizLabel.setPreferredSize(new Dimension(300, 100));
-		quizInstrLabel = new JLabel("Please type the word you hear:");
+		quizInstrLabel = new JLabel();
 		quizInstrLabel.setBounds(125, 90, 250, 15);
+		levelLabel = new JLabel();
+		levelLabel.setBounds(125, 70, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
 
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
@@ -66,6 +79,9 @@ public class Quiz extends JPanel implements ActionListener {
 		quizInputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
 		quizInputBox.setBounds(125, 120, 250, 30);
 		quizInputBox.setColumns(20);
+		
+		// TODO: Apostrophes are present in some of the words and this only alloweds letters so needs to change
+		// to allow apostrophes
 		quizInputBox.addKeyListener(new KeyAdapter(){ // Only letters can be inputed
 			public void keyTyped(KeyEvent e){
 				String text = quizInputBox.getText();
@@ -83,6 +99,7 @@ public class Quiz extends JPanel implements ActionListener {
 		add(submitWord);
 		add(quizLabel);
 		add(quizInstrLabel);
+		add(levelLabel);
 		
 	}
 
@@ -155,6 +172,7 @@ public class Quiz extends JPanel implements ActionListener {
 			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats("mastered", word);
 				festivalMessage = "correct";
+				_wordsCorrect++;
 			} else {
 				_firstAttempt = false;
 				sayMessage("Incorrect. The word is " + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
@@ -164,6 +182,7 @@ public class Quiz extends JPanel implements ActionListener {
 			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats("faulted", word);
 				festivalMessage = "correct";
+				_wordsCorrect++;
 			} else {
 				((SpellingAid) spellingAid).updateStats("failed", word);
 				festivalMessage = "incorrect.. ";
@@ -182,21 +201,36 @@ public class Quiz extends JPanel implements ActionListener {
 			}
 		}
 		_firstAttempt = true;
-		if (_wordNumber + 1 == _testingWords.size()) {
-			
-			// TODO: Add level progression when user gets 
-			// 9/10 words correct in a given level
+		
+		// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
+		if (_wordsCorrect >= 9) {
 			sayMessage(festivalMessage);
+			levelCompleteAction();
+			return;
+		}
+		if (_wordNumber + 1 == _testingWords.size()) {
 			_wordNumber = 0;
-			spellingAid.returnToMenu();
+			_wordsCorrect = 0;
+			sayMessage(festivalMessage);
+			String[] options = new String[] {"Repeat level","Return to Main Menu"};
+			int option = JOptionPane.showOptionDialog(this, "You have failed to complete the level.\nWould you like to do?",
+					"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			if (option == JOptionPane.YES_OPTION) {
+				spellingAid.startQuiz(_level);
+			} else {
+				spellingAid.returnToMenu();
+			}
 		} else {
 			_wordNumber++;
 			sayMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
+			quizInstrLabel.setText("Please spell word " + (_wordNumber+1) +" of " + MAXWORDS);
 		}
-
 	}
 
 	public void startQuiz(int level) {
+		_level = level;
+		levelLabel.setText("Level "+_level);
+		
 		if (_reviewMode) {
 			quizLabel.setText("Review Quiz");
 			_testingWords = randomWords(SpellingAid.REVIEWLIST, level);
@@ -206,6 +240,7 @@ public class Quiz extends JPanel implements ActionListener {
 		}
 		_firstAttempt = true;
 		_reviewSpellOut = false;
+		quizInstrLabel.setText("Please spell word " + (_wordNumber+1) + " of " + MAXWORDS);
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
 	}
@@ -232,5 +267,41 @@ public class Quiz extends JPanel implements ActionListener {
 		submitWord.setBackground(Color.WHITE);
 		repeatWord.setEnabled(true);
 		submitWord.setEnabled(true);
+	}
+	
+	/* Decides on what to do when the level is completed depending on what the user
+	 * chooses to do and what level they are on
+	 */
+	public void levelCompleteAction() {
+		_wordNumber = 0;
+		_wordsCorrect = 0;
+		if (_level != 11) {
+			// TODO: Give option for video reward before asking to progress to next level
+			// TODO: Give option to return to main menu after a level is completed as well as to an option to repeat a level
+			String[] options = new String[] {"Next Level","Repeat Level","Play Video", "Return to Main Menu"};
+			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			if (option == 0) {
+				spellingAid.startQuiz(_level + 1);
+			} else if (option == 1) {
+				spellingAid.startQuiz(_level);
+			} else if (option == 2) {
+				// TODO: Play video
+			} else {
+				spellingAid.returnToMenu();
+			}
+		} else {
+			// TODO: Give option for video reward
+			String[] options = new String[] {"Repeat Level","Play Video","Return to Main Menu"};
+			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			if (option == 0) {
+				spellingAid.startQuiz(_level);
+			} else if (option == 1) {
+				// TODO: Play video
+			} else {
+				spellingAid.returnToMenu();
+			}
+		}
 	}
 }

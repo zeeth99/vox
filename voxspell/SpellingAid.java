@@ -96,7 +96,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
 			if (REVIEWLIST.length() > 0) {
 				quiz.setReviewMode(true);
-				startQuiz(0);
+				startQuiz(1);
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
