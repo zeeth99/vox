@@ -28,6 +28,8 @@ import voxspell.Festival;
 
 @SuppressWarnings("serial")
 public class Quiz extends Card implements ActionListener {
+	
+	private static final int QUIZ_SIZE = 10;
 
 	private JLabel quizInstrLabel;
 	private JLabel levelLabel;
@@ -117,7 +119,7 @@ public class Quiz extends Card implements ActionListener {
 
 		String festivalMessage;
 		
-		if (_reviewSpellOut) { // Check if word is spelt correctly on thier last chance
+		if (_reviewSpellOut) { // Check if word is spelt correctly on their last chance
 			_reviewSpellOut = false;
 			if (input.equalsIgnoreCase(word)) {
 				// TODO: Remove word from failed list. Not sure whether word is mastered or faulted
@@ -307,15 +309,14 @@ public class Quiz extends Card implements ActionListener {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		if (tempList.size() > 10) {
-			Random rnd = new Random();
-			for (int i = 0; i < 10; i++) {
-				String word = tempList.get(rnd.nextInt(tempList.size()));
-				tempList.remove(word);
-				wordList.add(word);
+		Random rnd = new Random();
+		for (int i = 0; i < QUIZ_SIZE; i++) {
+			String word = tempList.get(rnd.nextInt(tempList.size()));
+			tempList.remove(word);
+			wordList.add(word);
+			if (wordList.isEmpty()) {
+				break;
 			}
-		} else {
-			return tempList;
 		}
 		return wordList;
 	}
