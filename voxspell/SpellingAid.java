@@ -194,7 +194,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
-	// TODO Move to Settings?
+	// TODO Move to Settings? Yup. Makes more sense there
 	private void clearStats() {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"

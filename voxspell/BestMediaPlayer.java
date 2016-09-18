@@ -8,9 +8,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -20,6 +18,13 @@ public class BestMediaPlayer {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private EmbeddedMediaPlayer _video;
 
+	private JButton _play;
+	private JButton _pause;
+	private JButton _stop;
+	
+	private JPanel _screen;
+	private JPanel _controls;
+	
     public BestMediaPlayer() {
         JFrame frame = new JFrame("The Awesome Mediaplayer");
 
@@ -28,49 +33,38 @@ public class BestMediaPlayer {
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
         _video = video;
         
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(mediaPlayerComponent, BorderLayout.CENTER);
+        _screen = new JPanel();
+        _controls = new JPanel();
         
-        frame.setContentPane(panel);
-
-        JButton btnMute = new JButton("Shh....");
-        panel.add(btnMute, BorderLayout.NORTH);
-        btnMute.addActionListener(new ActionListener() {
+        _screen.setLayout(new BorderLayout());
+        _screen.add(mediaPlayerComponent, BorderLayout.CENTER);
+        
+        _play = new JButton("PLAY");
+        _controls.add(_play);
+        _play.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		video.play();
+        	}
+        });
+        
+        _pause = new JButton("PAUSE");
+        _controls.add(_pause);
+        _pause.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				video.mute();
+				video.pause();
 			}
 		});
         
-        JButton btnSkip = new JButton("Hurry up!");
-        btnSkip.addActionListener(new ActionListener() {
+        _stop = new JButton("STOP");
+        _controls.add(_stop);
+        _stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				video.skip(5000);
+				video.stop();
 			}
 		});
-        panel.add(btnSkip, BorderLayout.EAST);
-
-        JButton btnSkipBack = new JButton("Say what!?!?");
-        btnSkipBack.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				video.skip(-5000);
-			}
-		});
-        panel.add(btnSkipBack, BorderLayout.WEST);
-        
-        JLabel labelTime = new JLabel("0 seconds");
-        panel.add(labelTime, BorderLayout.SOUTH);
-
-        Timer timer = new Timer(50, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				long time = (long)(video.getTime()/1000.0);
-				labelTime.setText(String.valueOf(time));
-			}
-		});
-        timer.start();
         
         frame.setLocation(100, 100);
         frame.setSize(1050, 600);
@@ -84,6 +78,9 @@ public class BestMediaPlayer {
                 mediaPlayerComponent.release();
             }
         });
+        
+        _screen.add(_controls, BorderLayout.SOUTH);
+        frame.setContentPane(_screen);
         
         String filename = "big_buck_bunny_1_minute.avi";
         video.playMedia(filename);
