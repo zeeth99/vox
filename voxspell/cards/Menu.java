@@ -12,8 +12,8 @@ import voxspell.SpellingAid;
 public class Menu extends Card implements ActionListener {
 
 	public JButton newSpellingQuiz;
-	public JButton reviewMistakes;
 	public JButton viewStatistics;
+	public JButton settings;
 	public JButton clearStatistics;
 
 	public Menu(SpellingAid sp) {
@@ -23,23 +23,23 @@ public class Menu extends Card implements ActionListener {
 		newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 		newSpellingQuiz.setBounds(100, 90, 300, 50);
 		newSpellingQuiz.addActionListener((ActionListener) sp);
-		reviewMistakes = new JButton("Review Mistakes");
-		reviewMistakes.setFont(new Font("Dialog", Font.BOLD, 16));
-		reviewMistakes.setBounds(100, 150, 300, 50);
-		reviewMistakes.addActionListener((ActionListener) sp);
 		viewStatistics = new JButton("View Statistics");
 		viewStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
-		viewStatistics.setBounds(100, 210, 300, 50);
+		viewStatistics.setBounds(100, 150, 300, 50);
 		viewStatistics.addActionListener(sp);
+		settings = new JButton("Settings");
+		settings.setFont(new Font("Dialog", Font.BOLD, 16));
+		settings.setBounds(100, 210, 300, 50);
+		settings.addActionListener((ActionListener) sp);
 		clearStatistics = new JButton("Clear Statistics");
 		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 		clearStatistics.setBounds(100, 270, 300, 50);
 		clearStatistics.addActionListener(sp);
 
-		add(reviewMistakes);
-		add(viewStatistics);
-		add(clearStatistics);
 		add(newSpellingQuiz);
+		add(viewStatistics);
+		add(settings);
+		add(clearStatistics);
 	}
 	
 	@Override

@@ -109,7 +109,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
 			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
-		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
+		} else if (e.getSource() == ((ModeSelect)modeSelect).reviewButton) {
 			if (!reviewFilesEmpty()) {
 				quiz.setReviewMode(true);
 				startQuiz(1);
