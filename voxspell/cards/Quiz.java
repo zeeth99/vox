@@ -192,8 +192,8 @@ public class Quiz extends Card implements ActionListener {
 		levelLabel.setText("Level "+_level);
 		
 		if (_reviewMode) {
-			File f = new File(".review/level"+level);
 			heading.setText("Review Quiz");
+			File f = new File(".history/review/level"+level);
 			_testingWords = randomWords(f, level);
 			if (noWordsToReview()) {
 				return;
@@ -311,7 +311,7 @@ public class Quiz extends Card implements ActionListener {
 	private void addWordToReview(String word, int level) {
 		try {	
 			String currentLine;
-			File inputFile = new File(".review/level"+level);
+			File inputFile = new File(".history/review/level"+level);
 			File tempFile = new File(".history/.tempFile");
 	
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -352,7 +352,7 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	private void reviewLevelCompleteAction() {
-		File f = new File(".review/level"+_level);
+		File f = new File(".history/review/level"+_level);
 		if (f.length() > 0) {
 			String[] options = new String[] {"Repeat level","Return to Main Menu"};
 			int option = JOptionPane.showOptionDialog(this, "There are still some words left to review on this level\nTo progress to further levels"
@@ -381,7 +381,7 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	protected void removeFromReview(String wordToBeRemoved) {
-		File review = new File(".review/level"+_level);
+		File review = new File(".history/review/level"+_level);
 		File temp = new File(".history/.tempFile");
 		try {
 			/* Following code retrieved and slightly modified from 
