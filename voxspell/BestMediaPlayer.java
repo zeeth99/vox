@@ -3,25 +3,20 @@ package voxspell;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
 
-public class BestMediaPlayer implements WindowListener {
+public class BestMediaPlayer {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private EmbeddedMediaPlayer _video;
 
@@ -82,33 +77,16 @@ public class BestMediaPlayer implements WindowListener {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
         
-        frame.addWindowListener(this);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	_video.stop();
+                mediaPlayerComponent.release();
+            }
+        });
         
         String filename = "big_buck_bunny_1_minute.avi";
         video.playMedia(filename);
         
     }
-
-	@Override
-	public void windowOpened(WindowEvent e) { }
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		_video.stop();
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) { }
-
-	@Override
-	public void windowIconified(WindowEvent e) { }
-
-	@Override
-	public void windowDeiconified(WindowEvent e) { }
-
-	@Override
-	public void windowActivated(WindowEvent e) { }
-
-	@Override
-	public void windowDeactivated(WindowEvent e) { }
 }
