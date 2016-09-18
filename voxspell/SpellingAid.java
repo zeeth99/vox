@@ -222,12 +222,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private static void createReviewFiles() {
 		// Creates files which contain words from each level which user failed to be
 		// reviewed in review mode
-		File r = new File(".review");
+		File r = new File(".history/review");
 		if (!r.exists() || !r.isDirectory()) {
 			r.mkdir();
 		}
 		for (int i = 1; i < 12; i++) {
-			r = new File(".review/level"+i);
+			r = new File(".history/review/level"+i);
 			try {
 				r.createNewFile();
 			} catch (IOException e) {
@@ -263,7 +263,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	private boolean reviewFilesEmpty() {
 		for (int i = 1; i < 12; i++) {
-			File f = new File(".review/level"+i);
+			File f = new File(".history/review/level"+i);
 			if (f.length() > 0) {
 				return false;
 			}
