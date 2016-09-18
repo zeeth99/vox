@@ -94,7 +94,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
-			if (REVIEWLIST.length() > 0) {
+			createReviewFiles();
+			if (!reviewFilesEmpty()) {
 				quiz.setReviewMode(true);
 				startQuiz(1);
 			} else {
@@ -214,7 +215,24 @@ public class SpellingAid extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 		}
-
+		
+	}
+	
+	private static void createReviewFiles() {
+		// Creates files which contain words from each level which user failed to be
+		// reviewed in review mode
+		File r = new File(".review");
+		if (!r.exists() || !r.isDirectory()) {
+			r.mkdir();
+		}
+		for (int i = 1; i < 12; i++) {
+			r = new File(".review/level"+i);
+			try {
+				r.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void main(String[] args) {
@@ -240,6 +258,16 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	public void returnToMenu() {
 		layout.show(cards, "Menu");
+	}
+	
+	private boolean reviewFilesEmpty() {
+		for (int i = 1; i < 12; i++) {
+			File f = new File(".review/level"+i);
+			if (f.length() > 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
