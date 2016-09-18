@@ -3,6 +3,8 @@ package voxspell;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,15 +21,17 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
-public class BestMediaPlayer {
+public class BestMediaPlayer implements WindowListener {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	private EmbeddedMediaPlayer _video;
 
-    public BestMediaPlayer(String[] args) {
+    public BestMediaPlayer() {
         JFrame frame = new JFrame("The Awesome Mediaplayer");
 
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
+        _video = video;
         
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(mediaPlayerComponent, BorderLayout.CENTER);
@@ -78,8 +82,33 @@ public class BestMediaPlayer {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
         
+        frame.addWindowListener(this);
+        
         String filename = "big_buck_bunny_1_minute.avi";
         video.playMedia(filename);
         
     }
+
+	@Override
+	public void windowOpened(WindowEvent e) { }
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		_video.stop();
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) { }
+
+	@Override
+	public void windowIconified(WindowEvent e) { }
+
+	@Override
+	public void windowDeiconified(WindowEvent e) { }
+
+	@Override
+	public void windowActivated(WindowEvent e) { }
+
+	@Override
+	public void windowDeactivated(WindowEvent e) { }
 }

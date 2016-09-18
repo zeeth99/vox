@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
+import voxspell.BestMediaPlayer;
 import voxspell.Festival;
 
 @SuppressWarnings("serial")
@@ -42,6 +43,8 @@ public class Quiz extends Card implements ActionListener {
 	private List<String> _testingWords;
 	
 	private int _level;
+	
+	private BestMediaPlayer _player;
 	
 	// Object used for text to speech. Could be an instance variable or local
 	private Festival _festival;
@@ -250,7 +253,8 @@ public class Quiz extends Card implements ActionListener {
 			} else if (option == 1) {
 				spellingAid.startQuiz(_level);
 			} else if (option == 2) {
-				// TODO: Play video
+				_player = new BestMediaPlayer();
+				spellingAid.returnToMenu();
 			} else {
 				spellingAid.returnToMenu();
 			}
@@ -262,7 +266,8 @@ public class Quiz extends Card implements ActionListener {
 			if (option == 0) {
 				spellingAid.startQuiz(_level);
 			} else if (option == 1) {
-				// TODO: Play video
+				_player = new BestMediaPlayer();
+				spellingAid.returnToMenu();
 			} else {
 				spellingAid.returnToMenu();
 			}
@@ -270,7 +275,6 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	private List<String> randomWords(File f, int level) {
-		// Commented out code is to be added when level selection is implemented
 		List<String> tempList = new ArrayList<String>();
 		List<String> wordList = new ArrayList<String>();
 		try {
