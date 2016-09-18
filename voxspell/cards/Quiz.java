@@ -318,12 +318,12 @@ public class Quiz extends Card implements ActionListener {
 		}
 		Random rnd = new Random();
 		for (int i = 0; i < QUIZ_SIZE; i++) {
-			String word = tempList.get(rnd.nextInt(tempList.size()));
-			tempList.remove(word);
-			wordList.add(word);
 			if (tempList.isEmpty()) {
 				break;
 			}
+			String word = tempList.get(rnd.nextInt(tempList.size()));
+			tempList.remove(word);
+			wordList.add(word);
 		}
 		return wordList;
 	}
