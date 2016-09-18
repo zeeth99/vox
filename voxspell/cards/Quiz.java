@@ -80,14 +80,10 @@ public class Quiz extends Card implements ActionListener {
 		quizInputBox.setBounds(125, 120, 250, 30);
 		quizInputBox.setColumns(20);
 		
-		// TODO: Apostrophes are present in some of the words and this only alloweds letters so needs to change
-		// to allow apostrophes
-		quizInputBox.addKeyListener(new KeyAdapter(){ // Only letters can be inputed
+		quizInputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
-				String text = quizInputBox.getText();
 				char ch = e.getKeyChar();
-				if(!Character.isLetter(ch)){
-					quizInputBox.setText(text);
+				if(!Character.isLetter(ch) && ch != '\''){
 					e.consume();
 				}
 			}
@@ -248,7 +244,6 @@ public class Quiz extends Card implements ActionListener {
 		_wordsCorrect = 0;
 		if (_level != 11) {
 			// TODO: Give option for video reward before asking to progress to next level
-			// TODO: Give option to return to main menu after a level is completed as well as to an option to repeat a level
 			String[] options = new String[] {"Next Level","Repeat Level","Play Video", "Return to Main Menu"};
 			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -400,7 +395,7 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 	
-	protected void removeFromReview(String wordToBeRemoved) {
+	private void removeFromReview(String wordToBeRemoved) {
 		File review = new File(".history/review/level"+_level);
 		File temp = new File(".history/.tempFile");
 		try {

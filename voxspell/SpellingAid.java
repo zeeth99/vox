@@ -189,7 +189,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
-	protected void clearStats() {
+	private void clearStats() {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"
 				+ "Are you sure you want to do this?";
