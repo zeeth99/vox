@@ -56,6 +56,20 @@ import javax.swing.JInternalFrame;
 @SuppressWarnings({ "serial", "unused" })
 public class SpellingAid extends JFrame implements ActionListener {
 
+	public enum QuizResult {
+		MASTERED(new File(".history/mastered"), 1), 
+		FAULTED(new File(".history/faulted"), 2), 
+		FAILED(new File(".history/failed"), 3);
+		
+		public final File file;
+		public final int integerValue;
+		
+		private QuizResult(File file, int integer) {
+			this.file = file;
+			integerValue = integer;
+		}
+	}
+	
 	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
 	final public static File REVIEWLIST = new File(".history/failed");
 
@@ -114,9 +128,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
-	public void updateStats(String type, String word) {
+	public void updateStats(QuizResult type, String word) {
 		try {
-			String[] files = {"mastered", "faulted", "failed"};
 			File inputFile;
 			File tempFile;
 			BufferedReader reader;
@@ -124,8 +137,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 			String currentLine;
 
 			for (int i = 0; i < 3; i++) {
-				String fileName = files[i];
-				inputFile = new File(".history/"+fileName);
+				QuizResult fileName = QuizResult.values()[i];
+				inputFile = fileName.file;
 				tempFile = new File(".history/.tempFile");
 
 				reader = new BufferedReader(new FileReader(inputFile));
@@ -152,13 +165,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			while ((currentLine = reader.readLine()) != null) {
 				if (currentLine.contains(word)) {
 					String[] brokenLine = currentLine.split(" ");
-					if (type.equals("mastered")) {
-						brokenLine[1] = "" + (Integer.parseInt(brokenLine[1]) + 1);
-					} else if (type.equals("faulted")) {
-						brokenLine[2] = "" + (Integer.parseInt(brokenLine[2]) + 1);
-					} else {
-						brokenLine[3] = "" + (Integer.parseInt(brokenLine[3]) + 1);
-					}
+					brokenLine[type.integerValue] = Integer.toString(Integer.parseInt(brokenLine[type.integerValue]) + 1);;
 					writer.write(brokenLine[0] + " " + brokenLine[1] + " " + brokenLine[2] + " " + brokenLine[3] + System.getProperty("line.separator"));
 					wordFoundInAll = true;
 				} else {
@@ -166,11 +173,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 				}
 			}
 			if (!wordFoundInAll) {
-				if (type.equals("mastered")) {
+				switch(type) {
+				case MASTERED:
 					writer.write(word + " 1 0 0" + System.getProperty("line.separator"));
-				} else if (type.equals("faulted")) {
+				case FAULTED:
 					writer.write(word + " 0 1 0" + System.getProperty("line.separator"));
-				} else {
+				case FAILED:
 					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
 				}
 			}
@@ -178,10 +186,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			reader.close();
 			writer.close();
 
-			//updateStatsTable(type, word);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -189,6 +194,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
+	// TODO Move to Settings?
 	private void clearStats() {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"

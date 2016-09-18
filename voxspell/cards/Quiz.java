@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
+import voxspell.SpellingAid.QuizResult;
 import voxspell.BestMediaPlayer;
 import voxspell.Festival;
 
@@ -33,8 +34,8 @@ public class Quiz extends Card implements ActionListener {
 
 	private JLabel wordCountLabel;
 	private JLabel levelLabel;
-	private JFormattedTextField quizInputBox;
-	private JLabel quizFeedbackLabel;
+	private JFormattedTextField inputBox;
+	private JLabel feedbackPanel;
 	private JButton repeatWord;
 	private JButton submitWord;
 
@@ -47,6 +48,7 @@ public class Quiz extends Card implements ActionListener {
 	
 	private int _level;
 	
+	@SuppressWarnings("unused")
 	private BestMediaPlayer _player;
 	
 	// Object used for text to speech. Could be an instance variable or local
@@ -54,19 +56,17 @@ public class Quiz extends Card implements ActionListener {
 	
 	// TODO: Have a button which leads to statistics for that given session (all levels) which can be pressed during the quiz
 	public Quiz(SpellingAid sp) {
-		super(sp, "Quiz");
+		super(sp, "");
 		
 		spellingAid = sp;
-		_wordNumber = 0;
-		_wordsCorrect = 0;
 
 		wordCountLabel = new JLabel();
 		wordCountLabel.setBounds(225, 90, 150, 15);
 		wordCountLabel.setHorizontalAlignment(JLabel.RIGHT);
 		levelLabel = new JLabel();
 		levelLabel.setBounds(125, 90, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
-		quizFeedbackLabel = new JLabel();
-		quizFeedbackLabel.setBounds(125, 230, 300, 15);
+		feedbackPanel = new JLabel();
+		feedbackPanel.setBounds(125, 230, 300, 15);
 		
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
@@ -74,14 +74,14 @@ public class Quiz extends Card implements ActionListener {
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
 		submitWord.addActionListener(this);
-		quizInputBox = new JFormattedTextField();
-		quizInputBox.setToolTipText("Type here.");
-		quizInputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
-		quizInputBox.setBounds(125, 120, 250, 30);
-		quizInputBox.setColumns(20);
+		inputBox = new JFormattedTextField();
+		inputBox.setToolTipText("Type here.");
+		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
+		inputBox.setBounds(125, 120, 250, 30);
+		inputBox.setColumns(20);
 		
-		quizInputBox.addActionListener(this);
-		quizInputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
+		inputBox.addActionListener(this);
+		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
 				char ch = e.getKeyChar();
 				if(!Character.isLetter(ch) && ch != '\''){
@@ -90,33 +90,33 @@ public class Quiz extends Card implements ActionListener {
 			}
 		});
 
-		add(quizInputBox);
+		add(inputBox);
 		add(repeatWord);
 		add(submitWord);
 		add(wordCountLabel);
 		add(levelLabel);
-		add(quizFeedbackLabel);
+		add(feedbackPanel);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		quizInputBox.grabFocus();
+		inputBox.grabFocus();
 		if (e.getSource() == repeatWord) {
 			sayMessage(_testingWords.get(_wordNumber));
-		} else if (e.getSource() == submitWord || (e.getSource() == quizInputBox && submitWord.isEnabled())) {
+		} else if (e.getSource() == submitWord || (e.getSource() == inputBox && submitWord.isEnabled())) {
 			checkWord();
 		}
 	}
 
 	private void checkWord() {
-		String input = quizInputBox.getText();
+		String input = inputBox.getText();
 		String word = _testingWords.get(_wordNumber);
-		quizInputBox.setText("");
+		inputBox.setText("");
 
 		String festivalMessage;
 		
-		if (_reviewSpellOut) { // Check if word is spelt correctly on their last chance
+		if (_reviewSpellOut) { // Check if word is spelled correctly on their last chance
 			_reviewSpellOut = false;
 			if (input.equalsIgnoreCase(word)) {
 				// TODO: Remove word from failed list. Not sure whether word is mastered or faulted
@@ -130,7 +130,7 @@ public class Quiz extends Card implements ActionListener {
 			}
 		} else if (_firstAttempt) {
 			if (input.equalsIgnoreCase(word)) {
-				((SpellingAid) spellingAid).updateStats("mastered", word);
+				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word);
 				festivalMessage = "correct";
 				_wordsCorrect++;
 				removeFromReview(word);
@@ -141,12 +141,12 @@ public class Quiz extends Card implements ActionListener {
 			}
 		} else {
 			if (input.equalsIgnoreCase(word)) {
-				((SpellingAid) spellingAid).updateStats("faulted", word);
+				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word);
 				festivalMessage = "correct";
 				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
-				((SpellingAid) spellingAid).updateStats("failed", word);
+				((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word);
 				festivalMessage = "incorrect.. ";
 				if (_reviewMode && !_reviewSpellOut) {
 					_reviewSpellOut = true;
@@ -166,7 +166,7 @@ public class Quiz extends Card implements ActionListener {
 		
 		_firstAttempt = true;
 		_wordNumber++;
-		quizFeedbackLabel.setText(_wordsCorrect + " out of " + _wordNumber + " correct so far");
+		feedbackPanel.setText(_wordsCorrect + " out of " + _wordNumber + " correct so far");
 		
 		// If all words have been tested:
 		if (_wordNumber == _testingWords.size()) {
@@ -208,9 +208,9 @@ public class Quiz extends Card implements ActionListener {
 		_firstAttempt = true;
 		_reviewSpellOut = false;
 		wordCountLabel.setText("Word " + (_wordNumber+1) + " of " + _testingWords.size());
-		quizFeedbackLabel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
+		feedbackPanel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
-		quizInputBox.grabFocus();
+		inputBox.grabFocus();
 	}
 
 	public void setReviewMode(boolean isTrue) {
