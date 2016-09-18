@@ -1,9 +1,13 @@
 package voxspell.cards;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 
@@ -12,6 +16,7 @@ public class Settings extends Card implements ActionListener {
 	private SpellingAid spellingAid;
 		
 	private JButton backToMenu;
+	public JButton clearStatistics;
 
 	public Settings(SpellingAid sp) {
 		super(sp, "Settings");
@@ -19,15 +24,36 @@ public class Settings extends Card implements ActionListener {
 		backToMenu = new JButton("Menu");
 		backToMenu.setBounds(12, 18, 73, 25);
 		backToMenu.addActionListener(this);
+		clearStatistics = new JButton("Clear Statistics");
+		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
+		clearStatistics.setBounds(100, 270, 300, 50);
+		clearStatistics.addActionListener(sp);
 		
 		add(backToMenu);
+		add(clearStatistics);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == backToMenu) {
 			spellingAid.returnToMenu();
+		} else if (e.getSource() == clearStatistics) {
+			clearStats();
 		}
 	}
+	
+	// TODO Move to Settings? Yup. Makes more sense there
+	private static void clearStats() {
+		JFrame popupFrame = new JFrame();
+		String message = "This will permanently delete all of your spelling history.\n"
+				+ "Are you sure you want to do this?";
+		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			String[] historyFileList = {"mastered", "faulted", "failed", "all"};
+			for (int i = 0; i < 4; i++) (new File(".history/" + historyFileList[i])).delete();
+			SpellingAid.createStatsFiles();
+		}
+	}
+
 
 }

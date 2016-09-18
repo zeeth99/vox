@@ -123,8 +123,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			} catch (FileNotFoundException e1) {
 				createStatsFiles();
 			}
-		} else if (e.getSource() == ((Menu)menu).clearStatistics) {
-			clearStats();
 		}
 	}
 
@@ -194,20 +192,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
-	// TODO Move to Settings? Yup. Makes more sense there
-	private void clearStats() {
-		JFrame popupFrame = new JFrame();
-		String message = "This will permanently delete all of your spelling history.\n"
-				+ "Are you sure you want to do this?";
-		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
-		if (option == JOptionPane.YES_OPTION) {
-			String[] historyFileList = {"mastered", "faulted", "failed", "all"};
-			for (int i = 0; i < 4; i++) (new File(".history/" + historyFileList[i])).delete();
-			createStatsFiles();
-		}
-	}
-
-	private static void createStatsFiles() {
+	public static void createStatsFiles() {
 		// Initialise .history
 		File f = new File(".history");
 		if (!f.exists() || !f.isDirectory()) {

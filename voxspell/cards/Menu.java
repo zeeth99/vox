@@ -14,7 +14,6 @@ public class Menu extends Card implements ActionListener {
 	public JButton newSpellingQuiz;
 	public JButton viewStatistics;
 	public JButton settings;
-	public JButton clearStatistics;
 
 	public Menu(SpellingAid sp) {
 		super(sp, "Welcome to the Spelling Aid");
@@ -31,15 +30,10 @@ public class Menu extends Card implements ActionListener {
 		settings.setFont(new Font("Dialog", Font.BOLD, 16));
 		settings.setBounds(100, 210, 300, 50);
 		settings.addActionListener((ActionListener) sp);
-		clearStatistics = new JButton("Clear Statistics");
-		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
-		clearStatistics.setBounds(100, 270, 300, 50);
-		clearStatistics.addActionListener(sp);
 
 		add(newSpellingQuiz);
 		add(viewStatistics);
 		add(settings);
-		add(clearStatistics);
 	}
 	
 	@Override
