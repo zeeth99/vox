@@ -80,6 +80,7 @@ public class Quiz extends Card implements ActionListener {
 		quizInputBox.setBounds(125, 120, 250, 30);
 		quizInputBox.setColumns(20);
 		
+		quizInputBox.addActionListener(this);
 		quizInputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
 				char ch = e.getKeyChar();
@@ -103,7 +104,7 @@ public class Quiz extends Card implements ActionListener {
 		quizInputBox.grabFocus();
 		if (e.getSource() == repeatWord) {
 			sayMessage(_testingWords.get(_wordNumber));
-		} else if (e.getSource() == submitWord) {
+		} else if (e.getSource() == submitWord || (e.getSource() == quizInputBox && submitWord.isEnabled())) {
 			checkWord();
 		}
 	}
