@@ -32,6 +32,7 @@ public class Quiz extends Card implements ActionListener {
 	private JLabel quizInstrLabel;
 	private JLabel levelLabel;
 	private JFormattedTextField quizInputBox;
+	private JLabel quizFeedbackLabel;
 	public static JButton repeatWord;
 	public static JButton submitWord;
 
@@ -62,7 +63,9 @@ public class Quiz extends Card implements ActionListener {
 		quizInstrLabel.setBounds(125, 90, 250, 15);
 		levelLabel = new JLabel();
 		levelLabel.setBounds(125, 70, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
-
+		quizFeedbackLabel = new JLabel();
+		quizFeedbackLabel.setBounds(135, 220, 300, 15);
+		
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
 		repeatWord.addActionListener(this);
@@ -93,6 +96,7 @@ public class Quiz extends Card implements ActionListener {
 		add(submitWord);
 		add(quizInstrLabel);
 		add(levelLabel);
+		add(quizFeedbackLabel);
 
 	}
 
@@ -163,6 +167,7 @@ public class Quiz extends Card implements ActionListener {
 		
 		// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
 		if (_wordsCorrect >= 9 && !_reviewMode) {
+			quizFeedbackLabel.setText("CONGRATULATIONS. You got 9 out of 10 words correct");
 			sayMessage(festivalMessage);
 			levelCompleteAction();
 			return;
@@ -185,6 +190,7 @@ public class Quiz extends Card implements ActionListener {
 			}
 		} else {
 			_wordNumber++;
+			quizFeedbackLabel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 			sayMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
 			quizInstrLabel.setText("Please spell word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
@@ -208,6 +214,7 @@ public class Quiz extends Card implements ActionListener {
 		_firstAttempt = true;
 		_reviewSpellOut = false;
 		quizInstrLabel.setText("Please spell word " + (_wordNumber+1) + " of " + _testingWords.size());
+		quizFeedbackLabel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
 	}
