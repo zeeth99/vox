@@ -166,34 +166,26 @@ public class Quiz extends Card implements ActionListener {
 				addWordToReview(word, _level);
 			}
 		}
-		_firstAttempt = true;
 		
-		// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
-		if (_wordsCorrect >= 9 && !_reviewMode) {
-			quizFeedbackLabel.setText("CONGRATULATIONS. You completed the level");
-			sayMessage(festivalMessage);
-			levelCompleteAction();
-			return;
-		}
-		if (_wordNumber + 1 == _testingWords.size()) {
-			_wordNumber = 0;
-			_wordsCorrect = 0;
+		_firstAttempt = true;
+		_wordNumber++;
+		quizFeedbackLabel.setText(_wordsCorrect + " out of " + _wordNumber + " correct so far");
+		
+		// If all words have been tested:
+		if (_wordNumber == _testingWords.size()) {
 			sayMessage(festivalMessage);
 			if (_reviewMode) {
 				reviewLevelCompleteAction();
 			} else {
-				String[] options = new String[] {"Repeat level","Return to Main Menu"};
-				int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
-						"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-				if (option == JOptionPane.YES_OPTION) {
-					spellingAid.startQuiz(_level);
+				// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
+				if (_wordsCorrect >= 9) {
+					levelCompleteAction();
 				} else {
-					spellingAid.returnToMenu();
+					levelIncompleteAction();
 				}
 			}
 		} else {
-			_wordNumber++;
-			quizFeedbackLabel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
+			// Test next word
 			sayMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
 			quizInstrLabel.setText("Please spell word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
@@ -202,6 +194,8 @@ public class Quiz extends Card implements ActionListener {
 	public void startQuiz(int level) {
 		_level = level;
 		levelLabel.setText("Level "+_level);
+		_wordNumber = 0;
+		_wordsCorrect = 0;
 		
 		if (_reviewMode) {
 			heading.setText("Review Quiz");
@@ -281,6 +275,19 @@ public class Quiz extends Card implements ActionListener {
 			} else {
 				spellingAid.returnToMenu();
 			}
+		}
+	}
+
+	/* Decides on what to do when the level is not completed [FOR NORMAL QUIZ ONLY]
+	 */
+	public void levelIncompleteAction() {
+		String[] options = new String[] {"Repeat level","Return to Main Menu"};
+		int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
+				"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		if (option == JOptionPane.YES_OPTION) {
+			spellingAid.startQuiz(_level);
+		} else {
+			spellingAid.returnToMenu();
 		}
 	}
 	
@@ -377,7 +384,6 @@ public class Quiz extends Card implements ActionListener {
 				spellingAid.returnToMenu();
 			}
 		} else {
-			quizFeedbackLabel.setText("CONGRATULATIONS. You completed this level");
 			if (_level != 11) {
 				String[] options = new String[] {"Continue","Return to Main Menu"};
 				int option = JOptionPane.showOptionDialog(this, "You have cleared all words on this level", "Congratulations!", 
