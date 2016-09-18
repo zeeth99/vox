@@ -8,8 +8,10 @@ import voxspell.cards.Quiz;
 public class Festival extends SwingWorker<Void,Void> {
 	
 	private String _message;
+	private Quiz _quiz;
 	
-	public Festival(String message) {
+	public Festival(String message, Quiz quiz) {
+		_quiz = quiz;
 		_message = message;
 	}
 	
@@ -27,6 +29,6 @@ public class Festival extends SwingWorker<Void,Void> {
 	
 	@Override
 	protected void done() {
-		Quiz.enableButtons();
+		_quiz.enableButtons();
 	}
 }

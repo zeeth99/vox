@@ -35,8 +35,8 @@ public class Quiz extends Card implements ActionListener {
 	private JLabel levelLabel;
 	private JFormattedTextField quizInputBox;
 	private JLabel quizFeedbackLabel;
-	public static JButton repeatWord;
-	public static JButton submitWord;
+	private JButton repeatWord;
+	private JButton submitWord;
 
 	private boolean _firstAttempt;
 	private boolean _reviewMode;
@@ -228,7 +228,7 @@ public class Quiz extends Card implements ActionListener {
 	
 	private void sayMessage(String message) {
 		disableButtons();
-		_festival = new Festival(message);
+		_festival = new Festival(message, this);
 		_festival.execute();
 	}
 	
@@ -239,7 +239,7 @@ public class Quiz extends Card implements ActionListener {
 		submitWord.setEnabled(false);
 	}
 	
-	public static void enableButtons() {
+	public void enableButtons() {
 		repeatWord.setBackground(Color.WHITE);
 		submitWord.setBackground(Color.WHITE);
 		repeatWord.setEnabled(true);
