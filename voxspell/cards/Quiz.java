@@ -31,7 +31,7 @@ public class Quiz extends Card implements ActionListener {
 	
 	private static final int QUIZ_SIZE = 10;
 
-	private JLabel quizInstrLabel;
+	private JLabel wordCountLabel;
 	private JLabel levelLabel;
 	private JFormattedTextField quizInputBox;
 	private JLabel quizFeedbackLabel;
@@ -53,7 +53,6 @@ public class Quiz extends Card implements ActionListener {
 	private Festival _festival;
 	
 	// TODO: Have a button which leads to statistics for that given session (all levels) which can be pressed during the quiz
-	// TODO: Have feedback during the quiz (a label) which tells the user how many words they have gotten correct so far, on a given level.
 	public Quiz(SpellingAid sp) {
 		super(sp, "Quiz");
 		
@@ -61,12 +60,13 @@ public class Quiz extends Card implements ActionListener {
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 
-		quizInstrLabel = new JLabel();
-		quizInstrLabel.setBounds(125, 90, 250, 15);
+		wordCountLabel = new JLabel();
+		wordCountLabel.setBounds(225, 90, 150, 15);
+		wordCountLabel.setHorizontalAlignment(JLabel.RIGHT);
 		levelLabel = new JLabel();
-		levelLabel.setBounds(125, 70, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
+		levelLabel.setBounds(125, 90, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
 		quizFeedbackLabel = new JLabel();
-		quizFeedbackLabel.setBounds(135, 220, 300, 15);
+		quizFeedbackLabel.setBounds(125, 230, 300, 15);
 		
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
@@ -96,7 +96,7 @@ public class Quiz extends Card implements ActionListener {
 		add(quizInputBox);
 		add(repeatWord);
 		add(submitWord);
-		add(quizInstrLabel);
+		add(wordCountLabel);
 		add(levelLabel);
 		add(quizFeedbackLabel);
 
@@ -187,7 +187,7 @@ public class Quiz extends Card implements ActionListener {
 		} else {
 			// Test next word
 			sayMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
-			quizInstrLabel.setText("Please spell word " + (_wordNumber+1) +" of " + _testingWords.size());
+			wordCountLabel.setText("Word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
 	}
 
@@ -210,7 +210,7 @@ public class Quiz extends Card implements ActionListener {
 		}
 		_firstAttempt = true;
 		_reviewSpellOut = false;
-		quizInstrLabel.setText("Please spell word " + (_wordNumber+1) + " of " + _testingWords.size());
+		wordCountLabel.setText("Word " + (_wordNumber+1) + " of " + _testingWords.size());
 		quizFeedbackLabel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		quizInputBox.grabFocus();
@@ -351,7 +351,7 @@ public class Quiz extends Card implements ActionListener {
 	
 	private boolean noWordsToReview() {
 		if (_testingWords.size() == 0) {
-			quizInstrLabel.setText("");
+			wordCountLabel.setText("");
 			if (_level != 11) {
 				String[] options = new String[] {"Continue", "Return to Main Menu"};
 				int option = JOptionPane.showOptionDialog(this, "There are no words to review on this level",
