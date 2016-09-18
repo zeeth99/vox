@@ -14,7 +14,6 @@ public class ModeSelect extends Card implements ActionListener{
 	private JButton[] levels = new JButton[11];
 	private JButton reviewButton;
 
-	
 	public ModeSelect(SpellingAid sp) {
 		super(sp, "Select Your Mode");
 		

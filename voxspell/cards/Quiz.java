@@ -1,7 +1,6 @@
 package voxspell.cards;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,18 +21,13 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import voxspell.SpellingAid;
 import voxspell.Festival;
 
 @SuppressWarnings("serial")
-public class Quiz extends JPanel implements ActionListener {
-	
-	private SpellingAid spellingAid;
+public class Quiz extends Card implements ActionListener {
 
-	private JLabel quizLabel;
 	private JLabel quizInstrLabel;
 	private JLabel levelLabel;
 	private JFormattedTextField quizInputBox;
@@ -55,16 +49,12 @@ public class Quiz extends JPanel implements ActionListener {
 	// TODO: Have a button which leads to statistics for that given session (all levels) which can be pressed during the quiz
 	// TODO: Have feedback during the quiz (a label) which tells the user how many words they have gotten correct so far, on a given level.
 	public Quiz(SpellingAid sp) {
+		super(sp, "Quiz");
+		
 		spellingAid = sp;
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 
-		quizLabel = new JLabel();
-		quizLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-		quizLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		quizLabel.setText("Quiz");
-		quizLabel.setBounds(0, 0, 500, 60);
-		quizLabel.setPreferredSize(new Dimension(300, 100));
 		quizInstrLabel = new JLabel();
 		quizInstrLabel.setBounds(125, 90, 250, 15);
 		levelLabel = new JLabel();
@@ -95,14 +85,12 @@ public class Quiz extends JPanel implements ActionListener {
 			}
 		});
 
-		setLayout(null);
 		add(quizInputBox);
 		add(repeatWord);
 		add(submitWord);
-		add(quizLabel);
 		add(quizInstrLabel);
 		add(levelLabel);
-		
+
 	}
 
 	@Override
@@ -204,14 +192,14 @@ public class Quiz extends JPanel implements ActionListener {
 		levelLabel.setText("Level "+_level);
 		
 		if (_reviewMode) {
-			quizLabel.setText("Review Quiz");
 			File f = new File(".review/level"+level);
+			heading.setText("Review Quiz");
 			_testingWords = randomWords(f, level);
 			if (noWordsToReview()) {
 				return;
 			}
 		} else {
-			quizLabel.setText("New Quiz");
+			heading.setText("New Quiz");
 			_testingWords = randomWords(SpellingAid.WORDLIST, level);
 		}
 		_firstAttempt = true;

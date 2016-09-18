@@ -5,28 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
-public class Menu extends JPanel implements ActionListener {
-
-	private JLabel menuLabel;
+public class Menu extends Card implements ActionListener {
 
 	public JButton newSpellingQuiz;
 	public JButton reviewMistakes;
 	public JButton viewStatistics;
 	public JButton clearStatistics;
 
-	
 	public Menu(SpellingAid sp) {
-		menuLabel = new JLabel("Welcome to the Spelling Aid");
-		menuLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		menuLabel.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
-		menuLabel.setBounds(0, 0, 500, 60);
+		super(sp, "Welcome to the Spelling Aid");
+		
 		newSpellingQuiz = new JButton("New Spelling Quiz");
 		newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 		newSpellingQuiz.setBounds(100, 90, 300, 50);
@@ -44,8 +36,6 @@ public class Menu extends JPanel implements ActionListener {
 		clearStatistics.setBounds(100, 270, 300, 50);
 		clearStatistics.addActionListener(sp);
 
-		setLayout(null);
-		add(menuLabel);
 		add(reviewMistakes);
 		add(viewStatistics);
 		add(clearStatistics);

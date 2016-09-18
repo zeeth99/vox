@@ -13,7 +13,7 @@ import voxspell.SpellingAid;
 public abstract class Card extends JPanel implements ActionListener {
 	protected SpellingAid spellingAid;
 	
-	private JLabel heading;
+	protected JLabel heading;
 	
 	public Card(SpellingAid sp, String str) {
 		spellingAid = sp;
