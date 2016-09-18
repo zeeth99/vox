@@ -123,6 +123,7 @@ public class Quiz extends Card implements ActionListener {
 				// TODO: Remove word from failed list. Not sure whether word is mastered or faulted
 				// ((SpellingAid) spellingAid).updateStats("faulted", word);
 				festivalMessage = "correct";
+				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
 				festivalMessage = "incorrect";
@@ -167,7 +168,7 @@ public class Quiz extends Card implements ActionListener {
 		
 		// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
 		if (_wordsCorrect >= 9 && !_reviewMode) {
-			quizFeedbackLabel.setText("CONGRATULATIONS. You got 9 out of 10 words correct");
+			quizFeedbackLabel.setText("CONGRATULATIONS. You completed the level");
 			sayMessage(festivalMessage);
 			levelCompleteAction();
 			return;
@@ -180,7 +181,7 @@ public class Quiz extends Card implements ActionListener {
 				reviewLevelCompleteAction();
 			} else {
 				String[] options = new String[] {"Repeat level","Return to Main Menu"};
-				int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nWould you like to do?",
+				int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
 						"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 				if (option == JOptionPane.YES_OPTION) {
 					spellingAid.startQuiz(_level);
@@ -375,6 +376,7 @@ public class Quiz extends Card implements ActionListener {
 				spellingAid.returnToMenu();
 			}
 		} else {
+			quizFeedbackLabel.setText("CONGRATULATIONS. You completed this level");
 			if (_level != 11) {
 				String[] options = new String[] {"Continue","Return to Main Menu"};
 				int option = JOptionPane.showOptionDialog(this, "You have cleared all words on this level", "Congratulations!", 
