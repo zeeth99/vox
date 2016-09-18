@@ -13,6 +13,7 @@ public class ModeSelect extends Card implements ActionListener{
 
 	private JButton[] levels = new JButton[11];
 	public JButton reviewButton;
+	private JButton menuButton;
 
 	public ModeSelect(SpellingAid sp) {
 		super(sp, "Select Your Mode");
@@ -34,7 +35,12 @@ public class ModeSelect extends Card implements ActionListener{
 		reviewButton.setBounds(330, 220, 120, 30);
 		reviewButton.addActionListener(sp);
 		
+		menuButton = new JButton("Menu");
+		menuButton.setBounds(20, 15, 100, 30);
+		menuButton.addActionListener(this);
+		
 		add(reviewButton);
+		add(menuButton);
 	}
 
 
@@ -42,6 +48,8 @@ public class ModeSelect extends Card implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == reviewButton) {
 			
+		} else if(e.getSource() == menuButton) {
+			spellingAid.returnToMenu();
 		} else {
 			for (int i = 0; i < 11; i++) {
 				if (e.getSource() == levels[i]) {
