@@ -199,7 +199,11 @@ public class Quiz extends Card implements ActionListener {
 			File f = new File(".history/review/level"+level);
 			_testingWords = randomWords(f, level);
 			if (noWordsToReview()) {
-				return;
+				if (level <= 11) {
+					return;
+				} else {
+					startQuiz(level+1);
+				}
 			}
 		} else {
 			heading.setText("New Quiz");
@@ -317,7 +321,7 @@ public class Quiz extends Card implements ActionListener {
 			String word = tempList.get(rnd.nextInt(tempList.size()));
 			tempList.remove(word);
 			wordList.add(word);
-			if (wordList.isEmpty()) {
+			if (tempList.isEmpty()) {
 				break;
 			}
 		}

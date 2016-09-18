@@ -32,6 +32,7 @@ public class ModeSelect extends Card implements ActionListener{
 												// I think it needs to stand out a little, 
 												// but I'm not sure how to do it well.
 		reviewButton.setBounds(330, 220, 120, 30);
+		reviewButton.addActionListener(sp);
 		
 		add(reviewButton);
 	}
