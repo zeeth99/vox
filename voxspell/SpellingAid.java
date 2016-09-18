@@ -73,9 +73,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setTitle("Spelling Aid");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+		
+		createReviewFiles();
+		
 		cards.setLayout(layout);
-
+		
 		// Set up cards
 		cards.add(menu, "Menu");
 		cards.add(modeSelect, "Level Select");
@@ -94,7 +96,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == ((Menu)menu).reviewMistakes) {
-			createReviewFiles();
 			if (!reviewFilesEmpty()) {
 				quiz.setReviewMode(true);
 				startQuiz(1);
