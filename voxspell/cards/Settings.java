@@ -42,8 +42,8 @@ public class Settings extends Card implements ActionListener {
 		voiceSettings.addActionListener(new ActionListener()	{
 			public void actionPerformed(ActionEvent e){
 				JComboBox combo = (JComboBox)e.getSource();
-                String currentQuantity = (String)combo.getSelectedItem();
-                switch (currentQuantity) {
+                String voice = (String)combo.getSelectedItem();
+                switch (voice) {
                 case "Default":
                 	changeVoiceSetting(DEFAULT_VOICE);
                 	break;
@@ -54,6 +54,8 @@ public class Settings extends Card implements ActionListener {
                 }
             }
           });
+		
+		voiceSettings.setBounds(50, 230, 300, 20);
 		
 		add(backToMenu);
 		add(clearStatistics);
