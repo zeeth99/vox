@@ -54,7 +54,6 @@ public class Quiz extends Card implements ActionListener {
 	// Object used for text to speech. Could be an instance variable or local
 	private Festival _festival;
 	
-	// TODO: Have a button which leads to statistics for that given session (all levels) which can be pressed during the quiz
 	public Quiz(SpellingAid sp) {
 		super(sp, "");
 		

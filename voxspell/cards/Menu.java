@@ -18,6 +18,9 @@ public class Menu extends Card implements ActionListener {
 	public Menu(SpellingAid sp) {
 		super(sp, "Welcome to the Spelling Aid");
 		
+		menuButton.setEnabled(false);
+		menuButton.setVisible(false);
+		
 		newSpellingQuiz = new JButton("New Spelling Quiz");
 		newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 		newSpellingQuiz.setBounds(100, 90, 300, 50);

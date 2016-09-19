@@ -21,16 +21,12 @@ public class Settings extends Card implements ActionListener {
 	public static final String DEFAULT_VOICE = "(voice_kal_diphone)"; 
 	public static final String NZ_VOICE = "(voice_akl_nz_jdt_diphone)";
 	  
-	private JButton backToMenu;
 	public JButton clearStatistics;
 	private JComboBox<String> voiceSettings;
 
 	public Settings(SpellingAid sp) {
 		super(sp, "Settings");
-		
-		backToMenu = new JButton("Menu");
-		backToMenu.setBounds(12, 18, 73, 25);
-		backToMenu.addActionListener(this);
+
 		clearStatistics = new JButton("Clear Statistics");
 		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 		clearStatistics.setBounds(100, 270, 300, 50);
@@ -58,16 +54,14 @@ public class Settings extends Card implements ActionListener {
 		
 		voiceSettings.setBounds(50, 230, 300, 20);
 		
-		add(backToMenu);
 		add(clearStatistics);
 		add(voiceSettings);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == backToMenu) {
-			spellingAid.returnToMenu();
-		} else if (e.getSource() == clearStatistics) {
+		super.actionPerformed(e);
+		if (e.getSource() == clearStatistics) {
 			clearStats();
 		}
 	}
