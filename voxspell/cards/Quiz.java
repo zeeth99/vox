@@ -105,6 +105,15 @@ public class Quiz extends Card implements ActionListener {
 			sayMessage(_testingWords.get(_wordNumber));
 		} else if (e.getSource() == submitWord || (e.getSource() == inputBox && submitWord.isEnabled())) {
 			checkWord();
+		} else if (e.getSource() == menuButton) {
+			int option = JOptionPane.showConfirmDialog(this, "If you go to the menu you will lose your progress in your current quiz. \nAre you sure you want to go to the menu?", "Are You Sure?", JOptionPane.OK_CANCEL_OPTION);
+			switch(option) {
+			case JOptionPane.CANCEL_OPTION:
+				break;
+			case JOptionPane.OK_OPTION:
+				spellingAid.returnToMenu();
+				break;
+			}
 		}
 	}
 
