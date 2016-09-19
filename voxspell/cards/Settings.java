@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import voxspell.Festival;
@@ -23,6 +24,7 @@ public class Settings extends Card implements ActionListener {
 	  
 	public JButton clearStatistics;
 	private JComboBox<String> voiceSettings;
+	private JLabel voiceSettingsLabel;
 
 	public Settings(SpellingAid sp) {
 		super(sp, "Settings");
@@ -52,10 +54,14 @@ public class Settings extends Card implements ActionListener {
             }
           });
 		
-		voiceSettings.setBounds(50, 230, 300, 20);
+		voiceSettings.setBounds(100, 100, 300, 20);
+		
+		voiceSettingsLabel = new JLabel("Select a voice setting:");
+		voiceSettingsLabel.setBounds(100, 80, 300, 20);
 		
 		add(clearStatistics);
 		add(voiceSettings);
+		add(voiceSettingsLabel);
 	}
 	
 	@Override
