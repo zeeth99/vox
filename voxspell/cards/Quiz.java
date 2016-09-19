@@ -121,40 +121,40 @@ public class Quiz extends Card implements ActionListener {
 			if (input.equalsIgnoreCase(word)) {
 				// TODO: Remove word from failed list. Not sure whether word is mastered or faulted
 				// ((SpellingAid) spellingAid).updateStats("faulted", word);
-				festivalMessage = "correct";
+				festivalMessage = "correct:";
 				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
-				festivalMessage = "incorrect";
+				festivalMessage = "incorrect:";
 				addWordToReview(word, _level);
 			}
 		} else if (_firstAttempt) {
 			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word);
-				festivalMessage = "correct";
+				festivalMessage = "correct:";
 				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
 				_firstAttempt = false;
-				sayMessage("Incorrect. The word is " + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
+				sayMessage("Incorrect: The word is " + _testingWords.get(_wordNumber) + ":.:" + _testingWords.get(_wordNumber));
 				return;
 			}
 		} else {
 			if (input.equalsIgnoreCase(word)) {
 				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word);
-				festivalMessage = "correct";
+				festivalMessage = "correct:";
 				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
 				((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word);
-				festivalMessage = "incorrect.. ";
+				festivalMessage = "incorrect: ";
 				if (_reviewMode && !_reviewSpellOut) {
 					_reviewSpellOut = true;
-					festivalMessage += "the word is spelt.. ";
+					festivalMessage += "the word is spelt: ";
 					// Spell out word if reviewing
 					String spellOutWord = "";
 					for (int i = 0; i < word.length(); i++) {
-						spellOutWord += word.charAt(i) + ".. ";
+						spellOutWord += word.charAt(i) + ": ";
 					}
 					festivalMessage += spellOutWord;
 					sayMessage(festivalMessage);
@@ -183,7 +183,7 @@ public class Quiz extends Card implements ActionListener {
 			}
 		} else {
 			// Test next word
-			sayMessage(festivalMessage+".. Please spell "+_testingWords.get(_wordNumber));
+			sayMessage(festivalMessage+"Please spell "+_testingWords.get(_wordNumber));
 			wordCountLabel.setText("Word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
 	}

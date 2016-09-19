@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -72,6 +73,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
 	final public static File REVIEWLIST = new File(".history/failed");
+	final public static File FESTIVAL = new File(".festival");
 
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
@@ -87,8 +89,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setTitle("Spelling Aid");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		createReviewFiles();
 		
 		cards.setLayout(layout);
 		
@@ -116,6 +116,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
+		} else if (e.getSource() == ((Menu)menu).settings) {
+			layout.show(cards, "Settings");
 		} else if (e.getSource() == ((Menu)menu).viewStatistics) {
 			try {
 				cards.add(new Stats(this), "Stats");
@@ -123,6 +125,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 			} catch (FileNotFoundException e1) {
 				createStatsFiles();
 			}
+		} else if (e.getSource() == ((Menu)menu).clearStatistics) {
+			clearStats();
 		}
 	}
 
@@ -192,7 +196,20 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
-	public static void createStatsFiles() {
+	// TODO Move to Settings? Yup. Makes more sense there
+	private void clearStats() {
+		JFrame popupFrame = new JFrame();
+		String message = "This will permanently delete all of your spelling history.\n"
+				+ "Are you sure you want to do this?";
+		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			String[] historyFileList = {"mastered", "faulted", "failed", "all"};
+			for (int i = 0; i < 4; i++) (new File(".history/" + historyFileList[i])).delete();
+			createStatsFiles();
+		}
+	}
+
+	private static void createStatsFiles() {
 		// Initialise .history
 		File f = new File(".history");
 		if (!f.exists() || !f.isDirectory()) {
@@ -231,6 +248,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 		createStatsFiles();
 
+		createReviewFiles();
+		createVoiceSettingFile();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
