@@ -13,7 +13,6 @@ import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
 public class Settings extends Card implements ActionListener {
-	private SpellingAid spellingAid;
 		
 	private JButton backToMenu;
 	public JButton clearStatistics;
