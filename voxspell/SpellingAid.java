@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -84,7 +85,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setTitle("Spelling Aid");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-				
+		
+		createVoiceSettingFiles();
 		createStatsFiles();
 		
 		cards.setLayout(layout);
@@ -204,6 +206,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
+		
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -232,6 +236,25 @@ public class SpellingAid extends JFrame implements ActionListener {
 			}
 		}
 		return true;
+	}
+	
+	private static void createVoiceSettingFiles() {
+		File f = new File(".festival");
+		if (!f.exists() || !f.isDirectory()) {
+			f.mkdir();
+		}
+		
+		f = new File(".festival/.message.scm");
+		try {
+			f.createNewFile();
+		} catch (Exception e) { }
+		
+		try {   
+			List<String> linesToWrite = new ArrayList<>();
+			linesToWrite.add(Settings.DEFAULT_VOICE);
+		    Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
+		} catch (Exception e) { } 
+		
 	}
 
 }
