@@ -1,24 +1,21 @@
 package voxspell.cards;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-import voxspell.Festival;
 import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
 public class Settings extends Card implements ActionListener {
-	
-	public static final String DEFAULT_VOICE = "(voice_kal_diphone)";
-	public static final String NZ_VOICE = "(voice_akl_nz_jdt_diphone)";
-	
+		
 	private JButton backToMenu;
-	private JButton changeVoice;
+	public JButton clearStatistics;
 
 	public Settings(SpellingAid sp) {
 		super(sp, "Settings");
@@ -26,33 +23,36 @@ public class Settings extends Card implements ActionListener {
 		backToMenu = new JButton("Menu");
 		backToMenu.setBounds(12, 18, 73, 25);
 		backToMenu.addActionListener(this);
-		
-		changeVoice = new JButton("Change Voice");
-		changeVoice.addActionListener(this);
-		changeVoice.setBounds(100,100,150,100);
+		clearStatistics = new JButton("Clear Statistics");
+		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
+		clearStatistics.setBounds(100, 270, 300, 50);
+		clearStatistics.addActionListener(sp);
 		
 		add(backToMenu);
-		add(changeVoice);
+		add(clearStatistics);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == backToMenu) {
 			spellingAid.returnToMenu();
-		} else if (e.getSource() == changeVoice) {
-			changeVoiceSetting();
+		} else if (e.getSource() == clearStatistics) {
+			clearStats();
 		}
 	}
 	
-	private void changeVoiceSetting() {
-		try {
-			List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath());
-			lines.set(0, NZ_VOICE);
-			Files.write(Festival.SCHEME_FILE.toPath(), lines);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
+	// TODO Move to Settings? Yup. Makes more sense there
+	private static void clearStats() {
+		JFrame popupFrame = new JFrame();
+		String message = "This will permanently delete all of your spelling history.\n"
+				+ "Are you sure you want to do this?";
+		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			String[] historyFileList = {"mastered", "faulted", "failed", "all"};
+			for (int i = 0; i < 4; i++) (new File(".history/" + historyFileList[i])).delete();
+			SpellingAid.createStatsFiles();
 		}
 	}
+
 
 }
