@@ -50,7 +50,6 @@ public class Quiz extends Card implements ActionListener {
 	
 	private BestMediaPlayer _player;
 	
-	// Object used for text to speech. Could be an instance variable or local
 	private Festival _festival;
 	
 	public Quiz(SpellingAid sp) {
@@ -264,7 +263,7 @@ public class Quiz extends Card implements ActionListener {
 			} else if (option == 1) {
 				spellingAid.startQuiz(_level);
 			} else if (option == 2) {
-				_player = new BestMediaPlayer();
+				selectFilterAndPlay();
 				spellingAid.returnToMenu();
 			} else {
 				spellingAid.returnToMenu();
@@ -276,7 +275,7 @@ public class Quiz extends Card implements ActionListener {
 			if (option == 0) {
 				spellingAid.startQuiz(_level);
 			} else if (option == 1) {
-				_player = new BestMediaPlayer();
+				selectFilterAndPlay();
 				spellingAid.returnToMenu();
 			} else {
 				spellingAid.returnToMenu();
@@ -433,6 +432,17 @@ public class Quiz extends Card implements ActionListener {
 			JOptionPane.showMessageDialog(this, "An error has occured due to critical files missing from "
 					+ ClassLoader.getSystemClassLoader().getResource(".").getPath() +"\nProgram will now exit. Opening program again will fix this");
 			System.exit(2);
+		}
+	}
+	
+	private void selectFilterAndPlay() {
+		String[] options = new String[] {"Normal","Negative"};
+		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#AllNatural#NoFilter#IWokeUpLikeThis",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		if (option == 0) {
+			_player = new BestMediaPlayer(BestMediaPlayer.NORMAL);
+		} else {
+			_player = new BestMediaPlayer(BestMediaPlayer.NEGATIVE);
 		}
 	}
 	

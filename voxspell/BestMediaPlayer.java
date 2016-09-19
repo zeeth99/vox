@@ -5,19 +5,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 
-public class BestMediaPlayer {
+public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private EmbeddedMediaPlayer _video;
-
+	
+	// Filters
+	public static final int NORMAL = 0;
+	public static final int NEGATIVE = 1;
+	
+	public static final String NORMAL_VIDEO = "big_buck_bunny_1_minute.avi";
+	public static final String NEGATIVE_VIDEO = "negative_big_buck_bunny_1_minute.avi";
+	
 	private JButton _play;
 	private JButton _pause;
 	private JButton _stop;
@@ -25,7 +34,7 @@ public class BestMediaPlayer {
 	private JPanel _screen;
 	private JPanel _controls;
 	
-    public BestMediaPlayer() {
+    public BestMediaPlayer(int filter) {
         JFrame frame = new JFrame("The Awesome Mediaplayer");
 
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
@@ -82,8 +91,41 @@ public class BestMediaPlayer {
         _screen.add(_controls, BorderLayout.SOUTH);
         frame.setContentPane(_screen);
         
-        String filename = "big_buck_bunny_1_minute.avi";
-        video.playMedia(filename);
+        if (filter == NORMAL) {
+        	video.playMedia(NORMAL_VIDEO);
+        } else {
+        	this.execute();
+        }
         
     }
+
+	@Override
+	protected Void doInBackground() throws Exception {
+		if (!negativeExists()) {
+			String cmd = "ffmpeg -y -i "+NORMAL_VIDEO+" -vf negate "+NEGATIVE_VIDEO;
+			ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
+			try {
+	
+				Process process = pb.start();
+				
+			} catch (Exception e) { }
+		} else {
+			done();
+		}
+		return null;
+	}
+	
+	@Override
+	protected void done() {
+		_video.playMedia(NEGATIVE_VIDEO);
+	}
+	
+	private boolean negativeExists() {
+		File f = new File(NEGATIVE_VIDEO);
+		if (f.exists()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
