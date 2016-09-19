@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
 import voxspell.SpellingAid;
@@ -15,47 +17,34 @@ import voxspell.SpellingAid;
 @SuppressWarnings("serial")
 public class Stats extends Card implements ActionListener {
 	
-	private JScrollPane scrollPane;
-	private JTable statsTable;
+	private JTabbedPane tabbedPane;
+	
+	private JPanel[] tabs;
+	
 	private JButton backToMenu;
 	
 	public Stats(SpellingAid sp) throws FileNotFoundException {
 		super(sp, "Spelling Statistics");
 		
+		// Make the JTabbedPane
+		tabbedPane = new JTabbedPane();
+		tabbedPane.setBounds(25, 50, 450, 300);
+		tabbedPane.setTabPlacement(JTabbedPane.LEFT);
+		
+		// Create each tab and add it to tabbedPane
+		tabs = new JPanel[11];
+		for (int i = 0; i < 11; i++) {
+			int level = i+1;
+			tabs[i] = new StatsTab(level);
+			tabbedPane.addTab(Integer.toString(level), tabs[i]);
+		}
+		
 		backToMenu = new JButton("Menu");
 		backToMenu.setBounds(12, 18, 73, 25);
 		backToMenu.addActionListener(this);
-		statsTable = new JTable();
-		statsTable.setShowGrid(true);
-		setLayout(null);
-
+		
 		add(backToMenu);
-
-		int lineCount = 0;
-		Scanner scanCount = new Scanner(new File(".history/all"));
-		while (scanCount.hasNextLine()) {
-			lineCount++;
-			scanCount.nextLine();
-		}
-		scanCount.close();
-
-		String[] tableHeadings = {"Word", "Times Mastered", "Times Faulted", "Time Failed"};
-		String[][] tableContents = new String[lineCount][4];
-		Scanner sc = new Scanner(new File(".history/all"));
-		for (int i = 0; i < lineCount; i++) {
-			for (int j = 0; j < 4; j++) {
-				tableContents[i][j] = sc.next();
-			}
-		}
-		sc.close();
-
-		statsTable = new JTable(tableContents, tableHeadings);
-		statsTable.setEnabled(false);
-		statsTable.setAutoCreateRowSorter(true);
-
-		scrollPane = new JScrollPane(statsTable);
-		scrollPane.setBounds(0, 60, 500, 320);
-		add(scrollPane);
+		add(tabbedPane);
 
 	}
 

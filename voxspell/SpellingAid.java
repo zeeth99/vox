@@ -57,21 +57,18 @@ import javax.swing.JInternalFrame;
 public class SpellingAid extends JFrame implements ActionListener {
 
 	public enum QuizResult {
-		MASTERED(new File(".history/mastered"), 1), 
-		FAULTED(new File(".history/faulted"), 2), 
-		FAILED(new File(".history/failed"), 3);
+		MASTERED(1), 
+		FAULTED(2), 
+		FAILED(3);
 		
-		public final File file;
 		public final int integerValue;
 		
-		private QuizResult(File file, int integer) {
-			this.file = file;
+		private QuizResult(int integer) {
 			integerValue = integer;
 		}
 	}
 	
 	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
-	final public static File REVIEWLIST = new File(".history/failed");
 
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
@@ -87,8 +84,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setTitle("Spelling Aid");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		createReviewFiles();
+				
+		createStatsFiles();
 		
 		cards.setLayout(layout);
 		
@@ -122,40 +119,29 @@ public class SpellingAid extends JFrame implements ActionListener {
 				layout.show(cards, "Stats");
 			} catch (FileNotFoundException e1) {
 				createStatsFiles();
+				try {
+					cards.add(new Stats(this), "Stats");
+					layout.show(cards, "Stats");
+				} catch (FileNotFoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 			}
+		} else if (e.getSource() == ((Menu)menu).settings) {
+			layout.show(cards, "Settings");
 		}
 	}
 
-	public void updateStats(QuizResult type, String word) {
+	public void updateStats(QuizResult type, String word, int level) {
 		try {
 			File inputFile;
 			File tempFile;
 			BufferedReader reader;
 			BufferedWriter writer;
 			String currentLine;
-
-			for (int i = 0; i < 3; i++) {
-				QuizResult fileName = QuizResult.values()[i];
-				inputFile = fileName.file;
-				tempFile = new File(".history/.tempFile");
-
-				reader = new BufferedReader(new FileReader(inputFile));
-				writer = new BufferedWriter(new FileWriter(tempFile));
-
-				while((currentLine = reader.readLine()) != null) {
-				    String trimmedLine = currentLine.trim();
-				    if(trimmedLine.equals(word)) continue;
-				    writer.write(currentLine + System.getProperty("line.separator"));
-				}
-				if (fileName.equals(type)) {
-					writer.write(word + System.getProperty("line.separator"));
-				}
-				writer.close();
-				reader.close();
-				tempFile.renameTo(inputFile);
-			}
+			
 			boolean wordFoundInAll = false;
-			inputFile = new File(".history/all");
+			inputFile = new File(".history/level"+level+"/stats");
 			tempFile = new File(".history/.tempFile");
 
 			reader = new BufferedReader(new FileReader(inputFile));
@@ -174,10 +160,13 @@ public class SpellingAid extends JFrame implements ActionListener {
 				switch(type) {
 				case MASTERED:
 					writer.write(word + " 1 0 0" + System.getProperty("line.separator"));
+					break;
 				case FAULTED:
 					writer.write(word + " 0 1 0" + System.getProperty("line.separator"));
+					break;
 				case FAILED:
 					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
+					break;
 				}
 			}
 			tempFile.renameTo(inputFile);
@@ -198,29 +187,16 @@ public class SpellingAid extends JFrame implements ActionListener {
 		if (!f.exists() || !f.isDirectory()) {
 			f.mkdir();
 		}
-		String[] historyFileList = {"mastered", "faulted", "failed", "all"};
-		for (int i = 0; i < 4; i++) {
-			f = new File(".history/" + historyFileList[i]);
-			try {
-				f.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	
-	private static void createReviewFiles() {
-		// Creates files which contain words from each level which user failed to be
-		// reviewed in review mode
-		File r = new File(".history/review");
-		if (!r.exists() || !r.isDirectory()) {
-			r.mkdir();
-		}
+		// create a folder for each level. Each folder contains a file for numerical statistics for each word 
+		// and a file which contains only the words to be reviewed.
 		for (int i = 1; i < 12; i++) {
-			r = new File(".history/review/level"+i);
+			f = new File(".history/level"+i);
+			if (!f.exists() || !f.isDirectory()) {
+				f.mkdir();
+			}
 			try {
-				r.createNewFile();
+				new File(".history/level"+i+"/stats").createNewFile();
+				new File(".history/level"+i+"/toReview").createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -228,9 +204,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-
-		createStatsFiles();
-
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -240,7 +213,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 				}
 			}
 		});
-
 	}
 
 	public void startQuiz(int level) {
@@ -254,7 +226,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	private boolean reviewFilesEmpty() {
 		for (int i = 1; i < 12; i++) {
-			File f = new File(".history/review/level"+i);
+			File f = new File(".history/level"+i);
 			if (f.length() > 0) {
 				return false;
 			}

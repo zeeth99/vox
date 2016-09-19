@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +27,7 @@ public class Settings extends Card implements ActionListener {
 		clearStatistics = new JButton("Clear Statistics");
 		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 		clearStatistics.setBounds(100, 270, 300, 50);
-		clearStatistics.addActionListener(sp);
+		clearStatistics.addActionListener(this);
 		
 		add(backToMenu);
 		add(clearStatistics);
@@ -41,15 +42,17 @@ public class Settings extends Card implements ActionListener {
 		}
 	}
 	
-	// TODO Move to Settings? Yup. Makes more sense there
 	private static void clearStats() {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"
 				+ "Are you sure you want to do this?";
 		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION) {
-			String[] historyFileList = {"mastered", "faulted", "failed", "all"};
-			for (int i = 0; i < 4; i++) (new File(".history/" + historyFileList[i])).delete();
+			File[] files = new File(".history").listFiles();
+			for (int i = 0; i < files.length; i++) {
+				files[i].delete();
+			}
+			new File(".history").delete();
 			SpellingAid.createStatsFiles();
 		}
 	}

@@ -130,23 +130,27 @@ public class Quiz extends Card implements ActionListener {
 			}
 		} else if (_firstAttempt) {
 			if (input.equalsIgnoreCase(word)) {
-				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word);
+				// MASTERED
+				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word, _level);
 				festivalMessage = "correct";
 				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
+				// FIRST FAIL
 				_firstAttempt = false;
 				sayMessage("Incorrect. The word is " + _testingWords.get(_wordNumber) + ".. " + _testingWords.get(_wordNumber));
 				return;
 			}
 		} else {
 			if (input.equalsIgnoreCase(word)) {
-				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word);
+				// FAULTED
+				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word, _level);
 				festivalMessage = "correct";
 				_wordsCorrect++;
 				removeFromReview(word);
 			} else {
-				((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word);
+				// FAILED
+				((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word, _level);
 				festivalMessage = "incorrect.. ";
 				if (_reviewMode && !_reviewSpellOut) {
 					_reviewSpellOut = true;
@@ -196,7 +200,7 @@ public class Quiz extends Card implements ActionListener {
 		
 		if (_reviewMode) {
 			heading.setText("Review Quiz");
-			File f = new File(".history/review/level"+level);
+			File f = new File(".history/level"+level+"/toReview");
 			_testingWords = randomWords(f, level);
 			if (noWordsToReview()) {
 				if (level <= 11) {
@@ -331,7 +335,7 @@ public class Quiz extends Card implements ActionListener {
 	private void addWordToReview(String word, int level) {
 		try {	
 			String currentLine;
-			File inputFile = new File(".history/review/level"+level);
+			File inputFile = new File(".history/level"+level+"/toReview");
 			File tempFile = new File(".history/.tempFile");
 	
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -372,7 +376,7 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	private void reviewLevelCompleteAction() {
-		File f = new File(".history/review/level"+_level);
+		File f = new File(".history/level"+_level+"/toReview");
 		if (f.length() > 0) {
 			String[] options = new String[] {"Repeat level","Return to Main Menu"};
 			int option = JOptionPane.showOptionDialog(this, "There are still some words left to review on this level\nTo progress to further levels"
@@ -401,7 +405,7 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	private void removeFromReview(String wordToBeRemoved) {
-		File review = new File(".history/review/level"+_level);
+		File review = new File(".history/level"+_level+"/toReview");
 		File temp = new File(".history/.tempFile");
 		try {
 			/* Following code retrieved and slightly modified from 
