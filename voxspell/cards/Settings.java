@@ -86,9 +86,12 @@ public class Settings extends Card implements ActionListener {
 				+ "Are you sure you want to do this?";
 		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION) {
-			File[] files = new File(".history").listFiles();
-			for (int i = 0; i < files.length; i++) {
-				files[i].delete();
+			File[] folders = new File(".history").listFiles();
+			for (File levelFolder : folders) {
+				File[] files = levelFolder.listFiles();
+				for (File file : files) {
+					file.delete();
+				}
 			}
 			new File(".history").delete();
 			SpellingAid.createStatsFiles();
