@@ -125,7 +125,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 					cards.add(new Stats(this), "Stats");
 					layout.show(cards, "Stats");
 				} catch (FileNotFoundException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 			}

@@ -41,7 +41,8 @@ public class Settings extends Card implements ActionListener {
 		voiceSettings.setSelectedIndex(0);
 		voiceSettings.addActionListener(new ActionListener()	{
 			public void actionPerformed(ActionEvent e){
-				JComboBox combo = (JComboBox)e.getSource();
+				@SuppressWarnings("unchecked")
+				JComboBox<String> combo = (JComboBox<String>)e.getSource();
                 String voice = (String)combo.getSelectedItem();
                 switch (voice) {
                 case "Default":

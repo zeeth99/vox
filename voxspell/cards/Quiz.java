@@ -119,11 +119,7 @@ public class Quiz extends Card implements ActionListener {
 		if (_reviewSpellOut) { // Check if word is spelled correctly on their last chance
 			_reviewSpellOut = false;
 			if (input.equalsIgnoreCase(word)) {
-				// TODO: Remove word from failed list. Not sure whether word is mastered or faulted
-				// ((SpellingAid) spellingAid).updateStats("faulted", word);
 				festivalMessage = "correct:";
-				_wordsCorrect++;
-				removeFromReview(word);
 			} else {
 				festivalMessage = "incorrect:";
 				addWordToReview(word, _level);
@@ -252,7 +248,7 @@ public class Quiz extends Card implements ActionListener {
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 		if (_level != 11) {
-			// TODO: Give option for video reward before asking to progress to next level
+			// Give option for video reward before asking to progress to next level
 			String[] options = new String[] {"Next Level","Repeat Level","Play Video", "Return to Main Menu"};
 			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -267,7 +263,6 @@ public class Quiz extends Card implements ActionListener {
 				spellingAid.returnToMenu();
 			}
 		} else {
-			// TODO: Give option for video reward
 			String[] options = new String[] {"Repeat Level","Play Video","Return to Main Menu"};
 			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
