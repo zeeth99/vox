@@ -27,7 +27,7 @@ public class StatsTab extends JPanel {
 		}
 		scanCount.close();
 
-		String[] tableHeadings = {"Word", "Times Mastered", "Times Faulted", "Time Failed"};
+		String[] tableHeadings = {"Word", "Times Mastered", "Times Faulted", "Times Failed"};
 		String[][] tableContents = new String[lineCount][4];
 		Scanner sc = new Scanner(new File(".history/level"+level+"/stats"));
 		for (int i = 0; i < lineCount; i++) {
