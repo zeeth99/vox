@@ -42,7 +42,7 @@ public class StatsTab extends JPanel {
 		statsTable.setAutoCreateRowSorter(true);
 
 		scrollPane = new JScrollPane(statsTable);
-		scrollPane.setBounds(0, 60, 450, 320);
+		scrollPane.setBounds(0, 0, 440, 290);
 		add(scrollPane);
 
 	}
