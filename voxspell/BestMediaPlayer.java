@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
@@ -34,9 +35,12 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private JPanel _screen;
 	private JPanel _controls;
 	
+	private BestMediaPlayer _this;
+	
     public BestMediaPlayer(int filter) {
         JFrame frame = new JFrame("The Awesome Mediaplayer");
-
+        _this = this;
+        
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
@@ -83,6 +87,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+            	_this.cancel(true);
             	_video.stop();
                 mediaPlayerComponent.release();
             }
@@ -95,6 +100,9 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
         	video.playMedia(NORMAL_VIDEO);
         } else {
         	this.execute();
+        	if (!negativeExists()) {
+        		JOptionPane.showMessageDialog(frame, "Loading Video","Patience is a Virtue", JOptionPane.PLAIN_MESSAGE);
+        	}
         }
         
     }
@@ -105,19 +113,24 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			String cmd = "ffmpeg -y -i "+NORMAL_VIDEO+" -vf negate "+NEGATIVE_VIDEO;
 			ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
 			try {
-	
+					
 				Process process = pb.start();
-				
+				process.waitFor();
+				if (isCancelled()) {
+					process.destroy();
+					return null;
+				}
+					
 			} catch (Exception e) { }
-		} else {
-			done();
 		}
 		return null;
 	}
 	
 	@Override
 	protected void done() {
-		_video.playMedia(NEGATIVE_VIDEO);
+		if (!isCancelled()) {
+			_video.playMedia(NEGATIVE_VIDEO);
+		}
 	}
 	
 	private boolean negativeExists() {
@@ -128,4 +141,5 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			return false;
 		}
 	}
+	
 }
