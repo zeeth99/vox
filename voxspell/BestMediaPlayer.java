@@ -31,6 +31,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private JButton _play;
 	private JButton _pause;
 	private JButton _stop;
+	private JButton _exit;
 	
 	private JPanel _screen;
 	private JPanel _controls;
@@ -79,6 +80,18 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			}
 		});
         
+        _exit = new JButton("EXIT");
+        _controls.add(_exit);
+        _exit.addActionListener(new ActionListener() {
+        	@Override
+			public void actionPerformed(ActionEvent e) {
+				video.stop();
+				_this.cancel(true);
+				mediaPlayerComponent.release();
+				frame.dispose();
+			}
+        });
+        
         frame.setLocation(100, 100);
         frame.setSize(1050, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -100,9 +113,6 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
         	video.playMedia(NORMAL_VIDEO);
         } else {
         	this.execute();
-        	if (!negativeExists()) {
-        		JOptionPane.showMessageDialog(frame, "Loading Video","Patience is a Virtue", JOptionPane.PLAIN_MESSAGE);
-        	}
         }
         
     }
