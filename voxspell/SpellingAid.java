@@ -105,17 +105,17 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == ((Menu)menu).newSpellingQuiz) {
+		if (e.getSource() == menu.newSpellingQuiz) {
 			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
-		} else if (e.getSource() == ((ModeSelect)modeSelect).reviewButton) {
+		} else if (e.getSource() == menu.reviewQuiz) {
 			if (!reviewFilesEmpty()) {
 				quiz.setReviewMode(true);
 				startQuiz(1);
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
-		} else if (e.getSource() == ((Menu)menu).viewStatistics) {
+		} else if (e.getSource() == menu.viewStatistics) {
 			try {
 				cards.add(new Stats(this), "Stats");
 				layout.show(cards, "Stats");
@@ -128,7 +128,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 					e2.printStackTrace();
 				}
 			}
-		} else if (e.getSource() == ((Menu)menu).settings) {
+		} else if (e.getSource() == menu.settings) {
 			layout.show(cards, "Settings");
 		}
 	}

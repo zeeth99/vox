@@ -11,7 +11,6 @@ import voxspell.SpellingAid;
 public class ModeSelect extends Card implements ActionListener{
 
 	private JButton[] levels = new JButton[11];
-	public JButton reviewButton;
 
 	public ModeSelect(SpellingAid sp) {
 		super(sp, "Select Your Mode");
@@ -25,23 +24,13 @@ public class ModeSelect extends Card implements ActionListener{
 			add(levels[i]);
 			levels[i].addActionListener(this);
 		}
-		
-		reviewButton = new JButton("Review");
-		reviewButton.setBounds(330, 220, 120, 30);
-		reviewButton.addActionListener(sp);
-		
-		add(reviewButton);
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
-		if (e.getSource() == reviewButton) {
-			
-		} else if(e.getSource() == menuButton) {
-			spellingAid.returnToMenu();
-		} else {
+		if(e.getSource() != menuButton) {
 			for (int i = 0; i < 11; i++) {
 				if (e.getSource() == levels[i]) {
 					spellingAid.startQuiz(i+1);
