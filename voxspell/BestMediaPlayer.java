@@ -39,6 +39,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private BestMediaPlayer _this;
 	
     public BestMediaPlayer(int filter) {
+    	
         JFrame frame = new JFrame("The Awesome Mediaplayer");
         _this = this;
         

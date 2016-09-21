@@ -86,6 +86,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		// Set up important files
 		createVoiceSettingFiles();
 		createStatsFiles();
 		
@@ -106,6 +107,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == menu.newSpellingQuiz) {
+			if (!wordListExists()) {
+				return;
+			}
 			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
@@ -254,6 +258,16 @@ public class SpellingAid extends JFrame implements ActionListener {
 		    Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
 		} catch (Exception e) { } 
 		
+	}
+	
+	private boolean wordListExists() {
+		if (!WORDLIST.exists()) {
+			JOptionPane.showMessageDialog(this, "File 'NZCER-spelling-lists.txt' does not exist in current directory\n"
+					+ "Please make sure this file exists within the current directory before attempting to start a quiz");
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 }

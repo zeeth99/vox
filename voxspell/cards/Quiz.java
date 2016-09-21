@@ -214,6 +214,10 @@ public class Quiz extends Card implements ActionListener {
 		} else {
 			heading.setText("New Quiz");
 			_testingWords = randomWords(SpellingAid.WORDLIST, level);
+			if (_testingWords == null) {
+				spellingAid.returnToMenu();
+				return;
+			}
 		}
 		_firstAttempt = true;
 		_reviewSpellOut = false;
@@ -318,9 +322,7 @@ public class Quiz extends Card implements ActionListener {
 				tempList.add(line);
 			}
 			sc.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		} catch (FileNotFoundException e) { }
 		Random rnd = new Random();
 		for (int i = 0; i < QUIZ_SIZE; i++) {
 			if (tempList.isEmpty()) {
@@ -436,6 +438,11 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	private void selectFilterAndPlay() {
+		if (!videoExists()) {
+			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within current directory\n"
+					+ "Please make sure this file exists as to enable the video to be played");
+			return;
+		}
 		String[] options = new String[] {"Normal","Negative"};
 		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#AllNatural#NoFilter#IWokeUpLikeThis",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -443,6 +450,15 @@ public class Quiz extends Card implements ActionListener {
 			_player = new BestMediaPlayer(BestMediaPlayer.NORMAL);
 		} else {
 			_player = new BestMediaPlayer(BestMediaPlayer.NEGATIVE);
+		}
+	}
+	
+	private boolean videoExists() {
+		File f = new File(BestMediaPlayer.NORMAL_VIDEO);
+		if (f.exists()) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
