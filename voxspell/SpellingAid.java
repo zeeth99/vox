@@ -233,7 +233,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	private boolean reviewFilesEmpty() {
 		for (int i = 1; i < 12; i++) {
-			File f = new File(".history/level"+i);
+			File f = new File(".history/level"+i+"/toReview");
 			if (f.length() > 0) {
 				return false;
 			}

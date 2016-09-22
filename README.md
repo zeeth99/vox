@@ -6,11 +6,11 @@ Welcome to VOXSPELL!
 
 BEFORE YOU DO ANYTHING
 Please make sure that :
-1. Within the directory that the files 'VOXSPELL.jar' and 'runMe.sh' (without quotation marks) is in, there
+1. Within the directory that the files 'VOXSPELL.jar' and 'runVoxspell.sh' (without quotation marks) is in, there
 	is a file named 'NZCER-spelling-lists.txt' (again, without quotation marks) within that same directory.
 	If one does not exist, please create one or get one from somewhere as you cannot attempt as quiz without
 	this file present
-2. Within the directory that the files 'VOXSPELL.jar' and 'runMe.sh' (without quotation marks) is in, there
+2. Within the directory that the files 'VOXSPELL.jar' and 'runVoxspell.sh' (without quotation marks) is in, there
 	is a file named 'big_buck_bunny_1_minute.avi' (you guessed it, without the quotation marks) within the
 	same directory. If one does not exist, please make sure one exists to enable any video reward at the end
 	of a quiz
@@ -21,10 +21,10 @@ Please make sure that :
 	/usr/lib/jvm/jdk1.8/
    A script file is included which you will need to execute in order to run the application
 
-To run the application, run the runMe.sh file. At the command line (with the current directory being the one where 
-runMe.sh is in), execute the following:
+To run the application, run the runVoxspell.sh file. At the command line (with the current directory being the one where 
+runVoxspell.sh is in), execute the following:
 	
-	./runMe.sh
+	./runVoxspell.sh
 
 This will run VOXSPELL
 
