@@ -17,7 +17,7 @@ public class Menu extends Card implements ActionListener {
 	public JButton reviewQuiz;
 
 	public Menu(SpellingAid sp) {
-		super(sp, "Welcome to the Spelling Aid");
+		super(sp, "Welcome to VOXSPELL");
 		
 		menuButton.setEnabled(false);
 		menuButton.setVisible(false);

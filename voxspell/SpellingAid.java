@@ -82,7 +82,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
-		setTitle("Spelling Aid");
+		setTitle("VOXSPELL");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
