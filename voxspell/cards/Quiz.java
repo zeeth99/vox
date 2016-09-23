@@ -440,6 +440,7 @@ public class Quiz extends Card implements ActionListener {
 	private void selectFilterAndPlay() {
 		if (!videoExists()) {
 			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath()+"\n"
+					+ "If you ran VOXSPELL without using the runVoxspell.sh script, then "+BestMediaPlayer.NORMAL_VIDEO+" doesn't exist within your home directory\n"
 					+ "Please make sure this file exists in the correct directory as to enable the video to be played");
 			return;
 		}

@@ -263,6 +263,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private boolean wordListExists() {
 		if (!WORDLIST.exists()) {
 			JOptionPane.showMessageDialog(this, "File 'NZCER-spelling-lists.txt' does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath() +"\n"
+					+ "If you ran VOXSPELL without using the runVoxspell.sh script, then 'NZCER-spelling-lists.txt' doesn't exist within your home directory\n"
 					+ "Please make sure this file exists within the correct directory before attempting to start a quiz");
 			return false;
 		} else {
