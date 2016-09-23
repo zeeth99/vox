@@ -444,7 +444,7 @@ public class Quiz extends Card implements ActionListener {
 			return;
 		}
 		String[] options = new String[] {"Normal","Negative"};
-		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#AllNatural#NoFilter#IWokeUpLikeThis",
+		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#Filters",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			_player = new BestMediaPlayer(BestMediaPlayer.NORMAL);
@@ -454,7 +454,7 @@ public class Quiz extends Card implements ActionListener {
 	}
 	
 	private boolean videoExists() {
-		File f = new File(BestMediaPlayer.NORMAL_VIDEO);
+		File f = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()+BestMediaPlayer.NORMAL_VIDEO);
 		if (f.exists()) {
 			return true;
 		} else {
