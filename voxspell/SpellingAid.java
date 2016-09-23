@@ -69,8 +69,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 	
-	// Makes it so the wordlist has to be placed in the same directory of the .jar file
-	final public static File WORDLIST = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()+"NZCER-spelling-lists.txt");
+	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
 
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
