@@ -439,8 +439,8 @@ public class Quiz extends Card implements ActionListener {
 	
 	private void selectFilterAndPlay() {
 		if (!videoExists()) {
-			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within current directory\n"
-					+ "Please make sure this file exists as to enable the video to be played");
+			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within your home directory i.e. ~/ \n"
+					+ "Please make sure this file exists in the correct directory as to enable the video to be played");
 			return;
 		}
 		String[] options = new String[] {"Normal","Negative"};
