@@ -19,9 +19,12 @@ Please make sure that :
 	(voice_akl_nz_jdt_diphone)
 4. Java Version 1.8 is installed at the following directory:
 	/usr/lib/jvm/jdk1.8/
-   A script file is included which you will need to execute in order to run the application
+   A script file is included which you will need to execute in order to run the application if you have Java 1.8 installed
+   but is not the default version of Java.
 
-To run the application, run the runVoxspell.sh file. At the command line (with the current directory being the one where 
+IF JAVA 1.8 IS YOUR DEFAULT VERSION OF JAVA, you may run the VOXSPELL.jar jar file to run VOXSPELL without running the script file
+
+IF JAVA 1.8 IS NOT YOUR DEFAULT VERSION OF JAVA BUT YOU HAVE IT INSTALLED AT THE DIRECTORY MENTIONED ABOVE IN POINT 4, run the runVoxspell.sh file. To do this, at the command line (with the current directory being the one where 
 runVoxspell.sh is in), execute the following:
 	
 	./runVoxspell.sh
