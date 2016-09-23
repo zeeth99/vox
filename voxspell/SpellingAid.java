@@ -262,7 +262,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	private boolean wordListExists() {
 		if (!WORDLIST.exists()) {
-			JOptionPane.showMessageDialog(this, "File 'NZCER-spelling-lists.txt' does not exist in your home directory i.e. ~/ \n"
+			JOptionPane.showMessageDialog(this, "File 'NZCER-spelling-lists.txt' does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath() +"\n"
 					+ "Please make sure this file exists within the correct directory before attempting to start a quiz");
 			return false;
 		} else {
