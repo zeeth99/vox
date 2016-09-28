@@ -104,7 +104,6 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			String cmd = "ffmpeg -y -i "+NORMAL_VIDEO+" -vf negate "+NEGATIVE_VIDEO;
 			ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
 			try {
-					
 				Process process = pb.start();
 				process.waitFor();
 				if (isCancelled()) {
@@ -126,7 +125,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	
 	private boolean negativeExists() {
 		File f = new File(NEGATIVE_VIDEO);
-		if (f.exists()) {
+		if (f.exists() && !f.isDirectory()) {
 			return true;
 		} else {
 			return false;
