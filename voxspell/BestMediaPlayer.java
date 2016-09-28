@@ -49,7 +49,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
         screen.setLayout(new BorderLayout());
         screen.add(mediaPlayerComponent, BorderLayout.CENTER);
         
-        play = new JButton("PLAY");
+        play = new JButton("PAUSE");
         controls.add(play);
         play.addActionListener(new ActionListener() {
         	@Override
@@ -70,6 +70,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				video.stop();
+				play.setText("PLAY");
 			}
 		});
 
