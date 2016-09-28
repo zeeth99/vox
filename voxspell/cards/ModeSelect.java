@@ -1,6 +1,5 @@
 package voxspell.cards;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,9 +11,7 @@ import voxspell.SpellingAid;
 public class ModeSelect extends Card implements ActionListener{
 
 	private JButton[] levels = new JButton[11];
-	private JButton reviewButton;
 
-	
 	public ModeSelect(SpellingAid sp) {
 		super(sp, "Select Your Mode");
 		
@@ -27,22 +24,13 @@ public class ModeSelect extends Card implements ActionListener{
 			add(levels[i]);
 			levels[i].addActionListener(this);
 		}
-		
-		reviewButton = new JButton("Review");
-		reviewButton.setBackground(Color.GRAY); //TODO: Looks crap. 
-												// I think it needs to stand out a little, 
-												// but I'm not sure how to do it well.
-		reviewButton.setBounds(330, 220, 120, 30);
-		
-		add(reviewButton);
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == reviewButton) {
-			
-		} else {
+		super.actionPerformed(e);
+		if(e.getSource() != menuButton) {
 			for (int i = 0; i < 11; i++) {
 				if (e.getSource() == levels[i]) {
 					spellingAid.startQuiz(i+1);
@@ -50,4 +38,5 @@ public class ModeSelect extends Card implements ActionListener{
 			}
 		}
 	}
+	
 }
