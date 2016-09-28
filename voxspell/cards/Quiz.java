@@ -47,9 +47,7 @@ public class Quiz extends Card implements ActionListener {
 	private List<String> _testingWords;
 	
 	private int _level;
-	
-	private BestMediaPlayer _player;
-	
+		
 	private Festival _festival;
 	
 	public Quiz(SpellingAid sp) {
@@ -448,9 +446,9 @@ public class Quiz extends Card implements ActionListener {
 		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#AllNatural#NoFilter#IWokeUpLikeThis",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == 0) {
-			_player = new BestMediaPlayer(BestMediaPlayer.NORMAL);
+			new BestMediaPlayer(BestMediaPlayer.Filter.NORMAL);
 		} else {
-			_player = new BestMediaPlayer(BestMediaPlayer.NEGATIVE);
+			new BestMediaPlayer(BestMediaPlayer.Filter.NEGATIVE);
 		}
 	}
 	
