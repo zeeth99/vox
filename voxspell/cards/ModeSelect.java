@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
@@ -57,6 +56,7 @@ public class ModeSelect extends Card implements ActionListener{
 		
 		startQuiz = new JButton("Start Quiz");
 		startQuiz.setBounds(383, 18, 117, 25);
+		startQuiz.addActionListener(this);
 		add(startQuiz);
 
 	}
