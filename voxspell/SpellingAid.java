@@ -120,7 +120,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			}
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
-			if (!reviewFilesEmpty()) {
+			if (!OLDreviewFilesEmpty()) {
 				startQuiz(null, null); //TODO
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
@@ -192,6 +192,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	}
 
+	// TODO: old, delete when new word list system is complete.
 	public static void createStatsFiles() {
 		// Initialise .history
 		File f = new File(".history");
@@ -259,7 +260,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 		layout.show(cards, "Menu");
 	}
 	
-	private boolean reviewFilesEmpty() {
+	// TODO: old, remove
+	private boolean OLDreviewFilesEmpty() {
 		for (int i = 1; i < 12; i++) {
 			File f = new File(".history/level"+i+"/toReview");
 			if (f.length() > 0) {
@@ -269,6 +271,14 @@ public class SpellingAid extends JFrame implements ActionListener {
 		return true;
 	}
 	
+	private boolean reviewFilesEmpty() {
+		for (File f : STATSFOLDER.listFiles())
+			if (f.getName().endsWith(".review") && f.length() > 0)
+				return false;
+		return true;
+	}
+	
+	// TODO: old, remove
 	private static void createVoiceSettingFiles() {
 		if (!FESTIVALFOLDER.exists() || !FESTIVALFOLDER.isDirectory()) {
 			FESTIVALFOLDER.mkdir();
@@ -296,5 +306,22 @@ public class SpellingAid extends JFrame implements ActionListener {
 			return true;
 		}
 	}
+	
+	private boolean wordlistsExist() {
+		if (WORDFOLDER.list().length == 0) {
+			JOptionPane.showMessageDialog(this, "No wordlist files exist in " + WORDFOLDER.getAbsolutePath() + "\n"
+				+ "Please make sure a correctly formatted file exists within " + WORDFOLDER.getName() + " before attempting to start a quiz");
+			return false;
+		} else {
+			return true;
+		}
+	}
 
+	// TODO: finish
+	private boolean isFileWordlist(File f) {
+		if (true) {
+			
+		}
+		return false;
+	}
 }
