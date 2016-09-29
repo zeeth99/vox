@@ -110,11 +110,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 			if (!wordListExists()) {
 				return;
 			}
-			quiz.setReviewMode(false);
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
 			if (!reviewFilesEmpty()) {
-				quiz.setReviewMode(true);
 				startQuiz(1);
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
