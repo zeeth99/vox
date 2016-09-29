@@ -9,13 +9,9 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -24,6 +20,7 @@ import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 import voxspell.SpellingAid.QuizResult;
+import voxspell.Wordlist;
 import voxspell.BestMediaPlayer;
 import voxspell.Festival;
 
@@ -44,6 +41,7 @@ public class Quiz extends Card implements ActionListener {
 	private int _wordsCorrect;
 	private List<String> _testingWords;
 	
+	Wordlist _wordlist;
 	private int _level;
 		
 	private Festival _festival;
@@ -167,14 +165,14 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
-	public void startQuiz(int level) {
-		_level = level;
+	public void startQuiz(Wordlist w) {
+		_wordlist = w;
 		levelLabel.setText("Level "+_level);
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 		
 		heading.setText("New Quiz");
-		_testingWords = randomWords(SpellingAid.WORDLIST, level);
+		_testingWords = w.randomWords(QUIZ_SIZE);
 		if (_testingWords == null) {
 			spellingAid.returnToMenu();
 			return;
@@ -213,33 +211,17 @@ public class Quiz extends Card implements ActionListener {
 	public void levelCompleteAction() {
 		_wordNumber = 0;
 		_wordsCorrect = 0;
-		if (_level != 11) {
-			// Give option for video reward before asking to progress to next level
-			String[] options = new String[] {"Next Level","Repeat Level","Play Video", "Return to Main Menu"};
-			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
-					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			if (option == 0) {
-				spellingAid.startQuiz(_level + 1);
-			} else if (option == 1) {
-				spellingAid.startQuiz(_level);
-			} else if (option == 2) {
-				selectFilterAndPlay();
-				spellingAid.returnToMenu();
-			} else {
-				spellingAid.returnToMenu();
-			}
+		// Give option for video reward before asking to progress to next level
+		String[] options = new String[] {"Repeat Level", "Play Video", "Return to Main Menu"};
+		int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		if (option == 0) {
+			startQuiz(_wordlist);
+		} else if (option == 1) {
+			selectFilterAndPlay();
+			spellingAid.returnToMenu();
 		} else {
-			String[] options = new String[] {"Repeat Level","Play Video","Return to Main Menu"};
-			int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
-					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			if (option == 0) {
-				spellingAid.startQuiz(_level);
-			} else if (option == 1) {
-				selectFilterAndPlay();
-				spellingAid.returnToMenu();
-			} else {
-				spellingAid.returnToMenu();
-			}
+			spellingAid.returnToMenu();
 		}
 	}
 
@@ -250,43 +232,12 @@ public class Quiz extends Card implements ActionListener {
 		int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
 				"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == JOptionPane.YES_OPTION) {
-			spellingAid.startQuiz(_level);
+			startQuiz(_wordlist);
 		} else {
 			spellingAid.returnToMenu();
 		}
 	}
-	
-	private List<String> randomWords(File f, int level) {
-		List<String> tempList = new ArrayList<String>();
-		List<String> wordList = new ArrayList<String>();
-		try {
-			Scanner sc = new Scanner(f);
-			while (sc.hasNextLine()) {
-				if (sc.nextLine().equals("%Level "+level)) {
-					break;
-				}
-			}
-			while (sc.hasNextLine()) {
-				String line = sc.nextLine();
-				if (line.charAt(0) == '%') {
-					break;
-				}
-				tempList.add(line);
-			}
-			sc.close();
-		} catch (FileNotFoundException e) { }
-		Random rnd = new Random();
-		for (int i = 0; i < QUIZ_SIZE; i++) {
-			if (tempList.isEmpty()) {
-				break;
-			}
-			String word = tempList.get(rnd.nextInt(tempList.size()));
-			tempList.remove(word);
-			wordList.add(word);
-		}
-		return wordList;
-	}
-	
+		
 	private void addWordToReview(String word, int level) {
 		try {	
 			String currentLine;

@@ -70,15 +70,18 @@ public class SpellingAid extends JFrame implements ActionListener {
 	}
 	
 	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
+	final public static File WORDFOLDER = new File("wordlists");
+	final public static File STATSFOLDER = new File(".history");
+	final public static File FESTIVALFOLDER = new File(".festival");
 
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
 
 	// Cards
-	private Menu menu = new Menu(this);
-	private Quiz quiz = new Quiz(this);
-	private ModeSelect modeSelect = new ModeSelect(this);
-	private Settings settings = new Settings(this);
+	private Menu menu;
+	private Quiz quiz;
+	private ModeSelect modeSelect;
+	private Settings settings;
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
@@ -89,13 +92,18 @@ public class SpellingAid extends JFrame implements ActionListener {
 		// Set up important files
 		createVoiceSettingFiles();
 		createStatsFiles();
+		createFiles();
 		
 		cards.setLayout(layout);
 		
 		// Set up cards
+		menu = new Menu(this);
 		cards.add(menu, "Menu");
+		modeSelect = new ModeSelect(this);
 		cards.add(modeSelect, "Level Select");
+		quiz = new Quiz(this);
 		cards.add(quiz, "Quiz");
+		settings = new Settings(this);
 		cards.add(settings, "Settings");
 
 		getContentPane().add(cards);
@@ -113,7 +121,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
 			if (!reviewFilesEmpty()) {
-				startQuiz(1);
+				startQuiz(null, null); //TODO
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
 			}
@@ -206,6 +214,23 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
+	public static void createFiles() {
+		if (!WORDFOLDER.exists() || !WORDFOLDER.isDirectory())
+			WORDFOLDER.mkdir();
+		if (!STATSFOLDER.exists() || !STATSFOLDER.isDirectory())
+			STATSFOLDER.mkdir();
+		if (!FESTIVALFOLDER.exists() || !FESTIVALFOLDER.isDirectory())
+			FESTIVALFOLDER.mkdir();
+		try {
+			new File(".festival/message.scm").createNewFile();
+		} catch (IOException e) {}
+		try {   
+			List<String> linesToWrite = new ArrayList<>();
+			linesToWrite.add(Settings.DEFAULT_VOICE);
+		    Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
+		} catch (Exception e) {} 
+	}
+	
 	public static void main(String[] args) {
 		
 		
@@ -220,9 +245,14 @@ public class SpellingAid extends JFrame implements ActionListener {
 		});
 	}
 
-	public void startQuiz(int level) {
+	public void startQuiz(File f, String category) {
 		layout.show(cards, "Quiz");
-		quiz.startQuiz(level);
+		try {
+			quiz.startQuiz(new Wordlist(f, category));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void returnToMenu() {
@@ -240,15 +270,13 @@ public class SpellingAid extends JFrame implements ActionListener {
 	}
 	
 	private static void createVoiceSettingFiles() {
-		File f = new File(".festival");
-		if (!f.exists() || !f.isDirectory()) {
-			f.mkdir();
+		if (!FESTIVALFOLDER.exists() || !FESTIVALFOLDER.isDirectory()) {
+			FESTIVALFOLDER.mkdir();
 		}
 		
-		f = new File(".festival/.message.scm");
 		try {
-			f.createNewFile();
-		} catch (Exception e) { }
+			new File(".festival/message.scm").createNewFile();
+		} catch (IOException e) { }
 		
 		try {   
 			List<String> linesToWrite = new ArrayList<>();
