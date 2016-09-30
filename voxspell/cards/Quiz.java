@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 import voxspell.SpellingAid.QuizResult;
-import voxspell.Wordlist;
+import voxspell.WordList;
 import voxspell.BestMediaPlayer;
 import voxspell.Festival;
 
@@ -41,7 +41,7 @@ public class Quiz extends Card implements ActionListener {
 	private int _wordsCorrect;
 	protected List<String> _testingWords;
 	
-	protected Wordlist _wordlist;
+	protected WordList _wordlist;
 		
 	private Festival _festival;
 	
@@ -157,7 +157,7 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
-	public void startQuiz(Wordlist w) {
+	public void startQuiz(WordList w) {
 		_wordlist = w;
 		categoryLabel.setText(_wordlist.toString());
 		_wordNumber = 0;
@@ -235,7 +235,7 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 		
-	private void addWordToReview(String word, Wordlist w) {
+	private void addWordToReview(String word, WordList w) {
 		try {	
 			String currentLine;
 			File inputFile = new File(".history/"+w+".review");

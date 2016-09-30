@@ -9,10 +9,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 @SuppressWarnings("serial")
-public class Wordlist extends ArrayList<String> {
+public class WordList extends ArrayList<String> {
 	private String _category;
+	private ReviewList _reviewList;
 	
-	public Wordlist(File f, String category) throws FileNotFoundException {
+	public WordList(File f, String category) throws FileNotFoundException {
 		_category = category;
 		
 		boolean categoryExists = false;
@@ -77,6 +78,6 @@ public class Wordlist extends ArrayList<String> {
 	}
 	
 	public String toString() {
-		return _category; // TODO: might change?
+		return _category;
 	}
 }

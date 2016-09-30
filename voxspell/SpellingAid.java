@@ -142,7 +142,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
-	public void updateStats(QuizResult type, String word, Wordlist w) {
+	public void updateStats(QuizResult type, String word, WordList w) {
 		try {
 			File inputFile;
 			File tempFile;
@@ -226,7 +226,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void startQuiz(File f, String category) {
 		layout.show(cards, "Quiz");
 		try {
-			quiz.startQuiz(new Wordlist(f, category));
+			quiz.startQuiz(new WordList(f, category));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
