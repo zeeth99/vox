@@ -69,7 +69,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 	
-	final public static File WORDLIST = new File("NZCER-spelling-lists.txt");
 	final public static File WORDFOLDER = new File("wordlists");
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
@@ -90,7 +89,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		// Set up important files
-		createVoiceSettingFiles();
 		createFiles();
 		
 		cards.setLayout(layout);
@@ -114,9 +112,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == menu.newSpellingQuiz) {
-			if (!wordListExists()) {
-				return;
-			}
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
 			if (!reviewFilesEmpty()) {
@@ -242,35 +237,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			if (f.getName().endsWith(".review") && f.length() > 0)
 				return false;
 		return true;
-	}
-	
-	// TODO: old, remove
-	private static void createVoiceSettingFiles() {
-		if (!FESTIVALFOLDER.exists() || !FESTIVALFOLDER.isDirectory()) {
-			FESTIVALFOLDER.mkdir();
-		}
-		
-		try {
-			new File(".festival/message.scm").createNewFile();
-		} catch (IOException e) { }
-		
-		try {   
-			List<String> linesToWrite = new ArrayList<>();
-			linesToWrite.add(Settings.DEFAULT_VOICE);
-		    Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
-		} catch (Exception e) { } 
-		
-	}
-	
-	private boolean wordListExists() {
-		if (!WORDLIST.exists()) {
-			JOptionPane.showMessageDialog(this, "File 'NZCER-spelling-lists.txt' does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath() +"\n"
-					+ "If you ran VOXSPELL without using the runVoxspell.sh script, then 'NZCER-spelling-lists.txt' doesn't exist within your home directory\n"
-					+ "Please make sure this file exists within the correct directory before attempting to start a quiz");
-			return false;
-		} else {
-			return true;
-		}
 	}
 	
 	private boolean wordlistsExist() {
