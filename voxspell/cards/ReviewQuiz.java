@@ -24,11 +24,14 @@ import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 import voxspell.SpellingAid.QuizResult;
+import voxspell.Wordlist;
 import voxspell.BestMediaPlayer;
 import voxspell.Festival;
 
 @SuppressWarnings("serial")
 public class ReviewQuiz extends Quiz {
+
+	private static final int QUIZ_SIZE = 10;
 
 	private boolean _reviewSpellOut;
 
@@ -114,38 +117,11 @@ public class ReviewQuiz extends Quiz {
 			wordCountLabel.setText("Word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
 	}
-
-	public void startQuiz(String level) {
-		_category = level;
-		categoryLabel.setText("Level "+_category);
-		_wordNumber = 0;
-		_wordsCorrect = 0;
-
-		if (_reviewMode) {
-			heading.setText("Review Quiz");
-			File f = new File(".history/level"+level+"/toReview");
-			_testingWords = randomWords(f, level);
-			if (noWordsToReview()) {
-				if (level <= 11) {
-					return;
-				} else {
-					startQuiz(level+1);
-				}
-			}
-		} else {
-			heading.setText("New Quiz");
-			_testingWords = randomWords(SpellingAid.WORDLIST, level);
-			if (_testingWords == null) {
-				spellingAid.returnToMenu();
-				return;
-			}
-		}
-		_firstAttempt = true;
+	
+	protected void quizHook() {
+		heading.setText("Review Quiz");
+		_testingWords = _wordlist.reviewWords(QUIZ_SIZE);
 		_reviewSpellOut = false;
-		wordCountLabel.setText("Word " + (_wordNumber+1) + " of " + _testingWords.size());
-		feedbackPanel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
-		sayMessage("Please spell " + _testingWords.get(_wordNumber));
-		inputBox.grabFocus();
 	}
 
 	/* Decides on what to do when the level is completed depending on what the user

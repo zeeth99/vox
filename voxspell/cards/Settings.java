@@ -48,7 +48,6 @@ public class Settings extends Card implements ActionListener {
                 	break;
                 case "New Zealand":
                 	changeVoiceSetting(NZ_VOICE);
-                default:
                 	break;
                 }
             }
@@ -87,18 +86,10 @@ public class Settings extends Card implements ActionListener {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"
 				+ "Are you sure you want to do this?";
-		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Are you sure?", JOptionPane.YES_NO_OPTION);
-		if (option == JOptionPane.YES_OPTION) {
-			File[] folders = new File(".history").listFiles();
-			for (File levelFolder : folders) {
-				File[] files = levelFolder.listFiles();
-				for (File file : files) {
-					file.delete();
-				}
-			}
-			new File(".history").delete();
-			SpellingAid.createStatsFiles();
-		}
+		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Delete Statistics", JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION)
+			for (File f : SpellingAid.STATSFOLDER.listFiles())
+				f.delete();
 	}
 
 

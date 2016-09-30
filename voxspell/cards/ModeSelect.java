@@ -61,7 +61,6 @@ public class ModeSelect extends Card implements ActionListener{
 
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);

@@ -30,7 +30,7 @@ public class Quiz extends Card implements ActionListener {
 	private static final int QUIZ_SIZE = 10;
 
 	private JLabel wordCountLabel;
-	private JLabel levelLabel;
+	protected JLabel categoryLabel;
 	private JFormattedTextField inputBox;
 	private JLabel feedbackPanel;
 	private JButton repeatWord;
@@ -39,10 +39,9 @@ public class Quiz extends Card implements ActionListener {
 	private boolean _firstAttempt;
 	private int _wordNumber;
 	private int _wordsCorrect;
-	private List<String> _testingWords;
+	protected List<String> _testingWords;
 	
-	Wordlist _wordlist;
-	private int _level;
+	protected Wordlist _wordlist;
 		
 	private Festival _festival;
 	
@@ -54,8 +53,8 @@ public class Quiz extends Card implements ActionListener {
 		wordCountLabel = new JLabel();
 		wordCountLabel.setBounds(225, 90, 150, 15);
 		wordCountLabel.setHorizontalAlignment(JLabel.RIGHT);
-		levelLabel = new JLabel();
-		levelLabel.setBounds(125, 90, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
+		categoryLabel = new JLabel();
+		categoryLabel.setBounds(125, 90, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
 		feedbackPanel = new JLabel();
 		feedbackPanel.setBounds(125, 230, 300, 15);
 		
@@ -85,7 +84,7 @@ public class Quiz extends Card implements ActionListener {
 		add(repeatWord);
 		add(submitWord);
 		add(wordCountLabel);
-		add(levelLabel);
+		add(categoryLabel);
 		add(feedbackPanel);
 
 	}
@@ -116,33 +115,28 @@ public class Quiz extends Card implements ActionListener {
 
 		String festivalMessage;
 		
-		if (_firstAttempt) {
-			if (input.equalsIgnoreCase(word)) {
+		if (input.equalsIgnoreCase(word)) {
+			if (_firstAttempt) {
 				// MASTERED
-				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word, _level);
-				festivalMessage = "correct:";
-				_wordsCorrect++;
-				removeFromReview(word);
+				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word, _wordlist);
 			} else {
+				// FAULTED
+				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word, _wordlist);
+			}
+			removeFromReview(word);
+			festivalMessage = "correct:";
+			_wordsCorrect++;
+		} else {
+			if (_firstAttempt) {
 				// FIRST FAIL
 				_firstAttempt = false;
 				sayMessage("Incorrect: The word is " + _testingWords.get(_wordNumber) + ":.:" + _testingWords.get(_wordNumber));
 				return;
-			}
-		} else {
-			if (input.equalsIgnoreCase(word)) {
-				// FAULTED
-				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word, _level);
-				festivalMessage = "correct:";
-				_wordsCorrect++;
-				removeFromReview(word);
-			} else {
-				// FAILED
-				((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word, _level);
-				festivalMessage = "incorrect:";
-
-				addWordToReview(word, _level);
-			}
+			} 
+			// FAILED
+			((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word, _wordlist);
+			festivalMessage = "incorrect:";
+			addWordToReview(word, _wordlist);
 		}
 		
 		_firstAttempt = true;
@@ -167,12 +161,12 @@ public class Quiz extends Card implements ActionListener {
 
 	public void startQuiz(Wordlist w) {
 		_wordlist = w;
-		levelLabel.setText("Level "+_level);
+		categoryLabel.setText(_wordlist.toString());
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 		
-		heading.setText("New Quiz");
-		_testingWords = w.randomWords(QUIZ_SIZE);
+		quizHook();
+
 		if (_testingWords == null) {
 			spellingAid.returnToMenu();
 			return;
@@ -183,6 +177,11 @@ public class Quiz extends Card implements ActionListener {
 		feedbackPanel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		inputBox.grabFocus();
+	}
+	
+	protected void quizHook() {
+		heading.setText("New Quiz");
+		_testingWords = _wordlist.randomWords(QUIZ_SIZE);
 	}
 
 	private void sayMessage(String message) {
@@ -238,11 +237,13 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 		
-	private void addWordToReview(String word, int level) {
+	private void addWordToReview(String word, Wordlist w) {
 		try {	
 			String currentLine;
-			File inputFile = new File(".history/level"+level+"/toReview");
+			File inputFile = new File(".history/"+w+".review");
 			File tempFile = new File(".history/.tempFile");
+			
+			inputFile.createNewFile();
 	
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
@@ -260,9 +261,10 @@ public class Quiz extends Card implements ActionListener {
 	}
 
 	private void removeFromReview(String wordToBeRemoved) {
-		File review = new File(".history/level"+_level+"/toReview");
+		File review = new File(".history/"+_wordlist+".review");
 		File temp = new File(".history/.tempFile");
 		try {
+			review.createNewFile();
 			/* Following code retrieved and slightly modified from 
 			 * http://stackoverflow.com/questions/1377279/find-a-line-in-a-file-and-remove-it */
 			BufferedReader reader = new BufferedReader(new FileReader(review));

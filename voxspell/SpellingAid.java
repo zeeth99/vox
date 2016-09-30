@@ -91,7 +91,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		
 		// Set up important files
 		createVoiceSettingFiles();
-		createStatsFiles();
 		createFiles();
 		
 		cards.setLayout(layout);
@@ -120,7 +119,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			}
 			layout.show(cards, "Level Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
-			if (!OLDreviewFilesEmpty()) {
+			if (!reviewFilesEmpty()) {
 				startQuiz(null, null); //TODO
 			} else {
 				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
@@ -130,7 +129,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 				cards.add(new Stats(this), "Stats");
 				layout.show(cards, "Stats");
 			} catch (FileNotFoundException e1) {
-				createStatsFiles();
+				createFiles();
 				try {
 					cards.add(new Stats(this), "Stats");
 					layout.show(cards, "Stats");
@@ -143,7 +142,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		}
 	}
 
-	public void updateStats(QuizResult type, String word, int level) {
+	public void updateStats(QuizResult type, String word, Wordlist w) {
 		try {
 			File inputFile;
 			File tempFile;
@@ -152,7 +151,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 			String currentLine;
 			
 			boolean wordFoundInAll = false;
-			inputFile = new File(".history/level"+level+"/stats");
+			inputFile = new File(".history/"+w+".stats");
+			inputFile.createNewFile();
 			tempFile = new File(".history/.tempFile");
 
 			reader = new BufferedReader(new FileReader(inputFile));
@@ -190,29 +190,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 
-	}
-
-	// TODO: old, delete when new word list system is complete.
-	public static void createStatsFiles() {
-		// Initialise .history
-		File f = new File(".history");
-		if (!f.exists() || !f.isDirectory()) {
-			f.mkdir();
-		}
-		// create a folder for each level. Each folder contains a file for numerical statistics for each word 
-		// and a file which contains only the words to be reviewed.
-		for (int i = 1; i < 12; i++) {
-			f = new File(".history/level"+i);
-			if (!f.exists() || !f.isDirectory()) {
-				f.mkdir();
-			}
-			try {
-				new File(".history/level"+i+"/stats").createNewFile();
-				new File(".history/level"+i+"/toReview").createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public static void createFiles() {
@@ -258,17 +235,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	public void returnToMenu() {
 		layout.show(cards, "Menu");
-	}
-	
-	// TODO: old, remove
-	private boolean OLDreviewFilesEmpty() {
-		for (int i = 1; i < 12; i++) {
-			File f = new File(".history/level"+i+"/toReview");
-			if (f.length() > 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	private boolean reviewFilesEmpty() {
