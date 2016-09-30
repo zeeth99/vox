@@ -207,7 +207,7 @@ public class Quiz extends Card implements ActionListener {
 	/* Decides on what to do when the level is completed depending on what the user
 	 * chooses to do and what level they are on [FOR NORMAL QUIZ ONLY]
 	 */
-	public void levelCompleteAction() {
+	protected void levelCompleteAction() {
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 		// Give option for video reward before asking to progress to next level
@@ -226,7 +226,7 @@ public class Quiz extends Card implements ActionListener {
 
 	/* Decides on what to do when the level is not completed [FOR NORMAL QUIZ ONLY]
 	 */
-	public void levelIncompleteAction() {
+	protected void levelIncompleteAction() {
 		String[] options = new String[] {"Repeat level","Return to Main Menu"};
 		int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
 				"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
