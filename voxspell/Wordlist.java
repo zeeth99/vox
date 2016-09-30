@@ -2,6 +2,7 @@ package voxspell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +35,6 @@ public class Wordlist extends ArrayList<String> {
 		sc.close();
 	}
 
-	
 	public List<String> randomWords(int quizSize) {
 		List<String> tempList = new ArrayList<String>();
 		tempList.addAll(this);
@@ -50,6 +50,32 @@ public class Wordlist extends ArrayList<String> {
 		return wordList;
 	}
 
+	public List<String> reviewWords(int quizSize) {
+		File reviewFile = new File(".history/"+toString()+".review");
+		List<String> tempList = new ArrayList<String>();
+		try {
+			reviewFile.createNewFile();
+			Scanner sc = new Scanner(reviewFile);
+			while (sc.hasNextLine())
+				tempList.add(sc.nextLine());
+			sc.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<String> wordList = new ArrayList<String>();
+		Random rnd = new Random();
+		for (int i = 0; i < quizSize; i++) {
+			if (tempList.isEmpty())
+				break;
+			String word = tempList.get(rnd.nextInt(tempList.size()));
+			tempList.remove(word);
+			wordList.add(word);
+		}
+		return wordList;
+	}
+	
 	public String toString() {
 		return _category; // TODO: might change?
 	}
