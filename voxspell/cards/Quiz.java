@@ -36,8 +36,8 @@ public class Quiz extends Card implements ActionListener {
 	private JButton repeatWord;
 	private JButton submitWord;
 
-	private boolean _firstAttempt;
-	private int _wordNumber;
+	protected boolean _firstAttempt;
+	protected int _wordNumber;
 	private int _wordsCorrect;
 	protected List<String> _testingWords;
 	
@@ -94,8 +94,8 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.grabFocus();
 		if (e.getSource() == repeatWord) {
 			sayMessage(_testingWords.get(_wordNumber));
-		} else if (e.getSource() == submitWord || (e.getSource() == inputBox && submitWord.isEnabled())) {
-			checkWord();
+		} else if ((e.getSource() == submitWord || e.getSource() == inputBox) && submitWord.isEnabled()) {
+			checkWord(inputBox.getText());
 		} else if (e.getSource() == menuButton) {
 			int option = JOptionPane.showConfirmDialog(this, "If you go to the menu you will lose your progress in your current quiz. \nAre you sure you want to go to the menu?", "Are You Sure?", JOptionPane.OK_CANCEL_OPTION);
 			switch(option) {
@@ -108,11 +108,9 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
-	private void checkWord() {
-		String input = inputBox.getText();
-		String word = _testingWords.get(_wordNumber);
+	protected void checkWord(String input) {
 		inputBox.setText("");
-
+		String word = _testingWords.get(_wordNumber);
 		String festivalMessage;
 		
 		if (input.equalsIgnoreCase(word)) {
