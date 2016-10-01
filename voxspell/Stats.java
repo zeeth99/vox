@@ -1,4 +1,4 @@
-package voxspell.cards;
+package voxspell;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
 public class Stats extends Card implements ActionListener {

@@ -1,4 +1,4 @@
-package voxspell;
+package voxspell.quiz;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingWorker;
-
-import voxspell.cards.Quiz;
 
 
 public class Festival extends SwingWorker<Void,Void> {

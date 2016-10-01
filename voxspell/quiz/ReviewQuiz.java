@@ -1,4 +1,4 @@
-package voxspell.cards;
+package voxspell.quiz;
 
 import java.io.File;
 import javax.swing.JOptionPane;

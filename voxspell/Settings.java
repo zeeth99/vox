@@ -1,4 +1,4 @@
-package voxspell.cards;
+package voxspell;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,8 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import voxspell.Festival;
-import voxspell.SpellingAid;
+import voxspell.quiz.Festival;
 
 @SuppressWarnings("serial")
 public class Settings extends Card implements ActionListener {

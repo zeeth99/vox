@@ -1,12 +1,10 @@
-package voxspell.cards;
+package voxspell;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-
-import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
 public class Menu extends Card implements ActionListener {

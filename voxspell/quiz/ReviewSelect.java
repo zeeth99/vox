@@ -1,12 +1,11 @@
-package voxspell.cards;
+package voxspell.quiz;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.DefaultListModel;
 
-import voxspell.ReviewList;
 import voxspell.SpellingAid;
-import voxspell.WordList;
 
 @SuppressWarnings("serial")
 public class ReviewSelect extends CategorySelect {
@@ -27,5 +26,9 @@ public class ReviewSelect extends CategorySelect {
 		}
 	}
 
+	public void actionPerformed(ActionEvent e) {
+		
+		super.actionPerformed(e);
+	}
 
 }

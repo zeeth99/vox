@@ -1,4 +1,4 @@
-package voxspell.cards;
+package voxspell.quiz;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,9 +20,8 @@ import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 import voxspell.SpellingAid.QuizResult;
-import voxspell.WordList;
 import voxspell.BestMediaPlayer;
-import voxspell.Festival;
+import voxspell.Card;
 
 @SuppressWarnings("serial")
 public class Quiz extends Card implements ActionListener {

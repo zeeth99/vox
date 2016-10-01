@@ -36,13 +36,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-import voxspell.cards.Card;
-import voxspell.cards.CategorySelect;
-import voxspell.cards.Menu;
-import voxspell.cards.Quiz;
-import voxspell.cards.ReviewSelect;
-import voxspell.cards.Settings;
-import voxspell.cards.Stats;
+import voxspell.quiz.CategorySelect;
+import voxspell.quiz.Festival;
+import voxspell.quiz.Quiz;
+import voxspell.quiz.ReviewSelect;
+import voxspell.quiz.WordList;
 
 import java.io.FileReader;
 import java.io.FileWriter;

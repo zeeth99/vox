@@ -1,4 +1,4 @@
-package voxspell.cards;
+package voxspell.quiz;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import voxspell.Card;
 import voxspell.SpellingAid;
-import voxspell.WordList;
 
 import javax.swing.JList;
 

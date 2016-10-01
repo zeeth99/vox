@@ -1,4 +1,4 @@
-package voxspell.cards;
+package voxspell;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -8,8 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
 public abstract class Card extends JPanel implements ActionListener {
