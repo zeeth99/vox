@@ -43,8 +43,6 @@ public class Quiz extends Card implements ActionListener {
 	
 	protected WordList _wordlist;
 		
-	private Festival _festival;
-	
 	public Quiz(SpellingAid sp) {
 		super(sp, "Quiz");
 		
@@ -183,23 +181,19 @@ public class Quiz extends Card implements ActionListener {
 	}
 
 	private void sayMessage(String message) {
-		disableButtons();
-		_festival = new Festival(message, this);
-		_festival.execute();
+		enableButtons(false);
+		(new Festival(message, this)).execute();
 	}
-	
-	private void disableButtons() {
-		repeatWord.setBackground(Color.GRAY);
-		submitWord.setBackground(Color.GRAY);
-		repeatWord.setEnabled(false);
-		submitWord.setEnabled(false);
-	}
-	
-	public void enableButtons() {
-		repeatWord.setBackground(Color.WHITE);
-		submitWord.setBackground(Color.WHITE);
-		repeatWord.setEnabled(true);
-		submitWord.setEnabled(true);
+
+	public void enableButtons(boolean enable) {
+		Color c = Color.GRAY;
+		if (enable) { 
+			c = Color.WHITE;
+		}
+		repeatWord.setBackground(c);
+		submitWord.setBackground(c);
+		repeatWord.setEnabled(enable);
+		submitWord.setEnabled(enable);
 	}
 	
 	/* Decides on what to do when the level is completed depending on what the user

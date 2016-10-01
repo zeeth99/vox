@@ -39,7 +39,7 @@ public class Festival extends SwingWorker<Void,Void> {
 	
 	@Override
 	protected void done() {
-		_quiz.enableButtons();
+		_quiz.enableButtons(true);
 	}
 	
 	private void addMessageToScheme(String[] message) { 
