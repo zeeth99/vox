@@ -36,9 +36,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-import voxspell.cards.ModeSelect;
+import voxspell.cards.CategorySelect;
 import voxspell.cards.Menu;
 import voxspell.cards.Quiz;
+import voxspell.cards.ReviewSelect;
 import voxspell.cards.Settings;
 import voxspell.cards.Stats;
 
@@ -79,7 +80,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 	// Cards
 	private Menu menu;
 	private Quiz quiz;
-	private ModeSelect modeSelect;
 	private Settings settings;
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
@@ -96,8 +96,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		// Set up cards
 		menu = new Menu(this);
 		cards.add(menu, "Menu");
-		modeSelect = new ModeSelect(this);
-		cards.add(modeSelect, "Level Select");
 		quiz = new Quiz(this);
 		cards.add(quiz, "Quiz");
 		settings = new Settings(this);
@@ -112,13 +110,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == menu.newSpellingQuiz) {
-			layout.show(cards, "Level Select");
+			cards.add(new CategorySelect(this), "Category Select");
+			layout.show(cards, "Category Select");
 		} else if (e.getSource() == menu.reviewQuiz) {
-			if (!reviewFilesEmpty()) {
-				startQuiz(null, null); //TODO
-			} else {
-				JOptionPane.showMessageDialog(this, "There are no words to revise.\nWell done!", "Nothing To Revise", JOptionPane.PLAIN_MESSAGE);
-			}
+			cards.add(new ReviewSelect(this), "Category Select");
+			layout.show(cards, "Category Select");
 		} else if (e.getSource() == menu.viewStatistics) {
 			try {
 				cards.add(new Stats(this), "Stats");
@@ -218,13 +214,15 @@ public class SpellingAid extends JFrame implements ActionListener {
 		});
 	}
 
-	public void startQuiz(File f, String category) {
-		layout.show(cards, "Quiz");
+	public void startQuiz(WordList w) {
 		try {
-			quiz.startQuiz(new WordList(f, category));
+			w.setup();
+			layout.show(cards, "Quiz");
+			quiz.startQuiz(w);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String message = "The file containing that category has been removed from "+WORDFOLDER;
+			JOptionPane.showMessageDialog(new JFrame(), message, "File Not Found", JOptionPane.ERROR_MESSAGE);
+			layout.show(cards, menu.toString());
 		}
 	}
 	

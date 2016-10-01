@@ -2,7 +2,6 @@ package voxspell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,16 +9,20 @@ import java.util.Scanner;
 
 @SuppressWarnings("serial")
 public class WordList extends ArrayList<String> {
-	private String _category;
+	protected String _category;
+	protected File _file;
 	private ReviewList _reviewList;
 	
-	public WordList(File f, String category) throws FileNotFoundException {
+	public WordList(File f, String category) {
 		_category = category;
-		
+		_file = f;
+	}
+
+	public void setup() throws FileNotFoundException {
+		Scanner sc = new Scanner(_file);
 		boolean categoryExists = false;
-		Scanner sc = new Scanner(f);
 		while (sc.hasNextLine()) {
-			if (sc.nextLine().equals("%" + category)) {
+			if (sc.nextLine().equals("%" + _category)) {
 				categoryExists = true;
 				break;
 			}
@@ -52,29 +55,7 @@ public class WordList extends ArrayList<String> {
 	}
 
 	public List<String> reviewWords(int quizSize) {
-		File reviewFile = new File(".history/"+toString()+".review");
-		List<String> tempList = new ArrayList<String>();
-		try {
-			reviewFile.createNewFile();
-			Scanner sc = new Scanner(reviewFile);
-			while (sc.hasNextLine())
-				tempList.add(sc.nextLine());
-			sc.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		List<String> wordList = new ArrayList<String>();
-		Random rnd = new Random();
-		for (int i = 0; i < quizSize; i++) {
-			if (tempList.isEmpty())
-				break;
-			String word = tempList.get(rnd.nextInt(tempList.size()));
-			tempList.remove(word);
-			wordList.add(word);
-		}
-		return wordList;
+		return _reviewList.randomWords(quizSize);
 	}
 	
 	public String toString() {
