@@ -10,10 +10,10 @@ import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class StatsTab extends JPanel {
-	
+
 	private JScrollPane scrollPane;
 	private JTable statsTable;
-	
+
 	public StatsTab(int level) throws FileNotFoundException {
 		statsTable = new JTable();
 		statsTable.setShowGrid(true);

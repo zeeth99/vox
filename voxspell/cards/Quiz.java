@@ -26,7 +26,7 @@ import voxspell.Festival;
 
 @SuppressWarnings("serial")
 public class Quiz extends Card implements ActionListener {
-	
+
 	private static final int QUIZ_SIZE = 10;
 
 	private JLabel wordCountLabel;
@@ -40,12 +40,12 @@ public class Quiz extends Card implements ActionListener {
 	protected int _wordNumber;
 	private int _wordsCorrect;
 	protected List<String> _testingWords;
-	
+
 	protected WordList _wordlist;
-		
+
 	public Quiz(SpellingAid sp) {
 		super(sp, "Quiz");
-		
+
 		spellingAid = sp;
 
 		wordCountLabel = new JLabel();
@@ -55,7 +55,7 @@ public class Quiz extends Card implements ActionListener {
 		categoryLabel.setBounds(125, 90, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
 		feedbackPanel = new JLabel();
 		feedbackPanel.setBounds(125, 230, 300, 15);
-		
+
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
 		repeatWord.addActionListener(this);
@@ -67,7 +67,7 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
 		inputBox.setBounds(125, 120, 250, 30);
 		inputBox.setColumns(20);
-		
+
 		inputBox.addActionListener(this);
 		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
@@ -110,7 +110,7 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.setText("");
 		String word = _testingWords.get(_wordNumber);
 		String festivalMessage;
-		
+
 		if (input.equalsIgnoreCase(word)) {
 			if (_firstAttempt) {
 				// MASTERED
@@ -134,20 +134,20 @@ public class Quiz extends Card implements ActionListener {
 			festivalMessage = "incorrect:";
 			addWordToReview(word, _wordlist);
 		}
-		
+
 		_firstAttempt = true;
 		_wordNumber++;
 		feedbackPanel.setText(_wordsCorrect + " out of " + _wordNumber + " correct so far");
-		
+
 		// If all words have been tested:
 		if (_wordNumber == _testingWords.size()) {
 			sayMessage(festivalMessage);
-				// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
-				if (_wordsCorrect >= 9) {
-					levelCompleteAction();
-				} else {
-					levelIncompleteAction();
-				}
+			// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
+			if (_wordsCorrect >= 9) {
+				levelCompleteAction();
+			} else {
+				levelIncompleteAction();
+			}
 		} else {
 			// Test next word
 			sayMessage(festivalMessage+"Please spell "+_testingWords.get(_wordNumber));
@@ -160,21 +160,21 @@ public class Quiz extends Card implements ActionListener {
 		categoryLabel.setText(_wordlist.toString());
 		_wordNumber = 0;
 		_wordsCorrect = 0;
-		
+
 		quizHook();
 
 		if (_testingWords == null) {
 			spellingAid.returnToMenu();
 			return;
 		}
-		
+
 		_firstAttempt = true;
 		wordCountLabel.setText("Word " + (_wordNumber+1) + " of " + _testingWords.size());
 		feedbackPanel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		inputBox.grabFocus();
 	}
-	
+
 	protected void quizHook() {
 		heading.setText("New Quiz");
 		_testingWords = _wordlist.randomWords(QUIZ_SIZE);
@@ -195,7 +195,7 @@ public class Quiz extends Card implements ActionListener {
 		repeatWord.setEnabled(enable);
 		submitWord.setEnabled(enable);
 	}
-	
+
 	/* Decides on what to do when the level is completed depending on what the user
 	 * chooses to do and what level they are on [FOR NORMAL QUIZ ONLY]
 	 */
@@ -228,22 +228,22 @@ public class Quiz extends Card implements ActionListener {
 			spellingAid.returnToMenu();
 		}
 	}
-		
+
 	private void addWordToReview(String word, WordList w) {
 		try {	
 			String currentLine;
 			File inputFile = new File(".history/"+w+".review");
 			File tempFile = new File(".history/.tempFile");
-			
+
 			inputFile.createNewFile();
-	
+
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-	
+
 			while((currentLine = reader.readLine()) != null) {
-			    String trimmedLine = currentLine.trim();
-			    if (trimmedLine.equals(word)) continue;
-			    writer.write(currentLine + System.getProperty("line.separator"));
+				String trimmedLine = currentLine.trim();
+				if (trimmedLine.equals(word)) continue;
+				writer.write(currentLine + System.getProperty("line.separator"));
 			}
 			writer.write(word + System.getProperty("line.separator"));
 			writer.close();
@@ -261,11 +261,11 @@ public class Quiz extends Card implements ActionListener {
 			 * http://stackoverflow.com/questions/1377279/find-a-line-in-a-file-and-remove-it */
 			BufferedReader reader = new BufferedReader(new FileReader(review));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
-		
+
 			String currentLine;
 
 			while((currentLine = reader.readLine()) != null) {
-		    
+
 				String trimmedLine = currentLine.trim();
 				if(trimmedLine.equals(wordToBeRemoved)) {
 					continue;
@@ -275,14 +275,14 @@ public class Quiz extends Card implements ActionListener {
 			writer.close(); 
 			reader.close(); 
 			temp.renameTo(review);
-			
+
 		} catch (Exception e) { 
 			JOptionPane.showMessageDialog(this, "An error has occured due to critical files missing from "
 					+ ClassLoader.getSystemClassLoader().getResource(".").getPath() +"\nProgram will now exit. Opening program again will fix this");
 			System.exit(2);
 		}
 	}
-	
+
 	private void selectFilterAndPlay() {
 		if (!videoExists()) {
 			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath()+"\n"
@@ -299,7 +299,7 @@ public class Quiz extends Card implements ActionListener {
 			new BestMediaPlayer(BestMediaPlayer.Filter.NEGATIVE);
 		}
 	}
-	
+
 	private boolean videoExists() {
 		File f = new File(BestMediaPlayer.NORMAL_VIDEO);
 		if (f.exists()) {
@@ -308,7 +308,7 @@ public class Quiz extends Card implements ActionListener {
 			return false;
 		}
 	}
-	
+
 	public String cardName() {
 		return "Quiz";
 	}

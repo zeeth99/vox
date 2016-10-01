@@ -12,7 +12,7 @@ public class WordList extends ArrayList<String> {
 	protected String _category;
 	protected File _file;
 	private ReviewList _reviewList;
-	
+
 	public WordList(File f, String category) {
 		_category = category;
 		_file = f;
@@ -57,7 +57,7 @@ public class WordList extends ArrayList<String> {
 	public List<String> reviewWords(int quizSize) {
 		return _reviewList.randomWords(quizSize);
 	}
-	
+
 	public String toString() {
 		return _category;
 	}

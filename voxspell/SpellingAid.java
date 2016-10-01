@@ -63,14 +63,14 @@ public class SpellingAid extends JFrame implements ActionListener {
 		MASTERED(1), 
 		FAULTED(2), 
 		FAILED(3);
-		
+
 		public final int integerValue;
-		
+
 		private QuizResult(int integer) {
 			integerValue = integer;
 		}
 	}
-	
+
 	final public static File WORDFOLDER = new File("wordlists");
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
@@ -93,12 +93,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setTitle("VOXSPELL");
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		// Set up important files
 		createFiles();
-		
+
 		cards.setLayout(layout);
-		
+
 		// Set up cards
 		menu = new Menu(this);
 		cards.add(menu);
@@ -134,7 +134,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private void viewCard(Card c) {
 		layout.show(cards, c.cardName());
 	}
-	
+
 	public void updateStats(QuizResult type, String word, WordList w) {
 		try {
 			File inputFile;
@@ -142,7 +142,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			BufferedReader reader;
 			BufferedWriter writer;
 			String currentLine;
-			
+
 			boolean wordFoundInAll = false;
 			inputFile = new File(".history/"+w+".stats");
 			inputFile.createNewFile();
@@ -198,10 +198,10 @@ public class SpellingAid extends JFrame implements ActionListener {
 		try {   
 			List<String> linesToWrite = new ArrayList<>();
 			linesToWrite.add(Settings.DEFAULT_VOICE);
-		    Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
+			Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
 		} catch (Exception e) {} 
 	}
-	
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -225,22 +225,22 @@ public class SpellingAid extends JFrame implements ActionListener {
 			layout.show(cards, menu.toString());
 		}
 	}
-	
+
 	public void returnToMenu() {
 		viewCard(menu);
 	}
-	
+
 	private boolean reviewFilesEmpty() {
 		for (File f : STATSFOLDER.listFiles())
 			if (f.getName().endsWith(".review") && f.length() > 0)
 				return false;
 		return true;
 	}
-	
+
 	private boolean wordlistsExist() {
 		if (WORDFOLDER.list().length == 0) {
 			JOptionPane.showMessageDialog(this, "No wordlist files exist in " + WORDFOLDER.getAbsolutePath() + "\n"
-				+ "Please make sure a correctly formatted file exists within " + WORDFOLDER.getName() + " before attempting to start a quiz");
+					+ "Please make sure a correctly formatted file exists within " + WORDFOLDER.getName() + " before attempting to start a quiz");
 			return false;
 		} else {
 			return true;
@@ -250,7 +250,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	// TODO: finish
 	private boolean isFileWordlist(File f) {
 		if (true) {
-			
+
 		}
 		return false;
 	}

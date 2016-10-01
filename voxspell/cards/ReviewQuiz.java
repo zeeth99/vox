@@ -22,7 +22,7 @@ public class ReviewQuiz extends Quiz {
 		}
 		super.checkWord(input);
 	}
-	
+
 	protected void quizHook() {
 		heading.setText("Review Quiz");
 		_testingWords = _wordlist.reviewWords(QUIZ_SIZE);

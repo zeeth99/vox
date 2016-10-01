@@ -10,11 +10,11 @@ import voxspell.WordList;
 
 @SuppressWarnings("serial")
 public class ReviewSelect extends CategorySelect {
-	
+
 	public ReviewSelect(SpellingAid sp) {
 		super(sp);
 	}
-	
+
 
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
 		String suffix = ".review";
@@ -27,5 +27,5 @@ public class ReviewSelect extends CategorySelect {
 		}
 	}
 
-	
+
 }

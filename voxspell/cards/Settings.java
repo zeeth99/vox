@@ -18,10 +18,10 @@ import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
 public class Settings extends Card implements ActionListener {
-	
+
 	public static final String DEFAULT_VOICE = "(voice_kal_diphone)"; 
 	public static final String NZ_VOICE = "(voice_akl_nz_jdt_diphone)";
-	  
+
 	public JButton clearStatistics;
 	private JComboBox<String> voiceSettings;
 	private JLabel voiceSettingsLabel;
@@ -33,7 +33,7 @@ public class Settings extends Card implements ActionListener {
 		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 		clearStatistics.setBounds(100, 270, 300, 50);
 		clearStatistics.addActionListener(this);
-		
+
 		String[] voices = new String[] {"Default","New Zealand"};
 		voiceSettings = new JComboBox<String>(voices);
 		voiceSettings.setSelectedIndex(0);
@@ -41,28 +41,28 @@ public class Settings extends Card implements ActionListener {
 			public void actionPerformed(ActionEvent e){
 				@SuppressWarnings("unchecked")
 				JComboBox<String> combo = (JComboBox<String>)e.getSource();
-                String voice = (String)combo.getSelectedItem();
-                switch (voice) {
-                case "Default":
-                	changeVoiceSetting(DEFAULT_VOICE);
-                	break;
-                case "New Zealand":
-                	changeVoiceSetting(NZ_VOICE);
-                	break;
-                }
-            }
-          });
-		
+				String voice = (String)combo.getSelectedItem();
+				switch (voice) {
+				case "Default":
+					changeVoiceSetting(DEFAULT_VOICE);
+					break;
+				case "New Zealand":
+					changeVoiceSetting(NZ_VOICE);
+					break;
+				}
+			}
+		});
+
 		voiceSettings.setBounds(100, 100, 300, 20);
-		
+
 		voiceSettingsLabel = new JLabel("Select a voice setting:");
 		voiceSettingsLabel.setBounds(100, 80, 300, 20);
-		
+
 		add(clearStatistics);
 		add(voiceSettings);
 		add(voiceSettingsLabel);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
@@ -70,18 +70,18 @@ public class Settings extends Card implements ActionListener {
 			clearStats();
 		}
 	}
-	
+
 	private void changeVoiceSetting(String setting) { 
-	    try { 
-	      List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath()); 
-	      lines.set(0, setting); 
-	      Files.write(Festival.SCHEME_FILE.toPath(), lines); 
-	       
-	    } catch (Exception e) { 
-	      e.printStackTrace();
-	    }
+		try { 
+			List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath()); 
+			lines.set(0, setting); 
+			Files.write(Festival.SCHEME_FILE.toPath(), lines); 
+
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
-	
+
 	private static void clearStats() {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"
