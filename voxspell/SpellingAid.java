@@ -76,17 +76,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 	final public static File FESTIVALFOLDER = new File(".festival");
 
 	private CardLayout layout = new CardLayout();
-	private JPanel cards = new JPanel() {
-		private void add(Card c) {
-			super.add(c, c.cardName());
-		}
-	};
+	private JPanel cards = new JPanel();
 
 	// Cards
 	private Menu menu;
-	private Quiz quiz;
 	private Settings settings;
-	private CategorySelect categorySelect;
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
@@ -101,11 +95,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 		// Set up cards
 		menu = new Menu(this);
-		cards.add(menu);
-		quiz = new Quiz(this);
-		cards.add(quiz);
+		addCard(menu);
 		settings = new Settings(this);
-		cards.add(settings);
+		addCard(settings);
 
 		getContentPane().add(cards);
 		returnToMenu();
@@ -127,7 +119,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		} else if (e.getSource() == menu.viewStatistics) {
 			c = new Stats(this);
 		}
-		cards.add(c);
+		addCard(c);
 		viewCard(c);
 	}
 
@@ -135,6 +127,10 @@ public class SpellingAid extends JFrame implements ActionListener {
 		layout.show(cards, c.cardName());
 	}
 
+	private void addCard(Card c) {
+		cards.add(c, c.cardName());
+	}
+	
 	public void updateStats(QuizResult type, String word, WordList w) {
 		try {
 			File inputFile;
@@ -217,7 +213,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void startQuiz(WordList w) {
 		try {
 			w.setup();
-			layout.show(cards, "Quiz");
+			Quiz quiz = new Quiz(this);
+			addCard(quiz);
+			viewCard(quiz);
 			quiz.startQuiz(w);
 		} catch (FileNotFoundException e) {
 			String message = "The file containing that category has been removed from "+WORDFOLDER;
@@ -235,16 +233,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 			if (f.getName().endsWith(".review") && f.length() > 0)
 				return false;
 		return true;
-	}
-
-	private boolean wordlistsExist() {
-		if (WORDFOLDER.list().length == 0) {
-			JOptionPane.showMessageDialog(this, "No wordlist files exist in " + WORDFOLDER.getAbsolutePath() + "\n"
-					+ "Please make sure a correctly formatted file exists within " + WORDFOLDER.getName() + " before attempting to start a quiz");
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	// TODO: finish

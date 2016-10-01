@@ -46,8 +46,6 @@ public class Quiz extends Card implements ActionListener {
 	public Quiz(SpellingAid sp) {
 		super(sp, "Quiz");
 
-		spellingAid = sp;
-
 		wordCountLabel = new JLabel();
 		wordCountLabel.setBounds(225, 90, 150, 15);
 		wordCountLabel.setHorizontalAlignment(JLabel.RIGHT);
@@ -67,7 +65,6 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
 		inputBox.setBounds(125, 120, 250, 30);
 		inputBox.setColumns(20);
-
 		inputBox.addActionListener(this);
 		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
@@ -84,7 +81,6 @@ public class Quiz extends Card implements ActionListener {
 		add(wordCountLabel);
 		add(categoryLabel);
 		add(feedbackPanel);
-
 	}
 
 	@Override
