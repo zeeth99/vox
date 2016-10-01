@@ -236,8 +236,8 @@ public class Quiz extends Card implements ActionListener {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
 			while((currentLine = reader.readLine()) != null) {
-				String trimmedLine = currentLine.trim();
-				if (trimmedLine.equals(word)) continue;
+				if (word.equals(currentLine.trim())) 
+					continue;
 				writer.write(currentLine + System.getProperty("line.separator"));
 			}
 			writer.write(word + System.getProperty("line.separator"));
@@ -260,16 +260,16 @@ public class Quiz extends Card implements ActionListener {
 			String currentLine;
 
 			while((currentLine = reader.readLine()) != null) {
-
-				String trimmedLine = currentLine.trim();
-				if(trimmedLine.equals(wordToBeRemoved)) {
+				if(wordToBeRemoved.equals(currentLine.trim())) 
 					continue;
-				}
 				writer.write(currentLine + System.getProperty("line.separator"));
 			}
 			writer.close(); 
 			reader.close(); 
 			temp.renameTo(review);
+			
+			if (review.length() == 0)
+				review.delete();
 
 		} catch (Exception e) { 
 			JOptionPane.showMessageDialog(this, "An error has occured due to critical files missing from "

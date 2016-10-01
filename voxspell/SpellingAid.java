@@ -137,19 +137,14 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	public void updateStats(QuizResult type, String word, WordList w) {
 		try {
-			File inputFile;
-			File tempFile;
-			BufferedReader reader;
-			BufferedWriter writer;
+			boolean wordFoundInAll = false;
+			File tempFile = new File(".history/.tempFile");
+			File inputFile = new File(".history/"+w+".stats");
+			inputFile.createNewFile();
 			String currentLine;
 
-			boolean wordFoundInAll = false;
-			inputFile = new File(".history/"+w+".stats");
-			inputFile.createNewFile();
-			tempFile = new File(".history/.tempFile");
-
-			reader = new BufferedReader(new FileReader(inputFile));
-			writer = new BufferedWriter(new FileWriter(tempFile));
+			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 			while ((currentLine = reader.readLine()) != null) {
 				if (currentLine.contains(word)) {
 					String[] brokenLine = currentLine.split(" ");
@@ -173,16 +168,14 @@ public class SpellingAid extends JFrame implements ActionListener {
 					break;
 				}
 			}
-			tempFile.renameTo(inputFile);
 			reader.close();
 			writer.close();
-
+			tempFile.renameTo(inputFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void createFiles() {

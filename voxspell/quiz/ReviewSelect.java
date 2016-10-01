@@ -1,10 +1,7 @@
 package voxspell.quiz;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
-
 import javax.swing.DefaultListModel;
-
 import voxspell.SpellingAid;
 
 @SuppressWarnings("serial")
