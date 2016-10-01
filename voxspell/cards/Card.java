@@ -42,5 +42,7 @@ public abstract class Card extends JPanel implements ActionListener {
 			spellingAid.returnToMenu();
 		}
 	}
+	
+	public abstract String cardName();
 
 }

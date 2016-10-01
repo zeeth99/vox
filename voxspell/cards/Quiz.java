@@ -309,4 +309,7 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 	
+	public String cardName() {
+		return "Quiz";
+	}
 }

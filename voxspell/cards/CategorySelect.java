@@ -69,4 +69,8 @@ public class CategorySelect extends Card implements ActionListener{
 		if(e.getSource() == startQuiz)
 			spellingAid.startQuiz(list.getSelectedValue());
 	}
+	
+	public String cardName() {
+		return "Category Select";
+	}
 }

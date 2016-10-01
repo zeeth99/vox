@@ -92,5 +92,7 @@ public class Settings extends Card implements ActionListener {
 				f.delete();
 	}
 
-
+	public String cardName() {
+		return "Settings";
+	}
 }

@@ -16,7 +16,7 @@ public class Stats extends Card implements ActionListener {
 	
 	private JPanel[] tabs;
 	
-	public Stats(SpellingAid sp) throws FileNotFoundException {
+	public Stats(SpellingAid sp) {
 		super(sp, "Spelling Statistics");
 		
 		// Make the JTabbedPane
@@ -29,11 +29,20 @@ public class Stats extends Card implements ActionListener {
 		tabs = new JPanel[11];
 		for (int i = 0; i < 11; i++) {
 			int level = i+1;
-			tabs[i] = new StatsTab(level);
+			try {
+				tabs[i] = new StatsTab(level);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			tabbedPane.addTab(""+level, tabs[i]);
 		}
 
 		add(tabbedPane);
 
+	}
+	
+	public String cardName() {
+		return "Statistics";
 	}
 }

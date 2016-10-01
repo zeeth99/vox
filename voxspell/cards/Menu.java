@@ -46,8 +46,9 @@ public class Menu extends Card implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		
-	}
+	public void actionPerformed(ActionEvent arg0) {}
 
+	public String cardName() {
+		return "Menu";
+	}
 }
