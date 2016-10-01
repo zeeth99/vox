@@ -39,6 +39,7 @@ import javax.swing.table.DefaultTableModel;
 import voxspell.quiz.CategorySelect;
 import voxspell.quiz.Festival;
 import voxspell.quiz.Quiz;
+import voxspell.quiz.ReviewQuiz;
 import voxspell.quiz.ReviewSelect;
 import voxspell.quiz.WordList;
 
@@ -79,6 +80,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	// Cards
 	private Menu menu;
 	private Settings settings;
+	private Quiz quiz;
 
 	private SpellingAid(String[] args) throws FileNotFoundException {
 		setResizable(false);
@@ -96,6 +98,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 		addCard(menu);
 		settings = new Settings(this);
 		addCard(settings);
+		quiz = new Quiz(null);
+		addCard(quiz);
 
 		getContentPane().add(cards);
 		returnToMenu();
@@ -112,8 +116,10 @@ public class SpellingAid extends JFrame implements ActionListener {
 		Card c = null;
 		if (e.getSource() == menu.newSpellingQuiz) {
 			c = new CategorySelect(this);
+			quiz = new Quiz(this);
 		} else if (e.getSource() == menu.reviewQuiz) {
 			c = new ReviewSelect(this);
+			quiz = new ReviewQuiz(this);
 		} else if (e.getSource() == menu.viewStatistics) {
 			c = new Stats(this);
 		}
@@ -211,8 +217,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void startQuiz(WordList w) {
 		try {
 			w.setup();
-			Quiz quiz = new Quiz(this);
-			addCard(quiz);
 			viewCard(quiz);
 			quiz.startQuiz(w);
 		} catch (FileNotFoundException e) {
@@ -224,20 +228,5 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	public void returnToMenu() {
 		viewCard(menu);
-	}
-
-	private boolean reviewFilesEmpty() {
-		for (File f : STATSFOLDER.listFiles())
-			if (f.getName().endsWith(".review") && f.length() > 0)
-				return false;
-		return true;
-	}
-
-	// TODO: finish
-	private boolean isFileWordlist(File f) {
-		if (true) {
-
-		}
-		return false;
 	}
 }

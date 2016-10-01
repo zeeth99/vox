@@ -14,7 +14,6 @@ public class ReviewSelect extends CategorySelect {
 		super(sp);
 	}
 
-
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
 		String suffix = ".review";
 		for (File f : SpellingAid.STATSFOLDER.listFiles()) {
@@ -25,10 +24,4 @@ public class ReviewSelect extends CategorySelect {
 			}
 		}
 	}
-
-	public void actionPerformed(ActionEvent e) {
-		
-		super.actionPerformed(e);
-	}
-
 }
