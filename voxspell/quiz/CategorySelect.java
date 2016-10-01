@@ -38,12 +38,10 @@ public class CategorySelect extends Card implements ActionListener{
 		setupListModel(listModel);
 		scrollPane.setViewportView(list);
 
-
 		startQuiz = new JButton("Start Quiz");
 		startQuiz.setBounds(383, 18, 117, 25);
 		startQuiz.addActionListener(this);
 		add(startQuiz);
-
 	}
 
 	protected void setupListModel(DefaultListModel<WordList> listModel) {

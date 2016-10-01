@@ -1,43 +1,43 @@
 package voxspell;
 
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
+import java.io.File;
 
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 @SuppressWarnings("serial")
-public class Stats extends Card implements ActionListener {
+public class Stats extends Card {
 
-	private JTabbedPane tabbedPane;
-
-	private JPanel[] tabs;
-
+	private JScrollPane scrollPane;
+	private JList<String> list;
+	private JScrollPane scrollPane1;
+	private StatsPanel statsPanel;
+	
 	public Stats(SpellingAid sp) {
 		super(sp, "Spelling Statistics");
-
-		// Make the JTabbedPane
-		tabbedPane = new JTabbedPane();
-		tabbedPane.setBounds(5, 50, 490, 300);
-		tabbedPane.setTabPlacement(JTabbedPane.LEFT);
-		tabbedPane.setFont(new Font(tabbedPane.getFont().getName(), Font.PLAIN, 19));
-
-		// Create each tab and add it to tabbedPane
-		tabs = new JPanel[11];
-		for (int i = 0; i < 11; i++) {
-			int level = i+1;
-			try {
-				tabs[i] = new StatsTab(level);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			tabbedPane.addTab(""+level, tabs[i]);
-		}
-
-		add(tabbedPane);
-
+		
+		statsPanel = new StatsPanel();
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setViewportView(statsPanel);
+		add(scrollPane);
+		
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
+		for (String s : SpellingAid.STATSFOLDER.list())
+			if (s.endsWith(".stats") && (new File(s)).length() > 0)
+				listModel.addElement(s.substring(0, s.length()-".stats".length()));
+		
+		list = new JList<String>(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setVisibleRowCount(-1);
+		list.addListSelectionListener(statsPanel);
+		
+		scrollPane1 = new JScrollPane();
+		scrollPane1.setViewportView(list);
+		add(scrollPane1);
 	}
 
 	public String cardName() {
