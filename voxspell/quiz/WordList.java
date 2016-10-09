@@ -64,4 +64,12 @@ public class WordList extends ArrayList<String> {
 			s = s.substring(10);
 		return s;
 	}
+	
+	public String category() {
+		return _category;
+	}
+	
+	public String file() {
+		return _file.getName();
+	}
 }

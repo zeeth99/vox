@@ -128,8 +128,12 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void updateStats(boolean correct, String word, WordList w) {
 		// stats files are stored in the following format:
 		// {word} {number of times the word was successfully attempted} {number of times the word was attempted}
+		// a folder is created for the stats for each wordlist file.
 		try {
 			boolean wordFound = false;
+			File folder = new File(".history/"+w.file());
+			if (!folder.isDirectory())
+				folder.mkdir();
 			File tempFile = new File(".history/.tempFile");
 			File inputFile = new File(".history/"+w+".stats");
 			inputFile.createNewFile();
