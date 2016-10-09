@@ -59,6 +59,9 @@ public class WordList extends ArrayList<String> {
 	}
 
 	public String toString() {
-		return _category;
+		String s = _file+"/"+_category;
+		if (_file.toString().startsWith("wordlists/"))
+			s = s.substring(10);
+		return s;
 	}
 }
