@@ -18,26 +18,39 @@ public class Stats extends Card {
 	public Stats(SpellingAid sp) {
 		super(sp, "Spelling Statistics");
 		
-		statsPanel = new StatsPanel();
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setViewportView(statsPanel);
-		add(scrollPane);
-		
 		DefaultListModel<String> listModel = new DefaultListModel<String>();
-		for (String s : SpellingAid.STATSFOLDER.list())
-			if (s.endsWith(".stats") && (new File(s)).length() > 0)
-				listModel.addElement(s.substring(0, s.length()-".stats".length()));
+		addFolderToList(SpellingAid.STATSFOLDER, listModel);
 		
 		list = new JList<String>(listModel);
+		list.setBounds(0, 0, 0, 0);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 		list.addListSelectionListener(statsPanel);
+		add(list);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setLocation(15, 55);
+		scrollPane.setSize(130, 290);
+		scrollPane.setViewportView(list);
+		add(scrollPane);
+		
+		statsPanel = new StatsPanel();
+
 		scrollPane1 = new JScrollPane();
-		scrollPane1.setViewportView(list);
 		add(scrollPane1);
+	}
+	
+	private void addFolderToList(File d, DefaultListModel<String> listModel) {
+		for (File f : d.listFiles()) {
+			if (f.isDirectory()) {
+				addFolderToList(f, listModel);
+			} else {
+				String s = f.getName();
+				if (s.endsWith(".stats") && f.length() > 0)
+					listModel.addElement(s.substring(0, s.length()-".stats".length()));
+			}
+		}
 	}
 
 	public String cardName() {
