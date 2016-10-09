@@ -8,17 +8,22 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import voxspell.quiz.StatsList;
+import javax.swing.JSplitPane;
 
 @SuppressWarnings("serial")
 public class Stats extends Card {
 
 	private JScrollPane scrollPane;
 	private JList<StatsList> list;
-	private JScrollPane scrollPane1;
 	private StatsPanel statsPanel;
+	private JSplitPane splitPane;
 	
 	public Stats(SpellingAid sp) {
 		super(sp, "Spelling Statistics");
+		
+		splitPane = new JSplitPane();
+		splitPane.setBounds(15, 55, 465, 290);
+		add(splitPane);
 		
 		DefaultListModel<StatsList> listModel = new DefaultListModel<StatsList>();
 		addFolderToList(SpellingAid.STATSFOLDER, listModel);
@@ -30,14 +35,11 @@ public class Stats extends Card {
 		list.addListSelectionListener(statsPanel);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 55, 130, 290);
 		scrollPane.setViewportView(list);
-		add(scrollPane);
+		splitPane.setLeftComponent(scrollPane);
 		
 		statsPanel = new StatsPanel(this);
-
-		scrollPane1 = new JScrollPane();
-		add(scrollPane1);
+		splitPane.setRightComponent(statsPanel);
 	}
 	
 	private void addFolderToList(File d, DefaultListModel<StatsList> listModel) {
@@ -47,7 +49,7 @@ public class Stats extends Card {
 			} else {
 				String s = f.getName();
 				if (s.endsWith(".stats") && f.length() > 0)
-					listModel.addElement(new StatsList(f));
+					listModel.addElement(new StatsList(d, s.substring(0, s.length()-6)));
 			}
 		}
 	}
