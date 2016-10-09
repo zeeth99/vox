@@ -10,7 +10,7 @@ import javax.swing.SwingWorker;
 
 public class Festival extends SwingWorker<Void,Void> {
 
-	public static final File SCHEME_FILE = new File(".festival/.message.scm");
+	public static final File SCHEME_FILE = new File(".festival/message.scm");
 
 	private String _message;
 	private Quiz _quiz;
