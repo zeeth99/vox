@@ -28,17 +28,14 @@ public class CategorySelect extends Card implements ActionListener{
 	public CategorySelect(SpellingAid sp) {
 		super(sp, "Select Your WordList");
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 55, 488, 233);
-		add(scrollPane);
-
 		DefaultListModel<WordList> listModel = new DefaultListModel<WordList>();
+		setupListModel(listModel);
 		list = new JList<WordList>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setVisibleRowCount(-1);
-		setupListModel(listModel);
-		scrollPane.setViewportView(list);
+		
+		scrollPane = new JScrollPane(list);
+		scrollPane.setBounds(12, 55, 488, 233);
+		add(scrollPane);
 
 		startQuiz = new JButton("Start Quiz");
 		startQuiz.setBounds(383, 18, 117, 25);
