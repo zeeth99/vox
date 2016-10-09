@@ -97,24 +97,24 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Settings
 		if (e.getSource() == menu.settings) {
+			// Settings
 			viewCard(settings);
 			return;
 		}
 		Card c = null;
-		// New Quiz
 		if (e.getSource() == menu.newSpellingQuiz) {
+			// New Quiz
 			c = new CategorySelect(this);
 			quiz = new Quiz(this);
 			addCard(quiz);
-		// Review Quiz
 		} else if (e.getSource() == menu.reviewQuiz) {
+			// Review Quiz
 			c = new ReviewSelect(this);
 			quiz = new ReviewQuiz(this);
 			addCard(quiz);
-		// Statistics
 		} else if (e.getSource() == menu.viewStatistics) {
+			// Statistics
 			c = new Stats(this);
 		}
 		addCard(c);
@@ -128,7 +128,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	private void addCard(Card c) {
 		cards.add(c, c.cardName());
 	}
-	
+
 	public void updateStats(boolean correct, String word, WordList w) {
 		// stats files are stored in the following format:
 		// {word} {number of times the word was successfully attempted} {number of times the word was attempted}

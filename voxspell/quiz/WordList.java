@@ -52,18 +52,18 @@ public class WordList extends ArrayList<String> {
 		}
 		return wordList;
 	}
-	
+
 	public String toString() {
 		String s = _file+"/"+_category;
 		if (_file.toString().startsWith("wordlists/"))
 			s = s.substring(10);
 		return s;
 	}
-	
+
 	public String category() {
 		return _category;
 	}
-	
+
 	public String file() {
 		return _file.getName();
 	}

@@ -10,7 +10,7 @@ public class ReviewList extends WordList {
 	public ReviewList(File f, String category) {
 		super(f, category);
 	}
-	
+
 	public ReviewList(File f) {
 		super(f, f.getName().substring(0, f.getName().length()-".recent".length()));
 	}

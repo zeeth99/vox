@@ -3,23 +3,20 @@ package voxspell.quiz;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
+@SuppressWarnings("serial")
 public class StatsList extends ArrayList<WordStats> {
-	private File _directory;
 	private File _stats;
 	private File _recent;
 	private String _name;
-	
-	public StatsList(File d, String name) {
-		_directory = d;
+
+	public StatsList(File directory, String name) {
 		_name = name;
-		String dString = d.getPath();
-		_stats = new File(dString+"/"+name+".stats");
-		_recent = new File(dString+"/"+name+".recent");
+		_stats = new File(directory+"/"+name+".stats");
+		_recent = new File(directory+"/"+name+".recent");
 	}
-	
+
 	public void setup() throws FileNotFoundException {
 		Scanner sc = new Scanner(_stats);
 		while (sc.hasNextLine()) {
@@ -39,11 +36,11 @@ public class StatsList extends ArrayList<WordStats> {
 		}
 		sc.close();
 	}
-	
+
 	public String toString() {
 		return _name;
 	}
-	
+
 }
 
 class WordStats {
@@ -51,11 +48,11 @@ class WordStats {
 	int _attempts;
 	int _successes;
 	int[] _recent;
-	
+
 	public WordStats(String w) {
 		_word = w;
 	}
-	
+
 	public boolean equals(WordStats w) {
 		return _word.equals(w._word);
 	}
