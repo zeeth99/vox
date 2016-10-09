@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
-import voxspell.SpellingAid.QuizResult;
 import voxspell.BestMediaPlayer;
 import voxspell.Card;
 
@@ -102,14 +101,10 @@ public class Quiz extends Card implements ActionListener {
 		String word = _testingWords.get(_wordNumber);
 		String festivalMessage;
 
-		QuizResult result;
+		boolean correct = false;
 
 		if (input.equalsIgnoreCase(word)) {
-			if (_firstAttempt) {
-				result = QuizResult.MASTERED;
-			} else {
-				result = QuizResult.FAULTED;
-			}
+			correct = true;
 			festivalMessage = "Correct:";
 			_wordsCorrect++;
 		} else {
@@ -117,12 +112,11 @@ public class Quiz extends Card implements ActionListener {
 			if (_firstAttempt) {
 				// FIRST FAIL
 				_firstAttempt = false;
-				sayMessage(festivalMessage+"The word is " + _testingWords.get(_wordNumber) + ":.:" + _testingWords.get(_wordNumber));
+				sayMessage(festivalMessage+"The word is " + word + ":.:" + word);
 				return;
 			} 
-			result = QuizResult.FAILED;
 		}
-		spellingAid.updateStats(result, word, _wordlist);
+		spellingAid.updateStats(correct, word, _wordlist);
 
 		_firstAttempt = true;
 		_wordNumber++;

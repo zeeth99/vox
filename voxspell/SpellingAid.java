@@ -58,18 +58,6 @@ import javax.swing.JInternalFrame;
 @SuppressWarnings({ "serial", "unused" })
 public class SpellingAid extends JFrame implements ActionListener {
 
-	public enum QuizResult {
-		MASTERED(1), 
-		FAULTED(2), 
-		FAILED(3);
-
-		public final int integerValue;
-
-		private QuizResult(int integer) {
-			integerValue = integer;
-		}
-	}
-
 	final public static File WORDFOLDER = new File("wordlists");
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
@@ -135,7 +123,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 		cards.add(c, c.cardName());
 	}
 	
-	public void updateStats(QuizResult type, String word, WordList w) {
+	public void updateStats(boolean correct, String word, WordList w) {
+		// stats files are stored in the following format:
+		// {word} {number of times the word was successfully attempted} {number of times the word was attempted}
 		try {
 			boolean wordFound = false;
 			File tempFile = new File(".history/.tempFile");
@@ -149,26 +139,22 @@ public class SpellingAid extends JFrame implements ActionListener {
 				// Update stats line with current word.
 				if (!wordFound && currentLine.contains(word)) {
 					String[] brokenLine = currentLine.split(" ");
-					brokenLine[type.integerValue] = Integer.toString(Integer.parseInt(brokenLine[type.integerValue]) + 1);;
-					writer.write(brokenLine[0] + " " + brokenLine[1] + " " + brokenLine[2] + " " + brokenLine[3] + System.getProperty("line.separator"));
+					int timesCorrect = Integer.parseInt(brokenLine[1]);
+					int timesAttempted = Integer.parseInt(brokenLine[2]) + 1;
+					if (correct)
+						timesCorrect++;
+					writer.write(brokenLine[0]+" "+timesCorrect+" "+timesAttempted+System.getProperty("line.separator"));
 					wordFound = true;
 				} else {
 					writer.write(currentLine + System.getProperty("line.separator"));
 				}
 			}
-			if (!wordFound) {
-				switch(type) {
-				case MASTERED:
-					writer.write(word + " 1 0 0" + System.getProperty("line.separator"));
-					break;
-				case FAULTED:
-					writer.write(word + " 0 1 0" + System.getProperty("line.separator"));
-					break;
-				case FAILED:
-					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
-					break;
+			if (!wordFound)
+				if (correct) {
+					writer.write(word + " 1 1" + System.getProperty("line.separator"));
+				} else {
+					writer.write(word + " 0 1" + System.getProperty("line.separator"));
 				}
-			}
 			reader.close();
 			writer.close();
 			tempFile.renameTo(inputFile);
@@ -177,13 +163,13 @@ public class SpellingAid extends JFrame implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		updateRecentStats(type, word, w);
+		updateRecentStats(correct, word, w);
 	}
 
-	public void updateRecentStats(QuizResult type, String word, WordList w) {
+	public void updateRecentStats(boolean correct, String word, WordList w) {
 		// Recent stats are stored in the following format:
 		// {word} {0|1} {0|1} {0|1}
-		// 1 represents a successful attempt on the word, 0 represents an failed attempt
+		// 1 represents a successful attempt on the word, 0 represents a failed attempt
 		// The rightmost number represents the most recent attempt. 
 		try {
 			boolean wordFound = false;
@@ -198,9 +184,9 @@ public class SpellingAid extends JFrame implements ActionListener {
 				// Update recent stats line with the current word.
 				if (!wordFound && currentLine.contains(word)) {
 					String[] brokenLine = currentLine.split(" ");
-					int i = 1;
-					if (type == QuizResult.FAILED) 
-						i = 0;
+					int i = 0;
+					if (correct) 
+						i = 1;
 					writer.write(brokenLine[0] + " " + brokenLine[2] + " " + brokenLine[3] + " " + i + System.getProperty("line.separator"));
 					wordFound = true;
 				} else {
@@ -208,7 +194,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 				}
 			}
 			if (!wordFound) {
-				if (type == QuizResult.MASTERED) {
+				if (correct) {
 					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
 				} else {
 					writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
