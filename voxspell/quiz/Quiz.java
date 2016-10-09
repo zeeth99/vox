@@ -6,11 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -106,29 +102,27 @@ public class Quiz extends Card implements ActionListener {
 		String word = _testingWords.get(_wordNumber);
 		String festivalMessage;
 
+		QuizResult result;
+
 		if (input.equalsIgnoreCase(word)) {
 			if (_firstAttempt) {
-				// MASTERED
-				spellingAid.updateStats(QuizResult.MASTERED, word, _wordlist);
+				result = QuizResult.MASTERED;
 			} else {
-				// FAULTED
-				spellingAid.updateStats(QuizResult.FAULTED, word, _wordlist);
+				result = QuizResult.FAULTED;
 			}
-			removeFromReview(word);
-			festivalMessage = "correct:";
+			festivalMessage = "Correct:";
 			_wordsCorrect++;
 		} else {
+			festivalMessage = "Incorrect:";
 			if (_firstAttempt) {
 				// FIRST FAIL
 				_firstAttempt = false;
-				sayMessage("Incorrect: The word is " + _testingWords.get(_wordNumber) + ":.:" + _testingWords.get(_wordNumber));
+				sayMessage(festivalMessage+"The word is " + _testingWords.get(_wordNumber) + ":.:" + _testingWords.get(_wordNumber));
 				return;
 			} 
-			// FAILED
-			spellingAid.updateStats(QuizResult.FAILED, word, _wordlist);
-			festivalMessage = "incorrect:";
-			addWordToReview(word, _wordlist);
+			result = QuizResult.FAILED;
 		}
+		spellingAid.updateStats(result, word, _wordlist);
 
 		_firstAttempt = true;
 		_wordNumber++;
@@ -221,60 +215,6 @@ public class Quiz extends Card implements ActionListener {
 			startQuiz(_wordlist);
 		} else {
 			spellingAid.returnToMenu();
-		}
-	}
-
-	private void addWordToReview(String word, WordList w) {
-		try {	
-			String currentLine;
-			File inputFile = new File(".history/"+w+".review");
-			File tempFile = new File(".history/.tempFile");
-
-			inputFile.createNewFile();
-
-			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-			while((currentLine = reader.readLine()) != null) {
-				if (word.equals(currentLine.trim())) 
-					continue;
-				writer.write(currentLine + System.getProperty("line.separator"));
-			}
-			writer.write(word + System.getProperty("line.separator"));
-			writer.close();
-			reader.close();
-			tempFile.renameTo(inputFile);
-		} catch (Exception e) { }
-	}
-
-	private void removeFromReview(String wordToBeRemoved) {
-		File review = new File(".history/"+_wordlist+".review");
-		File temp = new File(".history/.tempFile");
-		try {
-			review.createNewFile();
-			/* Following code retrieved and slightly modified from 
-			 * http://stackoverflow.com/questions/1377279/find-a-line-in-a-file-and-remove-it */
-			BufferedReader reader = new BufferedReader(new FileReader(review));
-			BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
-
-			String currentLine;
-
-			while((currentLine = reader.readLine()) != null) {
-				if(wordToBeRemoved.equals(currentLine.trim())) 
-					continue;
-				writer.write(currentLine + System.getProperty("line.separator"));
-			}
-			writer.close(); 
-			reader.close(); 
-			temp.renameTo(review);
-			
-			if (review.length() == 0)
-				review.delete();
-
-		} catch (Exception e) { 
-			JOptionPane.showMessageDialog(this, "An error has occured due to critical files missing from "
-					+ ClassLoader.getSystemClassLoader().getResource(".").getPath() +"\nProgram will now exit. Opening program again will fix this");
-			System.exit(2);
 		}
 	}
 
