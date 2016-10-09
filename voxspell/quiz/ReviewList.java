@@ -7,8 +7,12 @@ import java.util.Scanner;
 @SuppressWarnings("serial")
 public class ReviewList extends WordList {
 
-	public ReviewList(String category) {
-		super(new File(".history/"+category+".review"), category);
+	public ReviewList(File f, String category) {
+		super(f, category);
+	}
+	
+	public ReviewList(File f) {
+		super(f, f.getName().substring(0, f.getName().length()-".recent".length()));
 	}
 
 	public void setup() throws FileNotFoundException {

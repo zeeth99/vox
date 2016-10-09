@@ -12,13 +12,8 @@ public class ReviewSelect extends CategorySelect {
 	}
 
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
-		String suffix = ".review";
-		for (File f : SpellingAid.STATSFOLDER.listFiles()) {
-			String str = f.getName();
-			if (str.endsWith(suffix) && f.length() > 0) {
-				String strTrim = str.substring(0, str.length()-suffix.length());
-				listModel.addElement(new ReviewList(strTrim));
-			}
-		}
+		for (File f : SpellingAid.STATSFOLDER.listFiles())
+			if (f.getName().endsWith(".recent") && f.length() > 0)
+				listModel.addElement(new ReviewList(f));
 	}
 }
