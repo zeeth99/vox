@@ -13,33 +13,25 @@ import javax.swing.JSplitPane;
 @SuppressWarnings("serial")
 public class Stats extends Card {
 
-	private JScrollPane scrollPane;
 	private JList<StatsList> list;
 	private StatsPanel statsPanel;
 	private JSplitPane splitPane;
 
 	public Stats(SpellingAid sp) {
+		// Set up GUI
 		super(sp, "Spelling Statistics");
 
-		splitPane = new JSplitPane();
-		splitPane.setBounds(15, 55, 465, 290);
-		add(splitPane);
-
-		DefaultListModel<StatsList> listModel = new DefaultListModel<StatsList>();
-		addFolderToList(SpellingAid.STATSFOLDER, listModel);
-
-		list = new JList<StatsList>(listModel);
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setVisibleRowCount(-1);
-		list.addListSelectionListener(statsPanel);
-
-		scrollPane = new JScrollPane();
-		scrollPane.setViewportView(list);
-		splitPane.setLeftComponent(scrollPane);
-
 		statsPanel = new StatsPanel(this);
-		splitPane.setRightComponent(statsPanel);
+
+		list = new JList<StatsList>(new DefaultListModel<StatsList>());
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.addListSelectionListener(statsPanel);
+		addFolderToList(SpellingAid.STATSFOLDER, (DefaultListModel<StatsList>)list.getModel());
+
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), statsPanel);
+		splitPane.setBounds(15, 55, 465, 290);
+		splitPane.setDividerLocation(120);
+		add(splitPane);
 	}
 
 	private void addFolderToList(File d, DefaultListModel<StatsList> listModel) {
