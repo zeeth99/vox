@@ -205,7 +205,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			}
 			if (!wordFound) {
 				if (correct) {
-					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
+					writer.write(word + " 1 1 1" + System.getProperty("line.separator"));
 				} else {
 					writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
 				}

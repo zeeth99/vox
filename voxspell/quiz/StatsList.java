@@ -29,7 +29,10 @@ public class StatsList extends ArrayList<WordStats> {
 		sc.close();
 		sc = new Scanner(_recent);
 		while (sc.hasNextLine()) {
-			WordStats w = this.get(this.indexOf(new WordStats(sc.next())));
+			WordStats w = new WordStats(sc.next());
+			for (WordStats ws : this)
+				if (w.equals(ws))
+					w = ws;
 			int[] i = {sc.nextInt(), sc.nextInt(), sc.nextInt()};
 			w._recent = i;
 			sc.nextLine();
@@ -41,6 +44,20 @@ public class StatsList extends ArrayList<WordStats> {
 		return _name;
 	}
 
+	public ArrayList<String[]> statsInfo() {
+		ArrayList<String[]> list = new ArrayList<String[]>();
+
+		for (WordStats ws : this) {
+			String score = "";
+			for (int i : ws._recent) {
+				if (i == 1)
+					score += "★ ";
+			}
+			String[] s = {ws._word, score, String.valueOf(ws._successes), String.valueOf(ws._attempts)};
+			list.add(s);
+		}
+		return list;
+	}
 }
 
 class WordStats {

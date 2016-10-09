@@ -21,7 +21,7 @@ public class Stats extends Card {
 		// Set up GUI
 		super(sp, "Spelling Statistics");
 
-		statsPanel = new StatsPanel(this);
+		statsPanel = new StatsPanel();
 
 		list = new JList<StatsList>(new DefaultListModel<StatsList>());
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
