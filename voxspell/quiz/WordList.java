@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class WordList extends ArrayList<String> {
 	protected String _category;
 	protected File _file;
-	private ReviewList _reviewList;
 
 	public WordList(File f, String category) {
 		_category = category;
@@ -53,11 +52,7 @@ public class WordList extends ArrayList<String> {
 		}
 		return wordList;
 	}
-
-	public List<String> reviewWords(int quizSize) {
-		return _reviewList.randomWords(quizSize);
-	}
-
+	
 	public String toString() {
 		String s = _file+"/"+_category;
 		if (_file.toString().startsWith("wordlists/"))

@@ -19,10 +19,11 @@ public class ReviewList extends WordList {
 		Scanner sc = new Scanner(_file);
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
-			if (line.charAt(0) == '%')
-				break;
-			add(line);
+			String[] brokenLine = line.split(" ");
+			if (Integer.parseInt(brokenLine[1]) + Integer.parseInt(brokenLine[2]) + Integer.parseInt(brokenLine[3]) < 2)
+				add(line);
 		}
 		sc.close();
 	}
+
 }
