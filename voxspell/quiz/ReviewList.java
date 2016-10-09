@@ -26,4 +26,7 @@ public class ReviewList extends WordList {
 		sc.close();
 	}
 
+	public String toString() {
+		return _file.toString().substring(9);
+	}
 }
