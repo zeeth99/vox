@@ -105,9 +105,11 @@ public class SpellingAid extends JFrame implements ActionListener {
 		if (e.getSource() == menu.newSpellingQuiz) {
 			c = new CategorySelect(this);
 			quiz = new Quiz(this);
+			addCard(quiz);
 		} else if (e.getSource() == menu.reviewQuiz) {
 			c = new ReviewSelect(this);
 			quiz = new ReviewQuiz(this);
+			addCard(quiz);
 		} else if (e.getSource() == menu.viewStatistics) {
 			c = new Stats(this);
 		}
