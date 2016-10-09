@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -12,8 +13,11 @@ import javax.swing.event.ListSelectionListener;
 
 @SuppressWarnings("serial")
 public class StatsPanel extends JScrollPane implements ListSelectionListener {
+	private Stats _stats;
 	
-	public StatsPanel() {
+	
+	public StatsPanel(Stats stats) {
+		_stats = stats;
 //		int lineCount = 0;
 //		Scanner scanCount = new Scanner(new File(".history/level"+level+"/stats"));
 //		while (scanCount.hasNextLine()) {
@@ -47,5 +51,7 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
 		
+		revalidate();
+		repaint();
 	}
 }
