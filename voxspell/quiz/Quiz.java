@@ -140,7 +140,7 @@ public class Quiz extends Card implements ActionListener {
 
 	public void startQuiz(WordList w) {
 		_wordlist = w;
-		categoryLabel.setText(_wordlist.toString());
+		categoryLabel.setText(_wordlist.category());
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 
