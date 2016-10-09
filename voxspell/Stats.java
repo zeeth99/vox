@@ -7,23 +7,23 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import voxspell.quiz.WordList;
+import voxspell.quiz.StatsList;
 
 @SuppressWarnings("serial")
 public class Stats extends Card {
 
 	private JScrollPane scrollPane;
-	private JList<WordList> list;
+	private JList<StatsList> list;
 	private JScrollPane scrollPane1;
 	private StatsPanel statsPanel;
 	
 	public Stats(SpellingAid sp) {
 		super(sp, "Spelling Statistics");
 		
-		DefaultListModel<WordList> listModel = new DefaultListModel<WordList>();
+		DefaultListModel<StatsList> listModel = new DefaultListModel<StatsList>();
 		addFolderToList(SpellingAid.STATSFOLDER, listModel);
 		
-		list = new JList<WordList>(listModel);
+		list = new JList<StatsList>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
@@ -40,14 +40,14 @@ public class Stats extends Card {
 		add(scrollPane1);
 	}
 	
-	private void addFolderToList(File d, DefaultListModel<WordList> listModel) {
+	private void addFolderToList(File d, DefaultListModel<StatsList> listModel) {
 		for (File f : d.listFiles()) {
 			if (f.isDirectory()) {
 				addFolderToList(f, listModel);
 			} else {
 				String s = f.getName();
 				if (s.endsWith(".stats") && f.length() > 0)
-					listModel.addElement(new WordList(d, s.substring(0, s.length()-6)));
+					listModel.addElement(new StatsList(f));
 			}
 		}
 	}
