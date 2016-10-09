@@ -109,10 +109,10 @@ public class Quiz extends Card implements ActionListener {
 		if (input.equalsIgnoreCase(word)) {
 			if (_firstAttempt) {
 				// MASTERED
-				((SpellingAid) spellingAid).updateStats(QuizResult.MASTERED, word, _wordlist);
+				spellingAid.updateStats(QuizResult.MASTERED, word, _wordlist);
 			} else {
 				// FAULTED
-				((SpellingAid) spellingAid).updateStats(QuizResult.FAULTED, word, _wordlist);
+				spellingAid.updateStats(QuizResult.FAULTED, word, _wordlist);
 			}
 			removeFromReview(word);
 			festivalMessage = "correct:";
@@ -125,7 +125,7 @@ public class Quiz extends Card implements ActionListener {
 				return;
 			} 
 			// FAILED
-			((SpellingAid) spellingAid).updateStats(QuizResult.FAILED, word, _wordlist);
+			spellingAid.updateStats(QuizResult.FAILED, word, _wordlist);
 			festivalMessage = "incorrect:";
 			addWordToReview(word, _wordlist);
 		}
