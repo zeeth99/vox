@@ -137,7 +137,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	
 	public void updateStats(QuizResult type, String word, WordList w) {
 		try {
-			boolean wordFoundInAll = false;
+			boolean wordFound = false;
 			File tempFile = new File(".history/.tempFile");
 			File inputFile = new File(".history/"+w+".stats");
 			inputFile.createNewFile();
@@ -146,16 +146,17 @@ public class SpellingAid extends JFrame implements ActionListener {
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 			while ((currentLine = reader.readLine()) != null) {
-				if (currentLine.contains(word)) {
+				// Update stats line with current word.
+				if (!wordFound && currentLine.contains(word)) {
 					String[] brokenLine = currentLine.split(" ");
 					brokenLine[type.integerValue] = Integer.toString(Integer.parseInt(brokenLine[type.integerValue]) + 1);;
 					writer.write(brokenLine[0] + " " + brokenLine[1] + " " + brokenLine[2] + " " + brokenLine[3] + System.getProperty("line.separator"));
-					wordFoundInAll = true;
+					wordFound = true;
 				} else {
 					writer.write(currentLine + System.getProperty("line.separator"));
 				}
 			}
-			if (!wordFoundInAll) {
+			if (!wordFound) {
 				switch(type) {
 				case MASTERED:
 					writer.write(word + " 1 0 0" + System.getProperty("line.separator"));
@@ -166,6 +167,51 @@ public class SpellingAid extends JFrame implements ActionListener {
 				case FAILED:
 					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
 					break;
+				}
+			}
+			reader.close();
+			writer.close();
+			tempFile.renameTo(inputFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		updateRecentStats(type, word, w);
+	}
+
+	public void updateRecentStats(QuizResult type, String word, WordList w) {
+		// Recent stats are stored in the following format:
+		// {word} {0|1} {0|1} {0|1}
+		// 1 represents a successful attempt on the word, 0 represents an failed attempt
+		// The rightmost number represents the most recent attempt. 
+		try {
+			boolean wordFound = false;
+			File tempFile = new File(".history/.tempFile");
+			File inputFile = new File(".history/"+w+".recent");
+			inputFile.createNewFile();
+			String currentLine;
+
+			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+			while ((currentLine = reader.readLine()) != null) {
+				// Update recent stats line with the current word.
+				if (!wordFound && currentLine.contains(word)) {
+					String[] brokenLine = currentLine.split(" ");
+					int i = 1;
+					if (type == QuizResult.FAILED) 
+						i = 0;
+					writer.write(brokenLine[0] + " " + brokenLine[2] + " " + brokenLine[3] + " " + i + System.getProperty("line.separator"));
+					wordFound = true;
+				} else {
+					writer.write(currentLine + System.getProperty("line.separator"));
+				}
+			}
+			if (!wordFound) {
+				if (type == QuizResult.MASTERED) {
+					writer.write(word + " 0 0 1" + System.getProperty("line.separator"));
+				} else {
+					writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
 				}
 			}
 			reader.close();
