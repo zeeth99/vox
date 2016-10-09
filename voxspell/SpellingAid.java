@@ -97,19 +97,23 @@ public class SpellingAid extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Settings
 		if (e.getSource() == menu.settings) {
 			viewCard(settings);
 			return;
 		}
 		Card c = null;
+		// New Quiz
 		if (e.getSource() == menu.newSpellingQuiz) {
 			c = new CategorySelect(this);
 			quiz = new Quiz(this);
 			addCard(quiz);
+		// Review Quiz
 		} else if (e.getSource() == menu.reviewQuiz) {
 			c = new ReviewSelect(this);
 			quiz = new ReviewQuiz(this);
 			addCard(quiz);
+		// Statistics
 		} else if (e.getSource() == menu.viewStatistics) {
 			c = new Stats(this);
 		}
