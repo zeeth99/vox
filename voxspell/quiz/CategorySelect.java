@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
@@ -15,6 +16,7 @@ import voxspell.Card;
 import voxspell.SpellingAid;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class CategorySelect extends Card implements ActionListener{
@@ -51,8 +53,13 @@ public class CategorySelect extends Card implements ActionListener{
 				String str;
 				while (sc.hasNextLine()) {
 					str = sc.nextLine();
-					if (str.startsWith("%"))
-						listModel.addElement(new WordList(f, str.substring(1)));
+					if (str.startsWith("%")) {
+						if (listModel.contains(str.substring(1))) {
+							JOptionPane.showMessageDialog(new JFrame(), "The file, "+f+", contains multiple categories with same name./nOnly the first category with the name: "+str.substring(1)+"will be useable.", "Category Naming Conflict", JOptionPane.ERROR_MESSAGE);
+						} else {
+							listModel.addElement(new WordList(f, str.substring(1)));
+						}
+					}
 				}
 				sc.close();
 			} catch (FileNotFoundException e) {
