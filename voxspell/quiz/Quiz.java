@@ -38,7 +38,7 @@ public class Quiz extends Card implements ActionListener {
 	protected WordList _wordlist;
 
 	public Quiz(SpellingAid sp) {
-		super(sp, "Quiz");
+		super(sp, "New Quiz");
 
 		wordCountLabel = new JLabel();
 		wordCountLabel.setBounds(225, 90, 150, 15);
@@ -144,7 +144,7 @@ public class Quiz extends Card implements ActionListener {
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 
-		quizHook();
+		_testingWords = _wordlist.randomWords(QUIZ_SIZE);
 
 		if (_testingWords == null) {
 			spellingAid.returnToMenu();
@@ -156,11 +156,6 @@ public class Quiz extends Card implements ActionListener {
 		feedbackPanel.setText(_wordsCorrect+" out of " + _wordNumber + " correct so far");
 		sayMessage("Please spell " + _testingWords.get(_wordNumber));
 		inputBox.grabFocus();
-	}
-
-	protected void quizHook() {
-		heading.setText("New Quiz");
-		_testingWords = _wordlist.randomWords(QUIZ_SIZE);
 	}
 
 	private void sayMessage(String message) {
@@ -205,7 +200,7 @@ public class Quiz extends Card implements ActionListener {
 		String[] options = new String[] {"Repeat level","Return to Main Menu"};
 		int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
 				"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-		if (option == JOptionPane.YES_OPTION) {
+		if (option == 0) {
 			startQuiz(_wordlist);
 		} else {
 			spellingAid.returnToMenu();

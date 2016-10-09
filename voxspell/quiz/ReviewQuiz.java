@@ -8,10 +8,9 @@ import voxspell.SpellingAid;
 @SuppressWarnings("serial")
 public class ReviewQuiz extends Quiz {
 
-	private static final int QUIZ_SIZE = 10;
-
 	public ReviewQuiz(SpellingAid sp) {
 		super(sp);
+		heading.setText("Review Quiz");
 	}
 
 	protected void checkWord(String input) {
@@ -21,11 +20,6 @@ public class ReviewQuiz extends Quiz {
 			// both?
 		}
 		super.checkWord(input);
-	}
-
-	protected void quizHook() {
-		heading.setText("Review Quiz");
-		_testingWords = _wordlist.reviewWords(QUIZ_SIZE);
 	}
 
 	protected void levelCompleteAction() {
