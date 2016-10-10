@@ -17,7 +17,8 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 
 	DefaultTableModel model;
 	JTable table;
-	
+	ArrayList<StatsList> listOfDisplayedCategories;
+
 	public StatsPanel() {
 		super();
 		String[] columnNames = {"Word", "Score", "Successes", "Attempts"};
@@ -26,28 +27,40 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 		table.setAutoCreateRowSorter(true);
 		table.setEnabled(false);
 		this.setViewportView(table);
-
+		listOfDisplayedCategories = new ArrayList<StatsList>();
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
 		if (!e.getValueIsAdjusting()) {
 			@SuppressWarnings("unchecked")
 			JList<StatsList> list = (JList<StatsList>)e.getSource();
+			// For each category which might have changed selection status
 			for (int i = e.getFirstIndex(); i <= e.getLastIndex(); i++) {
-				if (list.isSelectedIndex(i) && !isIncluded(i)) {
-					StatsList sl = list.getModel().getElementAt(i);
-					try {
-						sl.setup();
-					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					ArrayList<String[]> arrayList = sl.statsInfo();
-					for (String[] s : arrayList)
+				StatsList sl = list.getModel().getElementAt(i);
+				try {
+					sl.setup();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				// If category is selected and wasn't previously
+				// Add all words from this category
+				if (list.isSelectedIndex(i) && !listOfDisplayedCategories.contains(sl)) {
+					listOfDisplayedCategories.add(sl);
+					for (String[] s : sl.statsInfo())
 						model.addRow(s);
-				} else if (!list.isSelectedIndex(i) && isIncluded(i)){
+				}
+				
+				// If category isn't selected and was previously
+				// Remove all rows for words in this category
+				if (!list.isSelectedIndex(i) && listOfDisplayedCategories.contains(sl)) {
+					listOfDisplayedCategories.remove(sl);
+					for (String word : sl.wordList())
+						for (int row = 0; row < table.getRowCount(); row++) 
+							if (word.equals(table.getValueAt(row, 0)))
+								model.removeRow(row);
 				}
 			}
 			revalidate();
@@ -55,8 +68,4 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 		}
 	}
 
-	private boolean isIncluded(int i) {
-		//TODO 
-		return false;
-	}
 }

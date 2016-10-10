@@ -18,6 +18,8 @@ public class StatsList extends ArrayList<WordStats> {
 	}
 
 	public void setup() throws FileNotFoundException {
+		if (size() > 0) return;
+		
 		Scanner sc = new Scanner(_stats);
 		while (sc.hasNextLine()) {
 			WordStats w = new WordStats(sc.next());
@@ -43,21 +45,28 @@ public class StatsList extends ArrayList<WordStats> {
 	public String toString() {
 		return _name;
 	}
+	
+	public ArrayList<String> wordList() {
+		ArrayList<String> list = new ArrayList<String>();
+		for (WordStats ws : this)
+			list.add(ws._word);
+		return list;
+	}
 
 	public ArrayList<String[]> statsInfo() {
 		ArrayList<String[]> list = new ArrayList<String[]>();
 
 		for (WordStats ws : this) {
 			String score = "";
-			for (int i : ws._recent) {
+			for (int i : ws._recent)
 				if (i == 1)
 					score += "★ ";
-			}
 			String[] s = {ws._word, score, String.valueOf(ws._successes), String.valueOf(ws._attempts)};
 			list.add(s);
 		}
 		return list;
 	}
+
 }
 
 class WordStats {
