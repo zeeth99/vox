@@ -58,8 +58,8 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 				if (!list.isSelectedIndex(i) && listOfDisplayedCategories.contains(sl)) {
 					listOfDisplayedCategories.remove(sl);
 					for (String word : sl.wordList())
-						for (int row = 0; row < table.getRowCount(); row++) 
-							if (word.equals(table.getValueAt(row, 0)))
+						for (int row = 0; row < model.getRowCount(); row++) 
+							if (word.equals(model.getValueAt(row, 0)))
 								model.removeRow(row);
 				}
 			}
