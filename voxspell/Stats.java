@@ -24,7 +24,7 @@ public class Stats extends Card {
 		statsPanel = new StatsPanel();
 
 		list = new JList<StatsList>(new DefaultListModel<StatsList>());
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.addListSelectionListener(statsPanel);
 		addFolderToList(SpellingAid.STATSFOLDER, (DefaultListModel<StatsList>)list.getModel());
 
