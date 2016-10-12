@@ -13,7 +13,8 @@ public class ReviewSelect extends CategorySelect {
 
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
 		for (File f : SpellingAid.STATSFOLDER.listFiles())
-			if (f.getName().endsWith(".recent") && f.length() > 0)
-				listModel.addElement(new ReviewList(f));
+			for (File f1 : f.listFiles())
+				if (f1.getName().endsWith(".recent") && f1.length() > 0)
+					listModel.addElement(new ReviewList(f1));
 	}
 }

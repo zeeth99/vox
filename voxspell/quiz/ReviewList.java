@@ -21,12 +21,12 @@ public class ReviewList extends WordList {
 			String line = sc.nextLine();
 			String[] brokenLine = line.split(" ");
 			if (Integer.parseInt(brokenLine[1]) + Integer.parseInt(brokenLine[2]) + Integer.parseInt(brokenLine[3]) < 2)
-				add(line);
+				add(brokenLine[0]);
 		}
 		sc.close();
 	}
 
 	public String toString() {
-		return _file.toString().substring(9);
+		return _file.toString().substring(9, _file.toString().length()-7);
 	}
 }
