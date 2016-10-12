@@ -34,11 +34,11 @@ public class CategorySelect extends Card implements ActionListener{
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		
 		scrollPane = new JScrollPane(list);
-		scrollPane.setBounds(12, 55, 488, 233);
+		scrollPane.setBounds(12, 55, 476, 233);
 		add(scrollPane);
 
 		startQuiz = new JButton("Start Quiz");
-		startQuiz.setBounds(383, 18, 117, 25);
+		startQuiz.setBounds(383, 18, 105, 25);
 		startQuiz.addActionListener(this);
 		add(startQuiz);
 	}
