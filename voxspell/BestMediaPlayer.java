@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,8 +34,8 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 		NORMAL, NEGATIVE
 	}
 
-	public static final String NORMAL_VIDEO = "reward.avi";
-	public static final String NEGATIVE_VIDEO = "negative_reward.avi";
+	public static final String NORMAL_VIDEO = "media/reward.avi";
+	public static final String NEGATIVE_VIDEO = "media/negative_reward.avi";
 
 	private JButton play;
 	private JButton stop;
@@ -129,7 +130,9 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 					process.destroy();
 					return null;
 				}
-			} catch (Exception e) { }
+			} catch (IOException e) {
+				new ErrorMessage(e);
+			}
 		}
 		return null;
 	}
@@ -139,9 +142,8 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 */
 	@Override
 	protected void done() {
-		if (!isCancelled()) {
+		if (!isCancelled())
 			_video.playMedia(NEGATIVE_VIDEO);
-		}
 	}
 
 	/**
@@ -149,11 +151,9 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 */
 	private boolean negativeExists() {
 		File f = new File(NEGATIVE_VIDEO);
-		if (f.exists() && !f.isDirectory()) {
+		if (f.exists() && !f.isDirectory())
 			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 
 }
