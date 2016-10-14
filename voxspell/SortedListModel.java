@@ -9,30 +9,31 @@ import javax.swing.AbstractListModel;
 @SuppressWarnings("serial")
 public class SortedListModel<E extends Comparable<? super E>> extends AbstractListModel<E> {
 
-	List<E> list = new ArrayList<E>();
+	private List<E> list;
 	
 	public SortedListModel() {
 		super();
+		list = new ArrayList<E>();
 	}
 
 	@Override
 	public E getElementAt(int arg0) {
-		// TODO Auto-generated method stub
 		return list.get(arg0);
 	}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 	
 	public void clear() {
+		fireIntervalRemoved(this, 0, getSize());
 		list.clear();
 	}
 	
-	public boolean addElement(E e) {
-		return list.add(e);
+	public void addElement(E e) {
+		list.add(e);
+		fireIntervalAdded(this, getSize()-1, getSize()-1);
 	}
 	
 	public boolean contains(Object o) {
@@ -41,5 +42,6 @@ public class SortedListModel<E extends Comparable<? super E>> extends AbstractLi
 	
 	public void sort() {
 		Collections.sort(list);
+		this.fireContentsChanged(this, 0, getSize());
 	}
 }

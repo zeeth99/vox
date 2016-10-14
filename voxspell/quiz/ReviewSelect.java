@@ -39,8 +39,6 @@ public class ReviewSelect extends CategorySelect {
 				buttonPressed.setSelected(true);
 				_maximumScore = Integer.parseInt(buttonPressed.getText());
 				setupListModel(listModel);
-				revalidate();
-				repaint();
 			}
 		};
 
@@ -57,10 +55,10 @@ public class ReviewSelect extends CategorySelect {
 		for (File f : FileAccess.STATSFOLDER.listFiles())
 			for (File f1 : f.listFiles())
 				if (f1.getName().endsWith(".recent") && f1.length() > 0){
-					ReviewList list = new ReviewList(f1);
-					list.setup(_maximumScore);
-					if (list.size() > 0)
-						listModel.addElement(list);
+					ReviewList reviewList = new ReviewList(f1);
+					reviewList.setup(_maximumScore);
+					if (reviewList.size() > 0)
+						listModel.addElement(reviewList);
 				}
 		listModel.sort();
 	}
