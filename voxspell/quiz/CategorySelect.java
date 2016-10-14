@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import voxspell.Card;
+import voxspell.FileAccess;
 import voxspell.SpellingAid;
 
 import javax.swing.JList;
@@ -44,7 +45,7 @@ public class CategorySelect extends Card implements ActionListener{
 		
 		// List of categories
 		scrollPane = new JScrollPane(list);
-		scrollPane.setBounds(12, 55, 476, 233);
+		scrollPane.setBounds(12, 55, 476, 265);
 		add(scrollPane);
 
 		// Button to start quiz with currently selected category
@@ -59,7 +60,7 @@ public class CategorySelect extends Card implements ActionListener{
 	 * @param listModel - ListModel to add categories to
 	 */
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
-		for (File f : SpellingAid.WORDFOLDER.listFiles()) {
+		for (File f : FileAccess.WORDFOLDER.listFiles()) {
 			try {
 				Scanner sc = new Scanner(f);
 				String str;
@@ -83,7 +84,7 @@ public class CategorySelect extends Card implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
-		if(e.getSource() == startQuiz)
+		if (e.getSource() == startQuiz)
 			spellingAid.startQuiz(list.getSelectedValue());
 	}
 

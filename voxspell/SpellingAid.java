@@ -62,10 +62,6 @@ import javax.swing.JInternalFrame;
 @SuppressWarnings({ "serial", "unused" })
 public class SpellingAid extends JFrame implements ActionListener {
 
-	final public static File WORDFOLDER = new File("wordlists");
-	final public static File STATSFOLDER = new File(".history");
-	final public static File FESTIVALFOLDER = new File(".festival");
-
 	private CardLayout layout = new CardLayout();
 	private JPanel cards = new JPanel();
 
@@ -81,7 +77,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		// Set up important files
-		createFiles();
+		FileAccess.createFiles();
 
 		cards.setLayout(layout);
 
@@ -133,114 +129,22 @@ public class SpellingAid extends JFrame implements ActionListener {
 		cards.add(c, c.cardName());
 	}
 
-	public void updateStats(boolean correct, String word, WordList w) {
-		// stats files are stored in the following format:
-		// {word} {number of times the word was successfully attempted} {number of times the word was attempted}
-		// a folder is created for the stats for each wordlist file.
+	public void startQuiz(WordList w) {
 		try {
-			boolean wordFound = false;
-			File folder = new File(".history/"+w.file());
-			if (!folder.isDirectory())
-				folder.mkdir();
-			File tempFile = new File(".history/.tempFile");
-			File inputFile = new File(".history/"+w+".stats");
-			inputFile.createNewFile();
-			String currentLine;
-
-			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-			while ((currentLine = reader.readLine()) != null) {
-				// Update stats line with current word.
-				if (!wordFound && currentLine.contains(word)) {
-					String[] brokenLine = currentLine.split(" ");
-					int timesCorrect = Integer.parseInt(brokenLine[1]);
-					int timesAttempted = Integer.parseInt(brokenLine[2]) + 1;
-					if (correct)
-						timesCorrect++;
-					writer.write(brokenLine[0]+" "+timesCorrect+" "+timesAttempted+System.getProperty("line.separator"));
-					wordFound = true;
-				} else {
-					writer.write(currentLine + System.getProperty("line.separator"));
-				}
-			}
-			if (!wordFound)
-				if (correct) {
-					writer.write(word + " 1 1" + System.getProperty("line.separator"));
-				} else {
-					writer.write(word + " 0 1" + System.getProperty("line.separator"));
-				}
-			reader.close();
-			writer.close();
-			tempFile.renameTo(inputFile);
+			w.setup();
+			viewCard(quiz);
+			quiz.startQuiz(w);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		updateRecentStats(correct, word, w);
-	}
-
-	public void updateRecentStats(boolean correct, String word, WordList w) {
-		// Recent stats are stored in the following format:
-		// {word} {0|1} {0|1} {0|1}
-		// 1 represents a successful attempt on the word, 0 represents a failed attempt
-		// The rightmost number represents the most recent attempt. 
-		try {
-			boolean wordFound = false;
-			File tempFile = new File(".history/.tempFile");
-			File inputFile = new File(".history/"+w+".recent");
-			inputFile.createNewFile();
-			String currentLine;
-
-			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-			while ((currentLine = reader.readLine()) != null) {
-				// Update recent stats line with the current word.
-				if (!wordFound && currentLine.contains(word)) {
-					String[] brokenLine = currentLine.split(" ");
-					int i = 0;
-					if (correct) 
-						i = 1;
-					writer.write(brokenLine[0] + " " + brokenLine[2] + " " + brokenLine[3] + " " + i + System.getProperty("line.separator"));
-					wordFound = true;
-				} else {
-					writer.write(currentLine + System.getProperty("line.separator"));
-				}
-			}
-			if (!wordFound) {
-				if (correct) {
-					writer.write(word + " 1 1 1" + System.getProperty("line.separator"));
-				} else {
-					writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
-				}
-			}
-			reader.close();
-			writer.close();
-			tempFile.renameTo(inputFile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			String message = "The file containing that category has been removed from "+FileAccess.WORDFOLDER;
+			JOptionPane.showMessageDialog(new JFrame(), message, "File Not Found", JOptionPane.ERROR_MESSAGE);
+			layout.show(cards, menu.toString());
 		}
 	}
 
-	public static void createFiles() {
-		if (!WORDFOLDER.exists() || !WORDFOLDER.isDirectory())
-			WORDFOLDER.mkdir();
-		if (!STATSFOLDER.exists() || !STATSFOLDER.isDirectory())
-			STATSFOLDER.mkdir();
-		if (!FESTIVALFOLDER.exists() || !FESTIVALFOLDER.isDirectory())
-			FESTIVALFOLDER.mkdir();
-		try {
-			new File(".festival/message.scm").createNewFile();
-		} catch (IOException e) {}
-		try {   
-			List<String> linesToWrite = new ArrayList<>();
-			linesToWrite.add(Settings.DEFAULT_VOICE);
-			Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
-		} catch (Exception e) {} 
+	public void returnToMenu() {
+		viewCard(menu);
 	}
-
+	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -251,21 +155,5 @@ public class SpellingAid extends JFrame implements ActionListener {
 				}
 			}
 		});
-	}
-
-	public void startQuiz(WordList w) {
-		try {
-			w.setup();
-			viewCard(quiz);
-			quiz.startQuiz(w);
-		} catch (FileNotFoundException e) {
-			String message = "The file containing that category has been removed from "+WORDFOLDER;
-			JOptionPane.showMessageDialog(new JFrame(), message, "File Not Found", JOptionPane.ERROR_MESSAGE);
-			layout.show(cards, menu.toString());
-		}
-	}
-
-	public void returnToMenu() {
-		viewCard(menu);
 	}
 }

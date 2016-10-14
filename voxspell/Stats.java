@@ -35,7 +35,7 @@ public class Stats extends Card {
 		list = new JList<StatsList>(new DefaultListModel<StatsList>());
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.addListSelectionListener(statsPanel);
-		addFolderToList(SpellingAid.STATSFOLDER, (DefaultListModel<StatsList>)list.getModel());
+		addFolderToList(FileAccess.STATSFOLDER, (DefaultListModel<StatsList>)list.getModel());
 
 		// Splits the screen with the category list on the left and statistics for selected categories on the right
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), statsPanel);

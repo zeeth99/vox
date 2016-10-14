@@ -102,7 +102,7 @@ public class Settings extends Card implements ActionListener {
 				+ "Are you sure you want to do this?";
 		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Delete Statistics", JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION)
-			for (File f : SpellingAid.STATSFOLDER.listFiles())
+			for (File f : FileAccess.STATSFOLDER.listFiles())
 				f.delete();
 	}
 

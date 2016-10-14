@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import voxspell.SpellingAid;
 import voxspell.BestMediaPlayer;
 import voxspell.Card;
+import voxspell.FileAccess;
 
 /**
  * Screen to test the user on a list of up to {@value #QUIZ_SIZE} words.
@@ -140,7 +141,7 @@ public class Quiz extends Card implements ActionListener {
 				return;
 			} 
 		}
-		spellingAid.updateStats(correct, word, _wordlist);
+		FileAccess.updateStats(correct, word, _wordlist);
 
 		_firstAttempt = true;
 		_wordNumber++;
