@@ -96,13 +96,11 @@ public class FileAccess {
 					writer.write(currentLine + System.getProperty("line.separator"));
 				}
 			}
-			if (!wordFound) {
-				if (correct) {
-					writer.write(word + " 1 1 1" + System.getProperty("line.separator"));
-				} else {
-					writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
-				}
-			}
+			if (!wordFound && correct)
+				writer.write(word + " 0 1 1" + System.getProperty("line.separator"));
+			if (!wordFound && !correct) 
+				writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
+			
 			reader.close();
 			writer.close();
 			tempFile.renameTo(inputFile);

@@ -92,9 +92,6 @@ public class Quiz extends Card implements ActionListener {
 		add(feedbackPanel);
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		inputBox.grabFocus();
