@@ -78,9 +78,8 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
 				char ch = e.getKeyChar();
-				if(!Character.isLetter(ch) && ch != '\''){
+				if(!(Character.isLetter(ch) || ch=='\'' || ch==' '))
 					e.consume();
-				}
 			}
 		});
 
