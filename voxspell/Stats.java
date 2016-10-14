@@ -35,6 +35,7 @@ public class Stats extends Card {
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.addListSelectionListener(statsPanel);
 		addFolderToList(FileAccess.STATSFOLDER, (SortedListModel<StatsList>)list.getModel());
+		((SortedListModel<StatsList>) list.getModel()).sort();
 
 		// Splits the screen with the category list on the left and statistics for selected categories on the right
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), statsPanel);
