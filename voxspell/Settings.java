@@ -3,7 +3,6 @@ package voxspell;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -107,14 +106,13 @@ public class Settings extends Card implements ActionListener {
 	/**
 	 * Opens a dialog to confirm. If confirmation is met, deletes all files in .history.
 	 */
-	private static void clearStats() {
+	public static void clearStats() {
 		JFrame popupFrame = new JFrame();
 		String message = "This will permanently delete all of your spelling history.\n"
 				+ "Are you sure you want to do this?";
 		int option = JOptionPane.showConfirmDialog(popupFrame, message, "Delete Statistics", JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION)
-			for (File f : FileAccess.STATSFOLDER.listFiles())
-				f.delete();
+			FileAccess.clearStats();
 	}
 
 	public String cardName() {

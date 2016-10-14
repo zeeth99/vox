@@ -16,12 +16,23 @@ import javax.swing.JFileChooser;
 import voxspell.quiz.Festival;
 import voxspell.quiz.WordList;
 
+/**
+ * Class which handles writing to files.
+ * @author Max McLaren
+ */
 public class FileAccess {
 
 	final public static File WORDFOLDER = new File("wordlists");
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
+	final public static File MEDIAFOLDER = new File("media");
 
+	/**
+	 * Updates the statistics files for a given word
+	 * @param correct - true if word was answered correctly
+	 * @param word - word to have its stats updated
+	 * @param w - WordList that the word is in
+	 */
 	public static void updateStats(boolean correct, String word, WordList w) {
 		// stats files are stored in the following format:
 		// {word} {number of times the word was successfully attempted} {number of times the word was attempted}
@@ -69,6 +80,12 @@ public class FileAccess {
 		updateRecentStats(correct, word, w);
 	}
 
+	/**
+	 * Updates the statistics .recent files for a given word
+	 * @param correct - true if word was answered correctly
+	 * @param word - word to have its stats updated
+	 * @param w - WordList that the word is in
+	 */
 	public static void updateRecentStats(boolean correct, String word, WordList w) {
 		// Recent stats are stored in the following format:
 		// {word} {0|1} {0|1} {0|1}
@@ -111,21 +128,24 @@ public class FileAccess {
 		}
 	}
 
+	/**
+	 * Create all necessary folders and 
+	 */
 	public static void createFiles() {
-		if (!WORDFOLDER.exists() || !WORDFOLDER.isDirectory())
+		if (!WORDFOLDER.isDirectory())
 			WORDFOLDER.mkdir();
-		if (!STATSFOLDER.exists() || !STATSFOLDER.isDirectory())
+		if (!STATSFOLDER.isDirectory())
 			STATSFOLDER.mkdir();
-		if (!FESTIVALFOLDER.exists() || !FESTIVALFOLDER.isDirectory())
+		if (!FESTIVALFOLDER.isDirectory())
 			FESTIVALFOLDER.mkdir();
 		try {
-			new File(".festival/message.scm").createNewFile();
-		} catch (IOException e) {}
-		try {   
-			List<String> linesToWrite = new ArrayList<>();
-			linesToWrite.add(Settings.DEFAULT_VOICE);
-			Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
-		} catch (Exception e) {} 
+			if (Festival.SCHEME_FILE.createNewFile()) {
+				List<String> linesToWrite = new ArrayList<>();
+				linesToWrite.add(Settings.DEFAULT_VOICE);
+				Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 				
+			}
+		} catch (IOException e) {
+		} 
 	}
 
 	/**
@@ -172,4 +192,8 @@ public class FileAccess {
 		return true;
 	}
 
+	public static void clearStats() {
+		for (File f : STATSFOLDER.listFiles())
+			f.delete();
+	}
 }
