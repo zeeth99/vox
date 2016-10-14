@@ -51,8 +51,8 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 				try {
 					sl.setup();
 				} catch (FileNotFoundException e1) {
-					// TODO probably some error message
-					e1.printStackTrace();
+					new ErrorMessage(e1);
+					continue;
 				}
 				
 				// If category is selected and wasn't previously

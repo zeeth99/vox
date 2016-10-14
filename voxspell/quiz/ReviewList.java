@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import voxspell.ErrorMessage;
+
 /**
  * 
  * @author Max McLaren
@@ -36,8 +38,7 @@ public class ReviewList extends WordList {
 			}
 			sc.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new ErrorMessage(e);
 		}
 	}
 	

@@ -3,6 +3,7 @@ package voxspell;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -98,8 +99,8 @@ public class Settings extends Card implements ActionListener {
 			List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath()); 
 			lines.set(0, setting); 
 			Files.write(Festival.SCHEME_FILE.toPath(), lines); 
-		} catch (Exception e) { 
-			e.printStackTrace();
+		} catch (IOException e) { 
+			new ErrorMessage(e);
 		}
 	}
 

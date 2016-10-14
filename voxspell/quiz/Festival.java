@@ -1,11 +1,14 @@
 package voxspell.quiz;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingWorker;
+
+import voxspell.ErrorMessage;
 
 /**
  * This class is used to call a festival text to speech command through Java.
@@ -36,7 +39,9 @@ public class Festival extends SwingWorker<Void,Void> {
 		try {
 			Process process = pb.start();
 			process.waitFor();
-		} catch (Exception e) { }
+		} catch (IOException e) {
+			new ErrorMessage(e);
+		}
 		return null;
 	}
 
@@ -49,19 +54,19 @@ public class Festival extends SwingWorker<Void,Void> {
 	}
 
 	/**
-	 * 
+	 * TODO document this
 	 * @param message - A String representing the message to be spoken
 	 */
 	private void addMessageToScheme(String[] message) { 
 		try {   
 			List<String> linesToWrite = new ArrayList<>(); 
-			List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath()); 
-			linesToWrite.add(lines.get(0)); 
-			for (String s : message) { 
-				String messageToAdd = "(SayText \""+s+"\")"; 
-				linesToWrite.add(messageToAdd); 
-			} 
-			Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 
-		} catch (Exception e) { } 
+			String firstLine = Files.readAllLines(SCHEME_FILE.toPath()).get(0);
+			linesToWrite.add(firstLine); 
+			for (String s : message)
+				linesToWrite.add("(SayText \""+s+"\")"); 
+			Files.write(SCHEME_FILE.toPath(), linesToWrite); 
+		} catch (IOException e) {
+			new ErrorMessage(e);
+		} 
 	} 
 }

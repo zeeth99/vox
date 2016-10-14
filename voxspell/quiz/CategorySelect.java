@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import voxspell.Card;
+import voxspell.ErrorMessage;
 import voxspell.FileAccess;
 import voxspell.SortedListModel;
 import voxspell.SpellingAid;
@@ -88,7 +89,8 @@ public class CategorySelect extends Card implements ActionListener{
 				}
 				sc.close();
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				new ErrorMessage(e);
+				continue;
 			}
 		}
 		listModel.sort();
