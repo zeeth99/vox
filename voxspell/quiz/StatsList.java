@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 @SuppressWarnings("serial")
-public class StatsList extends ArrayList<WordStats> {
+public class StatsList extends ArrayList<WordStats> implements Comparable<StatsList> {
 	private File _stats;
 	private File _recent;
 	private String _name;
@@ -65,6 +65,12 @@ public class StatsList extends ArrayList<WordStats> {
 			list.add(s);
 		}
 		return list;
+	}
+
+	@Override
+	public int compareTo(StatsList arg0) {
+		// TODO Auto-generated method stub
+		return _name.compareTo(arg0._name);
 	}
 
 }

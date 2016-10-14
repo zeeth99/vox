@@ -91,6 +91,7 @@ public class CategorySelect extends Card implements ActionListener{
 				e.printStackTrace();
 			}
 		}
+		listModel.sort();
 	}
 
 	@Override

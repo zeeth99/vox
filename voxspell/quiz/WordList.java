@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 @SuppressWarnings("serial")
-public class WordList extends ArrayList<String> {
+public class WordList extends ArrayList<String> implements Comparable<WordList>{
 	protected String _category;
 	protected File _file;
 
@@ -66,5 +66,11 @@ public class WordList extends ArrayList<String> {
 
 	public String file() {
 		return _file.getName();
+	}
+
+	@Override
+	public int compareTo(WordList arg0) {
+		// TODO Auto-generated method stub
+		return toString().compareToIgnoreCase(arg0.toString());
 	}
 }

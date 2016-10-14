@@ -16,6 +16,7 @@ public class ReviewList extends WordList {
 
 	public ReviewList(File f, String category) {
 		super(f, category);
+		_maximumScore = 2;
 	}
 
 	public ReviewList(File f) {
