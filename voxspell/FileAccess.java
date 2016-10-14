@@ -73,9 +73,9 @@ public class FileAccess {
 			writer.close();
 			tempFile.renameTo(inputFile);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			new ErrorMessage(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			new ErrorMessage(e);
 		}
 		updateRecentStats(correct, word, w);
 	}
@@ -122,9 +122,9 @@ public class FileAccess {
 			writer.close();
 			tempFile.renameTo(inputFile);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			new ErrorMessage(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			new ErrorMessage(e);
 		}
 	}
 
@@ -145,6 +145,7 @@ public class FileAccess {
 				Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 				
 			}
 		} catch (IOException e) {
+			new ErrorMessage(e);
 		} 
 	}
 
@@ -186,8 +187,7 @@ public class FileAccess {
 			reader.close();
 			writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new ErrorMessage(e);
 		}
 		return true;
 	}
