@@ -31,6 +31,7 @@ public class CategorySelect extends Card implements ActionListener{
 	private JButton startQuiz;
 	private JScrollPane scrollPane;
 	private JList<WordList> list;
+	private DefaultListModel<WordList> listModel;
 
 	/**
 	 * Set up GUI
@@ -39,7 +40,7 @@ public class CategorySelect extends Card implements ActionListener{
 	public CategorySelect(SpellingAid sp) {
 		super(sp, "Select Your WordList");
 
-		DefaultListModel<WordList> listModel = new DefaultListModel<WordList>();
+		listModel = new DefaultListModel<WordList>();
 		setupListModel(listModel);
 		list = new JList<WordList>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -67,6 +68,7 @@ public class CategorySelect extends Card implements ActionListener{
 	 * @param listModel - ListModel to add categories to
 	 */
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
+		listModel.clear();
 		for (File f : FileAccess.WORDFOLDER.listFiles()) {
 			try {
 				Scanner sc = new Scanner(f);
@@ -75,7 +77,10 @@ public class CategorySelect extends Card implements ActionListener{
 					str = sc.nextLine();
 					if (str.startsWith("%")) {
 						if (listModel.contains(str.substring(1))) {
-							JOptionPane.showMessageDialog(new JFrame(), "The file, "+f+", contains multiple categories with same name./nOnly the first category with the name: "+str.substring(1)+"will be useable.", "Category Naming Conflict", JOptionPane.ERROR_MESSAGE);
+							String message = "The file, "+f+", contains multiple categories "
+									+"with same name./nOnly the first category with the name: "
+									+str.substring(1)+"will be useable.";
+							JOptionPane.showMessageDialog(new JFrame(), message, "Category Naming Conflict", JOptionPane.ERROR_MESSAGE);
 						} else {
 							listModel.addElement(new WordList(f, str.substring(1)));
 						}
@@ -91,10 +96,12 @@ public class CategorySelect extends Card implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
-		if (e.getSource() == startQuiz)
+		if (e.getSource() == startQuiz) {
 			spellingAid.startQuiz(list.getSelectedValue());
-		if (e.getSource() == fileSelect)
+		} else if (e.getSource() == fileSelect) {
 			FileAccess.addWordList();
+			setupListModel(listModel);
+		}
 	}
 
 	public String cardName() {
