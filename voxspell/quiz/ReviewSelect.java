@@ -15,6 +15,8 @@ public class ReviewSelect extends CategorySelect {
 	 */
 	public ReviewSelect(SpellingAid sp) {
 		super(sp);
+		fileSelect.setEnabled(false);
+		fileSelect.setVisible(false);
 	}
 
 	protected void setupListModel(DefaultListModel<WordList> listModel) {

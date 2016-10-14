@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("serial")
 public class CategorySelect extends Card implements ActionListener{
 
+	protected JButton fileSelect;
 	private JButton startQuiz;
 	private JScrollPane scrollPane;
 	private JList<WordList> list;
@@ -53,6 +54,12 @@ public class CategorySelect extends Card implements ActionListener{
 		startQuiz.setBounds(383, 18, 105, 25);
 		startQuiz.addActionListener(this);
 		add(startQuiz);
+		
+		// Button to add an external file to the list of wordlists.
+		fileSelect = new JButton("Select Other File");
+		fileSelect.setBounds(12, 320, 200, 30);
+		fileSelect.addActionListener(this);
+		add(fileSelect);
 	}
 
 	/**
@@ -86,6 +93,8 @@ public class CategorySelect extends Card implements ActionListener{
 		super.actionPerformed(e);
 		if (e.getSource() == startQuiz)
 			spellingAid.startQuiz(list.getSelectedValue());
+		if (e.getSource() == fileSelect)
+			FileAccess.addWordList();
 	}
 
 	public String cardName() {

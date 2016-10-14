@@ -29,6 +29,7 @@ public class Settings extends Card implements ActionListener {
 	public JButton clearStatistics;
 	private JComboBox<String> voiceSettings;
 	private JLabel voiceSettingsLabel;
+	private JButton addNewWord;
 
 	/**
 	 * Set up the GUI
@@ -37,18 +38,13 @@ public class Settings extends Card implements ActionListener {
 	public Settings(SpellingAid sp) {
 		super(sp, "Settings");
 
-		// Button to delete all history files
-		clearStatistics = new JButton("Clear Statistics");
-		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
-		clearStatistics.setBounds(100, 270, 300, 50);
-		clearStatistics.addActionListener(this);
-		
 		voiceSettingsLabel = new JLabel("Select a voice setting:");
 		voiceSettingsLabel.setBounds(100, 80, 300, 20);
 
 		// Drop down menu to select the voice for Festival to use
-		String[] voices = new String[] {"Default","New Zealand"};
-		voiceSettings = new JComboBox<String>(voices);
+		voiceSettings = new JComboBox<String>();
+		voiceSettings.addItem("Default");
+		voiceSettings.addItem("New Zealand");
 		voiceSettings.setBounds(100, 100, 300, 20);
 		voiceSettings.setSelectedIndex(0);
 		voiceSettings.addActionListener(new ActionListener()	{
@@ -67,9 +63,22 @@ public class Settings extends Card implements ActionListener {
 			}
 		});
 
+		// Button to delete all history files
+		clearStatistics = new JButton("Clear Statistics");
+		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
+		clearStatistics.setBounds(100, 270, 300, 50);
+		clearStatistics.addActionListener(this);
+		
+		// Button to add a new word list
+		addNewWord = new JButton("Add New Word List");
+		addNewWord.setFont(new Font("Dialog", Font.BOLD, 16));
+		addNewWord.setBounds(100, 210, 300, 50);
+		addNewWord.addActionListener(this);
+		
 		add(clearStatistics);
 		add(voiceSettings);
 		add(voiceSettingsLabel);
+		add(addNewWord);
 	}
 
 	@Override
@@ -77,6 +86,8 @@ public class Settings extends Card implements ActionListener {
 		super.actionPerformed(e);
 		if (e.getSource() == clearStatistics)
 			clearStats();
+		if (e.getSource() == addNewWord)
+			FileAccess.addWordList();
 	}
 
 	/**
