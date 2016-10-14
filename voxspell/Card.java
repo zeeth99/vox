@@ -9,6 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * GUI model for all main screens.
+ * @author Max McLaren
+ */
 @SuppressWarnings("serial")
 public abstract class Card extends JPanel implements ActionListener {
 	protected SpellingAid spellingAid;
@@ -16,6 +20,11 @@ public abstract class Card extends JPanel implements ActionListener {
 	protected JLabel heading;
 	protected JButton menuButton;
 
+	/**
+	 * Creates the default screen GUI
+	 * @param sp - The SpellingAid that created this
+	 * @param str - The text for the heading label
+	 */
 	public Card(SpellingAid sp, String str) {
 		spellingAid = sp;
 
@@ -36,11 +45,15 @@ public abstract class Card extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Returns the user to the main menu
 		if (e.getSource() == menuButton) {
 			spellingAid.returnToMenu();
 		}
 	}
 
+	/**
+	 * @return A String representing the card subclass
+	 */
 	public abstract String cardName();
 
 }

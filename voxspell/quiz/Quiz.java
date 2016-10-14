@@ -37,6 +37,10 @@ public class Quiz extends Card implements ActionListener {
 
 	protected WordList _wordlist;
 
+	/**
+	 * 
+	 * @param sp - The SpellingAid that created this
+	 */
 	public Quiz(SpellingAid sp) {
 		super(sp, "New Quiz");
 

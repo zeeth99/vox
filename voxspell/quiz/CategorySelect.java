@@ -25,6 +25,10 @@ public class CategorySelect extends Card implements ActionListener{
 	private JScrollPane scrollPane;
 	private JList<WordList> list;
 
+	/**
+	 * 
+	 * @param sp - The SpellingAid that created this
+	 */
 	public CategorySelect(SpellingAid sp) {
 		super(sp, "Select Your WordList");
 

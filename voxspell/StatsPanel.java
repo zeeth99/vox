@@ -12,6 +12,10 @@ import javax.swing.table.DefaultTableModel;
 
 import voxspell.quiz.StatsList;
 
+/**
+ * A panel which shows the user statistics on the words they have attempted
+ * @author Max McLaren
+ */
 @SuppressWarnings("serial")
 public class StatsPanel extends JScrollPane implements ListSelectionListener {
 
@@ -19,6 +23,9 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 	JTable table;
 	ArrayList<StatsList> listOfDisplayedCategories;
 
+	/**
+	 * Set up the GUI
+	 */
 	public StatsPanel() {
 		super();
 		String[] columnNames = {"Word", "Score", "Successes", "Attempts"};
@@ -30,6 +37,9 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 		listOfDisplayedCategories = new ArrayList<StatsList>();
 	}
 
+	/**
+	 * Update the table when categories are selected or unselected from the list this listens to.
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (!e.getValueIsAdjusting()) {
@@ -41,7 +51,7 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 				try {
 					sl.setup();
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
+					// TODO probably some error message
 					e1.printStackTrace();
 				}
 				
@@ -63,6 +73,7 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 								model.removeRow(row);
 				}
 			}
+			// Visually update the table
 			revalidate();
 			repaint();
 		}

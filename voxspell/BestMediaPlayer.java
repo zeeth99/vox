@@ -15,18 +15,26 @@ import javax.swing.SwingWorker;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
-
+/**
+ * Creates and displays a video reward.
+ * @author Ray Akau'ola
+ * @author Max McLaren
+ */
 public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private EmbeddedMediaPlayer _video;
 
-	// Filters
+	/**
+	 * Filters for the video.
+	 * @author Ray Akau'ola
+	 * @author Max McLaren
+	 */
 	public enum Filter {
 		NORMAL, NEGATIVE
 	}
 
-	public static final String NORMAL_VIDEO = "big_buck_bunny_1_minute.avi";
-	public static final String NEGATIVE_VIDEO = "negative_big_buck_bunny_1_minute.avi";
+	public static final String NORMAL_VIDEO = "reward.avi";
+	public static final String NEGATIVE_VIDEO = "negative_reward.avi";
 
 	private JButton play;
 	private JButton stop;
@@ -34,6 +42,9 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private JPanel screen;
 	private JPanel controls;
 
+	/**
+	 * Sets up the video player GUI.
+	 */
 	public BestMediaPlayer(Filter filter) {
 
 		JFrame frame = new JFrame("The Awesome Mediaplayer");
@@ -49,6 +60,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 		screen.setLayout(new BorderLayout());
 		screen.add(mediaPlayerComponent, BorderLayout.CENTER);
 
+		// Button to play and pause the video.
 		play = new JButton("PAUSE");
 		controls.add(play);
 		play.addActionListener(new ActionListener() {
@@ -64,6 +76,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			}
 		});
 
+		// Button to stop the playing video.
 		stop = new JButton("STOP");
 		controls.add(stop);
 		stop.addActionListener(new ActionListener() {
@@ -79,6 +92,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 
+		// Stop the video from playing when the window is closed
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -91,6 +105,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 		screen.add(controls, BorderLayout.SOUTH);
 		frame.setContentPane(screen);
 
+		// Play the video
 		if (filter == Filter.NORMAL) {
 			video.playMedia(NORMAL_VIDEO);
 		} else {
@@ -99,6 +114,9 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 
 	}
 
+	/**
+	 * Create a negative variant of the video
+	 */
 	@Override
 	protected Void doInBackground() throws Exception {
 		if (!negativeExists()) {
@@ -111,12 +129,14 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 					process.destroy();
 					return null;
 				}
-
 			} catch (Exception e) { }
 		}
 		return null;
 	}
 
+	/**
+	 * Play the negative video.
+	 */
 	@Override
 	protected void done() {
 		if (!isCancelled()) {
@@ -124,6 +144,9 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 		}
 	}
 
+	/**
+	 * @return whether or not negative reward exists
+	 */
 	private boolean negativeExists() {
 		File f = new File(NEGATIVE_VIDEO);
 		if (f.exists() && !f.isDirectory()) {

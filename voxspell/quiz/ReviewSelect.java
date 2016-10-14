@@ -7,6 +7,10 @@ import voxspell.SpellingAid;
 @SuppressWarnings("serial")
 public class ReviewSelect extends CategorySelect {
 
+	/**
+	 * 
+	 * @param sp - The SpellingAid that created this
+	 */
 	public ReviewSelect(SpellingAid sp) {
 		super(sp);
 	}

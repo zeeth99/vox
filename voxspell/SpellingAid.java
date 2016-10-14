@@ -54,7 +54,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JInternalFrame;
 
-
+/**
+ * TODO document this class
+ * @author Ray Akau'ola
+ * @author Max McLaren
+ */
 @SuppressWarnings({ "serial", "unused" })
 public class SpellingAid extends JFrame implements ActionListener {
 

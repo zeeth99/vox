@@ -8,6 +8,10 @@ import voxspell.SpellingAid;
 @SuppressWarnings("serial")
 public class ReviewQuiz extends Quiz {
 
+	/**
+	 * 
+	 * @param sp - The SpellingAid that created this
+	 */
 	public ReviewQuiz(SpellingAid sp) {
 		super(sp);
 		heading.setText("Review Quiz");
