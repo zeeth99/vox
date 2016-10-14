@@ -7,6 +7,7 @@ import java.io.File;
 import voxspell.FileAccess;
 import voxspell.SortedListModel;
 import voxspell.SpellingAid;
+
 import javax.swing.JToggleButton;
 
 @SuppressWarnings("serial")
@@ -24,11 +25,14 @@ public class ReviewSelect extends CategorySelect {
 		fileSelect.setEnabled(false);
 		fileSelect.setVisible(false);
 
-		JToggleButton twoStar = new JToggleButton("2");
-		twoStar.setBounds(12,320,50,30);
+		// following buttons dictate the number of stars a word can have to be considered reviewable.
+		JToggleButton twoStar = new JToggleButton("Least known words");
+		twoStar.setName("2");
+		twoStar.setBounds(12,320,238,30);
 
-		JToggleButton threeStar = new JToggleButton("3");
-		threeStar.setBounds(62,320,50,30);
+		JToggleButton threeStar = new JToggleButton("All word without three stars");
+		threeStar.setName("3");
+		threeStar.setBounds(250,320,238,30);
 
 		listener = new ActionListener() {
 			@Override
@@ -37,7 +41,7 @@ public class ReviewSelect extends CategorySelect {
 				twoStar.setSelected(false);
 				threeStar.setSelected(false);
 				buttonPressed.setSelected(true);
-				_maximumScore = Integer.parseInt(buttonPressed.getText());
+				_maximumScore = Integer.parseInt(buttonPressed.getName());
 				setupListModel(listModel);
 			}
 		};
