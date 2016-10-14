@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+
 import voxspell.quiz.Festival;
 import voxspell.quiz.WordList;
 
@@ -19,7 +21,7 @@ public class FileAccess {
 	final public static File WORDFOLDER = new File("wordlists");
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
-	
+
 	public static void updateStats(boolean correct, String word, WordList w) {
 		// stats files are stored in the following format:
 		// {word} {number of times the word was successfully attempted} {number of times the word was attempted}
@@ -128,10 +130,48 @@ public class FileAccess {
 		} catch (Exception e) {} 
 	}
 
+	/**
+	 * Adds a file to the folder of word lists.
+	 */
 	public static void addWordList() {
-		// TODO Auto-generated method stub
-		
+		JFileChooser chooser = new JFileChooser();
+		int returnValue = chooser.showOpenDialog(chooser);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File fromFile = chooser.getSelectedFile();
+			File toFile = new File(WORDFOLDER+"/"+fromFile.getName());
+			copyFile(fromFile, toFile);
+		}
 	}
 
+	/**
+	 * Copies contents of a file to another file.
+	 * If the to file doesn't exist it is created
+	 * @param from - File to copy
+	 * @param to - File to be created as a copy of from
+	 * @return true if the file was successfully copied, false otherwise
+	 */
+	private static boolean copyFile(File from, File to) {
+		if (!from.isFile()) 
+			return false;
+
+		try {
+			if (!to.createNewFile())
+				return false;
+
+			BufferedReader reader = new BufferedReader(new FileReader(from));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(to));
+
+			String currentLine;
+			while ((currentLine = reader.readLine()) != null)
+				writer.write(currentLine + System.getProperty("line.separator"));
+
+			reader.close();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
 
 }
