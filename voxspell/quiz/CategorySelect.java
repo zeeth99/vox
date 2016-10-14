@@ -30,8 +30,8 @@ public class CategorySelect extends Card implements ActionListener{
 	protected JButton fileSelect;
 	private JButton startQuiz;
 	private JScrollPane scrollPane;
-	private JList<WordList> list;
-	private DefaultListModel<WordList> listModel;
+	protected JList<WordList> list;
+	protected DefaultListModel<WordList> listModel;
 
 	/**
 	 * Set up GUI

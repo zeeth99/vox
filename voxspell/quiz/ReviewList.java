@@ -11,6 +11,8 @@ import java.util.Scanner;
  */
 @SuppressWarnings("serial")
 public class ReviewList extends WordList {
+	
+	int _maximumScore;
 
 	public ReviewList(File f, String category) {
 		super(f, category);
@@ -28,7 +30,7 @@ public class ReviewList extends WordList {
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
 				String[] brokenLine = line.split(" ");
-				if (Integer.parseInt(brokenLine[1]) + Integer.parseInt(brokenLine[2]) + Integer.parseInt(brokenLine[3]) < 2)
+				if (Integer.parseInt(brokenLine[1]) + Integer.parseInt(brokenLine[2]) + Integer.parseInt(brokenLine[3]) < _maximumScore)
 					add(brokenLine[0]);
 			}
 			sc.close();
@@ -36,6 +38,11 @@ public class ReviewList extends WordList {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setup(int i) {
+		_maximumScore = i;
+		setup();
 	}
 
 	public String toString() {
