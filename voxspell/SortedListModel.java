@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+/**
+ * A ListModel with sorting functionality.
+ * @author Max McLaren
+ */
 @SuppressWarnings("serial")
 public class SortedListModel<E extends Comparable<? super E>> extends AbstractListModel<E> {
 
@@ -36,10 +40,14 @@ public class SortedListModel<E extends Comparable<? super E>> extends AbstractLi
 		fireIntervalAdded(this, getSize()-1, getSize()-1);
 	}
 	
+	
 	public boolean contains(Object o) {
 		return list.contains(o);
 	}
-	
+
+	/**
+	 *  Sort list
+	 */
 	public void sort() {
 		Collections.sort(list);
 		this.fireContentsChanged(this, 0, getSize());
