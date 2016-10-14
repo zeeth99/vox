@@ -8,6 +8,7 @@ import javax.swing.JButton;
 
 /**
  * The main menu screen, containing buttons to go to different screens
+ * @author Ray Akau'ola
  * @author Max McLaren
  */
 @SuppressWarnings("serial")

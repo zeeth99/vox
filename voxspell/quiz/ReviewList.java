@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Max McLaren
+ *
+ */
 @SuppressWarnings("serial")
 public class ReviewList extends WordList {
 

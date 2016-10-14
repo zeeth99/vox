@@ -8,7 +8,7 @@ import voxspell.SpellingAid;
 public class ReviewSelect extends CategorySelect {
 
 	/**
-	 * 
+	 * Set up GUI.
 	 * @param sp - The SpellingAid that created this
 	 */
 	public ReviewSelect(SpellingAid sp) {

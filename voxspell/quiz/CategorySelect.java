@@ -18,6 +18,11 @@ import voxspell.SpellingAid;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+/**
+ * Screen to select a category to be tested on.
+ * @author Ray Akau'ola
+ * @author Max McLaren
+ */
 @SuppressWarnings("serial")
 public class CategorySelect extends Card implements ActionListener{
 
@@ -26,7 +31,7 @@ public class CategorySelect extends Card implements ActionListener{
 	private JList<WordList> list;
 
 	/**
-	 * 
+	 * Set up GUI
 	 * @param sp - The SpellingAid that created this
 	 */
 	public CategorySelect(SpellingAid sp) {
@@ -37,16 +42,22 @@ public class CategorySelect extends Card implements ActionListener{
 		list = new JList<WordList>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		
+		// List of categories
 		scrollPane = new JScrollPane(list);
 		scrollPane.setBounds(12, 55, 476, 233);
 		add(scrollPane);
 
+		// Button to start quiz with currently selected category
 		startQuiz = new JButton("Start Quiz");
 		startQuiz.setBounds(383, 18, 105, 25);
 		startQuiz.addActionListener(this);
 		add(startQuiz);
 	}
 
+	/**
+	 * Add all categories in the word list directory to the list.
+	 * @param listModel - ListModel to add categories to
+	 */
 	protected void setupListModel(DefaultListModel<WordList> listModel) {
 		for (File f : SpellingAid.WORDFOLDER.listFiles()) {
 			try {

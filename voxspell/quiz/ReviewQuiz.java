@@ -5,11 +5,15 @@ import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 
+/**
+ * Screen to test the user on words they answered incorrectly in a category.
+ * @author Max McLaren
+ */
 @SuppressWarnings("serial")
 public class ReviewQuiz extends Quiz {
 
 	/**
-	 * 
+	 * Set up GUI.
 	 * @param sp - The SpellingAid that created this
 	 */
 	public ReviewQuiz(SpellingAid sp) {
@@ -17,6 +21,9 @@ public class ReviewQuiz extends Quiz {
 		heading.setText("Review Quiz");
 	}
 
+	/**
+	 * TODO
+	 */
 	protected void checkWord(String input) {
 		if (!input.equalsIgnoreCase(_testingWords.get(_wordNumber)) && !_firstAttempt) {
 			// spell it out? 

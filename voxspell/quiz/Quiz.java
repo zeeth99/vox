@@ -18,6 +18,11 @@ import voxspell.SpellingAid;
 import voxspell.BestMediaPlayer;
 import voxspell.Card;
 
+/**
+ * Screen to test the user on a list of up to {@value #QUIZ_SIZE} words.
+ * @author Ray Akau'ola
+ * @author Max McLaren
+ */
 @SuppressWarnings("serial")
 public class Quiz extends Card implements ActionListener {
 
@@ -38,7 +43,7 @@ public class Quiz extends Card implements ActionListener {
 	protected WordList _wordlist;
 
 	/**
-	 * 
+	 * Set up the GUI
 	 * @param sp - The SpellingAid that created this
 	 */
 	public Quiz(SpellingAid sp) {
@@ -52,12 +57,17 @@ public class Quiz extends Card implements ActionListener {
 		feedbackPanel = new JLabel();
 		feedbackPanel.setBounds(125, 230, 300, 15);
 
+		// Button used to hear the word to spell again
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
 		repeatWord.addActionListener(this);
+		
+		// Button to submit a proposed spelling of the word
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
 		submitWord.addActionListener(this);
+		
+		// Box to type the word to spell
 		inputBox = new JFormattedTextField();
 		inputBox.setToolTipText("Type here.");
 		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
@@ -81,6 +91,9 @@ public class Quiz extends Card implements ActionListener {
 		add(feedbackPanel);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		inputBox.grabFocus();
@@ -100,6 +113,10 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * @param input
+	 */
 	protected void checkWord(String input) {
 		inputBox.setText("");
 		String word = _testingWords.get(_wordNumber);
@@ -130,6 +147,7 @@ public class Quiz extends Card implements ActionListener {
 		if (_wordNumber == _testingWords.size()) {
 			sayMessage(festivalMessage);
 			// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
+			// TODO deal with lists shorter than 10 words.
 			if (_wordsCorrect >= 9) {
 				levelCompleteAction();
 			} else {
@@ -142,6 +160,10 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
+	/**
+	 * Start the quiz with the specified WordList
+	 * @param w - The {@link voxspell.quiz.WordList WordList} to test the user on
+	 */
 	public void startQuiz(WordList w) {
 		_wordlist = w;
 		categoryLabel.setText(_wordlist.category());
@@ -162,24 +184,32 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.grabFocus();
 	}
 
+	/**
+	 * Makes a text to speech call with Festival.
+	 * @param message - A string representing the message for Festival to say
+	 */
 	private void sayMessage(String message) {
-		enableButtons(false);
+		setButtonsEnabled(false);
 		(new Festival(message, this)).execute();
 	}
 
-	public void enableButtons(boolean enable) {
+	/**
+	 * Enables and disables submit and repeat buttons.
+	 * Used to stop Festival from overlapping.
+	 * @param b - true to enable the buttons, false otherwise
+	 */
+	public void setButtonsEnabled(boolean b) {
 		Color c = Color.GRAY;
-		if (enable) { 
+		if (b)
 			c = Color.WHITE;
-		}
 		repeatWord.setBackground(c);
 		submitWord.setBackground(c);
-		repeatWord.setEnabled(enable);
-		submitWord.setEnabled(enable);
+		repeatWord.setEnabled(b);
+		submitWord.setEnabled(b);
 	}
 
-	/* Decides on what to do when the level is completed depending on what the user
-	 * chooses to do and what level they are on [FOR NORMAL QUIZ ONLY]
+	/**
+	 * Gives user options as level ends.
 	 */
 	protected void levelCompleteAction() {
 		_wordNumber = 0;
@@ -198,7 +228,8 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
-	/* Decides on what to do when the level is not completed [FOR NORMAL QUIZ ONLY]
+	/**
+	 * Gives user options as level ends.
 	 */
 	protected void levelIncompleteAction() {
 		String[] options = new String[] {"Repeat level","Return to Main Menu"};
@@ -211,6 +242,9 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
+	/**
+	 * Gives user choice of videos filter, then plays video reward.
+	 */
 	private void selectFilterAndPlay() {
 		if (!videoExists()) {
 			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath()+"\n"
@@ -228,6 +262,9 @@ public class Quiz extends Card implements ActionListener {
 		}
 	}
 
+	/**
+	 * @return true if video reward file exists
+	 */
 	private boolean videoExists() {
 		File f = new File(BestMediaPlayer.NORMAL_VIDEO);
 		if (f.exists()) {
