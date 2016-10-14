@@ -55,7 +55,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JInternalFrame;
 
 /**
- * TODO document this class
+ * Main class for VOXSPELL. Handles the frame.
  * @author Ray Akau'ola
  * @author Max McLaren
  */
@@ -68,9 +68,16 @@ public class SpellingAid extends JFrame implements ActionListener {
 	// Cards
 	private Menu menu;
 	private Settings settings;
+	private CategorySelect categorySelect;
+	private ReviewSelect reviewSelect;
 	private Quiz quiz;
+	private Stats stats;
 
-	private SpellingAid(String[] args) throws FileNotFoundException {
+	/**
+	 * Set up the program.
+	 * @param args
+	 */
+	private SpellingAid(String[] args) {
 		setResizable(false);
 		setTitle("VOXSPELL");
 		setSize(500, 400);
@@ -82,64 +89,85 @@ public class SpellingAid extends JFrame implements ActionListener {
 		cards.setLayout(layout);
 
 		// Set up cards
-		menu = new Menu(this);
-		addCard(menu);
-		settings = new Settings(this);
-		addCard(settings);
+		categorySelect = new CategorySelect(this);
+		reviewSelect = new ReviewSelect(this);
 		quiz = new Quiz(null);
-		addCard(quiz);
+
+		menu = new Menu(this);
+		settings = new Settings(this);
+		stats = new Stats(this);
+		
+		addCard(menu);
+		addCard(settings);
+		addCard(stats);
 
 		setContentPane(cards);
 		returnToMenu();
 		setVisible(true);
 	}
 
+	/**
+	 * Display one a screen depending on what button was pressed.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == menu.settings) {
-			// Settings
-			viewCard(settings);
-			return;
-		}
-		Card c = null;
-		if (e.getSource() == menu.newSpellingQuiz) {
-			// New Quiz
-			c = new CategorySelect(this);
+		Object source = e.getSource();
+		// New Quiz
+		if (source == menu.newSpellingQuiz) {
 			quiz = new Quiz(this);
 			addCard(quiz);
-		} else if (e.getSource() == menu.reviewQuiz) {
-			// Review Quiz
-			c = new ReviewSelect(this);
+			addCard(categorySelect);
+			viewCard(categorySelect);
+		} 
+		// Review Quiz
+		if (source == menu.reviewQuiz) {
 			quiz = new ReviewQuiz(this);
 			addCard(quiz);
-		} else if (e.getSource() == menu.viewStatistics) {
-			// Statistics
-			c = new Stats(this);
+			addCard(reviewSelect);
+			viewCard(reviewSelect);
 		}
-		addCard(c);
-		viewCard(c);
+		// Statistics
+		if (source == menu.viewStatistics)
+			viewCard(stats);
+		// Settings
+		if (source == menu.settings)
+			viewCard(settings);
 	}
 
+	/**
+	 * Change view to specified Card
+	 * @param c - The Card to view
+	 */
 	private void viewCard(Card c) {
 		layout.show(cards, c.cardName());
 	}
 
+	/**
+	 * Add a Card to be able to view.
+	 * @param c - The Card to add to the program
+	 */
 	private void addCard(Card c) {
 		cards.add(c, c.cardName());
 	}
 
+	/**
+	 * Start a Quiz with the specified WordList.
+	 * @param w - The WordList be quizzed on
+	 */
 	public void startQuiz(WordList w) {
 		try {
 			w.setup();
 			viewCard(quiz);
 			quiz.startQuiz(w);
 		} catch (FileNotFoundException e) {
-			String message = "The file containing that category has been removed from "+FileAccess.WORDFOLDER;
-			JOptionPane.showMessageDialog(new JFrame(), message, "File Not Found", JOptionPane.ERROR_MESSAGE);
 			layout.show(cards, menu.toString());
+			new ErrorMessage(e);
 		}
 	}
 
+	/**
+	 * View the menu screen.
+	 */
 	public void returnToMenu() {
 		viewCard(menu);
 	}
@@ -147,11 +175,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					new SpellingAid(args);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
+				new SpellingAid(args);
 			}
 		});
 	}
