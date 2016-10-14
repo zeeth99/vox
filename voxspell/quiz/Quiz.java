@@ -94,19 +94,15 @@ public class Quiz extends Card implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		inputBox.grabFocus();
-		if (e.getSource() == repeatWord) {
+		Object source = e.getSource();
+		if (source == repeatWord)
 			sayMessage(_testingWords.get(_wordNumber));
-		} else if ((e.getSource() == submitWord || e.getSource() == inputBox) && submitWord.isEnabled()) {
+		if ((source == submitWord || source == inputBox) && submitWord.isEnabled())
 			checkWord(inputBox.getText());
-		} else if (e.getSource() == menuButton) {
+		if (source == menuButton) {
 			int option = JOptionPane.showConfirmDialog(this, "If you go to the menu you will lose your progress in your current quiz. \nAre you sure you want to go to the menu?", "Are You Sure?", JOptionPane.OK_CANCEL_OPTION);
-			switch(option) {
-			case JOptionPane.CANCEL_OPTION:
-				break;
-			case JOptionPane.OK_OPTION:
+			if (option == JOptionPane.OK_OPTION)
 				spellingAid.returnToMenu();
-				break;
-			}
 		}
 	}
 
@@ -220,12 +216,11 @@ public class Quiz extends Card implements ActionListener {
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			startQuiz(_wordlist);
-		} else if (option == 1) {
-			selectFilterAndPlay();
-			spellingAid.returnToMenu();
-		} else {
-			spellingAid.returnToMenu();
+			return;
 		}
+		if (option == 1)
+			selectFilterAndPlay();
+		spellingAid.returnToMenu();
 	}
 
 	/**
@@ -266,12 +261,7 @@ public class Quiz extends Card implements ActionListener {
 	 * @return true if video reward file exists
 	 */
 	private boolean videoExists() {
-		File f = new File(BestMediaPlayer.NORMAL_VIDEO);
-		if (f.exists()) {
-			return true;
-		} else {
-			return false;
-		}
+		return new File(BestMediaPlayer.NORMAL_VIDEO).exists();
 	}
 
 	public String cardName() {
