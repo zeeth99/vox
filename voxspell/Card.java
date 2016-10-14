@@ -46,9 +46,8 @@ public abstract class Card extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Returns the user to the main menu
-		if (e.getSource() == menuButton) {
+		if (e.getSource() == menuButton)
 			spellingAid.returnToMenu();
-		}
 	}
 
 	/**
