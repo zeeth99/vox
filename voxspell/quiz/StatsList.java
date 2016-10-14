@@ -69,7 +69,6 @@ public class StatsList extends ArrayList<WordStats> implements Comparable<StatsL
 
 	@Override
 	public int compareTo(StatsList arg0) {
-		// TODO Auto-generated method stub
 		return _name.compareTo(arg0._name);
 	}
 

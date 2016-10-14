@@ -70,7 +70,6 @@ public class WordList extends ArrayList<String> implements Comparable<WordList>{
 
 	@Override
 	public int compareTo(WordList arg0) {
-		// TODO Auto-generated method stub
 		return toString().compareToIgnoreCase(arg0.toString());
 	}
 }
