@@ -4,9 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.DefaultListModel;
-
 import voxspell.FileAccess;
+import voxspell.SortedListModel;
 import voxspell.SpellingAid;
 import javax.swing.JToggleButton;
 
@@ -53,7 +52,7 @@ public class ReviewSelect extends CategorySelect {
 		twoStar.doClick();
 	}
 
-	protected void setupListModel(DefaultListModel<WordList> listModel) {
+	protected void setupListModel(SortedListModel<WordList> listModel) {
 		listModel.clear();
 		for (File f : FileAccess.STATSFOLDER.listFiles())
 			for (File f1 : f.listFiles())

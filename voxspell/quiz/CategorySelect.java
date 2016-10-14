@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -14,6 +13,7 @@ import javax.swing.ListSelectionModel;
 
 import voxspell.Card;
 import voxspell.FileAccess;
+import voxspell.SortedListModel;
 import voxspell.SpellingAid;
 
 import javax.swing.JList;
@@ -31,7 +31,7 @@ public class CategorySelect extends Card implements ActionListener{
 	private JButton startQuiz;
 	private JScrollPane scrollPane;
 	protected JList<WordList> list;
-	protected DefaultListModel<WordList> listModel;
+	protected SortedListModel<WordList> listModel;
 
 	/**
 	 * Set up GUI
@@ -40,7 +40,7 @@ public class CategorySelect extends Card implements ActionListener{
 	public CategorySelect(SpellingAid sp) {
 		super(sp, "Select Your WordList");
 
-		listModel = new DefaultListModel<WordList>();
+		listModel = new SortedListModel<WordList>();
 		setupListModel(listModel);
 		list = new JList<WordList>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -67,7 +67,7 @@ public class CategorySelect extends Card implements ActionListener{
 	 * Add all categories in the word list directory to the list.
 	 * @param listModel - ListModel to add categories to
 	 */
-	protected void setupListModel(DefaultListModel<WordList> listModel) {
+	protected void setupListModel(SortedListModel<WordList> listModel) {
 		listModel.clear();
 		for (File f : FileAccess.WORDFOLDER.listFiles()) {
 			try {
