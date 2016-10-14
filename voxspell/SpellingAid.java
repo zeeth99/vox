@@ -89,9 +89,8 @@ public class SpellingAid extends JFrame implements ActionListener {
 		quiz = new Quiz(null);
 		addCard(quiz);
 
-		getContentPane().add(cards);
+		setContentPane(cards);
 		returnToMenu();
-
 		setVisible(true);
 	}
 

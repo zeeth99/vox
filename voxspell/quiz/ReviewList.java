@@ -20,15 +20,22 @@ public class ReviewList extends WordList {
 		super(f, f.getName().substring(0, f.getName().length()-".recent".length()));
 	}
 
-	public void setup() throws FileNotFoundException {
-		Scanner sc = new Scanner(_file);
-		while (sc.hasNextLine()) {
-			String line = sc.nextLine();
-			String[] brokenLine = line.split(" ");
-			if (Integer.parseInt(brokenLine[1]) + Integer.parseInt(brokenLine[2]) + Integer.parseInt(brokenLine[3]) < 2)
-				add(brokenLine[0]);
+	public void setup() {
+		this.clear();
+		Scanner sc;
+		try {
+			sc = new Scanner(_file);
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				String[] brokenLine = line.split(" ");
+				if (Integer.parseInt(brokenLine[1]) + Integer.parseInt(brokenLine[2]) + Integer.parseInt(brokenLine[3]) < 2)
+					add(brokenLine[0]);
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		sc.close();
 	}
 
 	public String toString() {
