@@ -114,7 +114,10 @@ public class Quiz extends Card implements ActionListener {
 	}
 
 	/**
-	 * 
+	 * Checks if the word was spelled correctly.
+	 * Gives order to update stats based on successfulness.
+	 * Updates GUI based on progress.
+	 * Gives order to perform appropriate level completion action.
 	 * @param input
 	 */
 	protected void checkWord(String input) {
@@ -161,8 +164,8 @@ public class Quiz extends Card implements ActionListener {
 	}
 
 	/**
-	 * Start the quiz with the specified WordList
-	 * @param w - The {@link voxspell.quiz.WordList WordList} to test the user on
+	 * Starts the quiz with the specified WordList.
+	 * @param w - The {@link WordList} to test the user on
 	 */
 	public void startQuiz(WordList w) {
 		_wordlist = w;
