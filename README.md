@@ -25,11 +25,18 @@ Run the runVoxspell.sh file. To do this, at the command line (with the working d
 	./runVoxspell.sh
 
 ========================
-Notes For Peer Reviewers
+  Notes For Developers
 ========================
 
-GUI file selection will happen, don't worry. In fact, it may have already happened if I forget to remove this after implmenting it.
 I'm gonna have a better sound reward cos Mr. Festival aint very congratulatory.
 Category Deletion will happen, cos otherwise that list will get hella crowded.
-I'll make it more visually apparent whether a word is correct or not.
-Wow, this really collects my ideas. I just need to look here whenever I'm looking for what to do next, thanks peer reviewer.
+
+========================
+    Acknowledgements
+========================
+Ray Akau'ola
+Open source icons from:
+	design.google.com/icons
+	icons8.com
+
+
