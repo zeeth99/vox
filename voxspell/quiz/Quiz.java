@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -28,10 +29,13 @@ import voxspell.FileAccess;
 public class Quiz extends Card implements ActionListener {
 
 	private static final int QUIZ_SIZE = 10;
+	private static final ImageIcon CORRECT = new ImageIcon("media/Correct.png");
+	private static final ImageIcon INCORRECT = new ImageIcon("media/Incorrect.png");
 
 	private JLabel wordCountLabel;
 	protected JLabel categoryLabel;
 	private JFormattedTextField inputBox;
+	private JLabel correctIncorrect;
 	private JLabel feedbackPanel;
 	private JButton repeatWord;
 	private JButton submitWord;
@@ -73,7 +77,6 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.setToolTipText("Type here.");
 		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
 		inputBox.setBounds(125, 120, 250, 30);
-		inputBox.setColumns(20);
 		inputBox.addActionListener(this);
 		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
@@ -82,7 +85,12 @@ public class Quiz extends Card implements ActionListener {
 					e.consume();
 			}
 		});
-
+		
+		// Shows a tick or a cross after attempting a word
+		correctIncorrect = new JLabel("");
+		correctIncorrect.setBounds(375, 111, 48, 48);
+		
+		add(correctIncorrect);
 		add(inputBox);
 		add(repeatWord);
 		add(submitWord);
@@ -118,14 +126,15 @@ public class Quiz extends Card implements ActionListener {
 		String word = _testingWords.get(_wordNumber);
 		String festivalMessage;
 
-		boolean correct = false;
+		boolean correct = input.equalsIgnoreCase(word);
 
-		if (input.equalsIgnoreCase(word)) {
-			correct = true;
+		if (correct) {
 			festivalMessage = "Correct:";
+			correctIncorrect.setIcon(CORRECT);
 			_wordsCorrect++;
 		} else {
 			festivalMessage = "Incorrect:";
+			correctIncorrect.setIcon(INCORRECT);
 			if (_firstAttempt) {
 				// FIRST FAIL
 				_firstAttempt = false;
