@@ -53,7 +53,7 @@ public class CategorySelect extends Card implements ActionListener{
 
 		// Button to start quiz with currently selected category
 		startQuiz = new JButton("Start Quiz");
-		startQuiz.setBounds(383, 18, 105, 25);
+		startQuiz.setBounds(383, 15, 105, 30);
 		startQuiz.addActionListener(this);
 		add(startQuiz);
 		

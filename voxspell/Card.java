@@ -35,7 +35,7 @@ public abstract class Card extends JPanel implements ActionListener {
 		heading.setFont(new Font("Tibetan Machine Uni", Font.BOLD, 20));
 		heading.setBounds(0, 0, 500, 60);
 		menuButton = new JButton("Menu");
-		menuButton.setBounds(12, 18, 73, 25);
+		menuButton.setBounds(12, 15, 73, 30);
 		menuButton.addActionListener(this);
 
 		add(menuButton);
