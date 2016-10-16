@@ -1,5 +1,6 @@
 package voxspell;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -26,7 +28,7 @@ public class Settings extends Card implements ActionListener {
 	public static final String DEFAULT_VOICE = "(voice_kal_diphone)"; 
 	public static final String NZ_VOICE = "(voice_akl_nz_jdt_diphone)";
 
-	public JButton clearStatistics;
+	private JButton clearStatistics;
 	private JComboBox<String> voiceSettings;
 	private JLabel voiceSettingsLabel;
 	private JButton addNewWord;
@@ -40,7 +42,10 @@ public class Settings extends Card implements ActionListener {
 
 		voiceSettingsLabel = new JLabel("Select a voice setting:");
 		voiceSettingsLabel.setBounds(100, 80, 300, 20);
-
+		
+		ImageIcon voiceSettingsIcon = new ImageIcon("media/Microphone.png");
+		voiceSettingsLabel.setIcon(voiceSettingsIcon);
+		
 		// Drop down menu to select the voice for Festival to use
 		voiceSettings = new JComboBox<String>();
 		voiceSettings.addItem("Default");
@@ -69,11 +74,19 @@ public class Settings extends Card implements ActionListener {
 		clearStatistics.setBounds(100, 270, 300, 50);
 		clearStatistics.addActionListener(this);
 		
+		ImageIcon clearStatisticsIcon = new ImageIcon("media/Delete_2x.png");
+		clearStatistics.setLayout(new BorderLayout());
+		clearStatistics.add(new JLabel(clearStatisticsIcon), BorderLayout.WEST);
+		
 		// Button to add a new word list
 		addNewWord = new JButton("Add New Word List");
 		addNewWord.setFont(new Font("Dialog", Font.BOLD, 16));
 		addNewWord.setBounds(100, 210, 300, 50);
 		addNewWord.addActionListener(this);
+		
+		ImageIcon addNewWordIcon = new ImageIcon("media/Add_List_2x.png");
+		addNewWord.setLayout(new BorderLayout());
+		addNewWord.add(new JLabel(addNewWordIcon), BorderLayout.WEST);
 		
 		add(clearStatistics);
 		add(voiceSettings);
