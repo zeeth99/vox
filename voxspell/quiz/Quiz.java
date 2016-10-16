@@ -33,7 +33,6 @@ public class Quiz extends Card implements ActionListener {
 	private static final ImageIcon INCORRECT = new ImageIcon("media/Incorrect.png");
 
 	private JLabel wordCountLabel;
-	protected JLabel categoryLabel;
 	private JFormattedTextField inputBox;
 	private JLabel correctIncorrect;
 	private JLabel feedbackPanel;
@@ -54,12 +53,9 @@ public class Quiz extends Card implements ActionListener {
 	public Quiz(SpellingAid sp) {
 		super(sp, "New Quiz");
 
-		wordCountLabel = new JLabel();
-		wordCountLabel.setBounds(225, 90, 150, 15);
-		wordCountLabel.setHorizontalAlignment(JLabel.RIGHT);
-		categoryLabel = new JLabel();
-		categoryLabel.setBounds(125, 90, 150, 15); // Place this label wherever it fits the best. Kinda awkward where it is at now
-		feedbackPanel = new JLabel();
+		wordCountLabel = new JLabel("Word 0 out of 0");
+		wordCountLabel.setBounds(125, 90, 150, 15);
+		feedbackPanel = new JLabel("0 out of 0 correct");
 		feedbackPanel.setBounds(125, 230, 300, 15);
 
 		// Button used to hear the word to spell again
@@ -95,7 +91,6 @@ public class Quiz extends Card implements ActionListener {
 		add(repeatWord);
 		add(submitWord);
 		add(wordCountLabel);
-		add(categoryLabel);
 		add(feedbackPanel);
 	}
 
@@ -171,7 +166,7 @@ public class Quiz extends Card implements ActionListener {
 	 */
 	public void startQuiz(WordList w) {
 		_wordlist = w;
-		categoryLabel.setText(_wordlist.category());
+		heading.setText(_wordlist.category());
 		_wordNumber = 0;
 		_wordsCorrect = 0;
 
