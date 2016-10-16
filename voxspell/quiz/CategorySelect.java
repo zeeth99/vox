@@ -1,13 +1,16 @@
 package voxspell.quiz;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
@@ -62,6 +65,11 @@ public class CategorySelect extends Card implements ActionListener{
 		fileSelect.setBounds(12, 320, 200, 30);
 		fileSelect.addActionListener(this);
 		add(fileSelect);
+		
+		ImageIcon fileSelectIcon = new ImageIcon("media/Add_List.png");
+		fileSelect.setLayout(new BorderLayout());
+		fileSelect.add(new JLabel(fileSelectIcon), BorderLayout.WEST);
+
 	}
 
 	/**
