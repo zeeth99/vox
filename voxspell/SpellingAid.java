@@ -33,6 +33,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -78,6 +81,17 @@ public class SpellingAid extends JFrame implements ActionListener {
 	 * @param args
 	 */
 	private SpellingAid(String[] args) {
+		// Set LookAndFeel to Nimbus. If Nimbus isn't installed, set Look and Feel to
+		// system Look and Feel.
+		String LookAndFeel = UIManager.getSystemLookAndFeelClassName();
+		for (LookAndFeelInfo LaF : UIManager.getInstalledLookAndFeels())
+			if (LaF.getName().equals("Nimbus"))
+				LookAndFeel = LaF.getClassName();
+		try {
+			UIManager.setLookAndFeel(LookAndFeel);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {}
+		
 		setResizable(false);
 		setTitle("VOXSPELL");
 		setSize(500, 400);
@@ -96,7 +110,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		menu = new Menu(this);
 		settings = new Settings(this);
 		stats = new Stats(this);
-		
+
 		addCard(menu);
 		addCard(settings);
 		addCard(stats);
@@ -171,7 +185,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	public void returnToMenu() {
 		viewCard(menu);
 	}
-	
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
