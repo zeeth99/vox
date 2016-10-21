@@ -146,13 +146,7 @@ public class Quiz extends Card implements ActionListener {
 		// If all words have been tested:
 		if (_wordNumber == _testingWords.size()) {
 			sayMessage(festivalMessage);
-			// Check to see if user has completed a level i.e. has gotten 9 out of 10 words correct
-			// TODO deal with lists shorter than 10 words.
-			if (_wordsCorrect >= 9) {
-				levelCompleteAction();
-			} else {
-				levelIncompleteAction();
-			}
+			endQuiz();
 		} else {
 			// Test next word
 			sayMessage(festivalMessage+"Please spell "+_testingWords.get(_wordNumber));
@@ -209,35 +203,46 @@ public class Quiz extends Card implements ActionListener {
 	}
 
 	/**
-	 * Gives user options as level ends.
+	 * Decide what to do on quiz end.
 	 */
-	protected void levelCompleteAction() {
-		_wordNumber = 0;
-		_wordsCorrect = 0;
-		// Give option for video reward before asking to progress to next level
-		String[] options = new String[] {"Repeat Level", "Play Video", "Return to Main Menu"};
-		int option = JOptionPane.showOptionDialog(this, "You have completed this level!\nWhat would you like to do?", "Congratulations!",
-				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-		if (option == 0) {
-			startQuiz(_wordlist);
-			return;
+	protected void endQuiz() {
+		// If the word list is 1 or 2 words long, the user needs to get full marks to 'pass'
+		// Otherwise they need to get at most one word wrong.
+		String[] options = {"Repeat Level", "Play Video", "Return to Main Menu"};
+		String message;
+		String heading;
+		if ((_wordsCorrect == _testingWords.size()-1 && _testingWords.size() > 2) 
+				|| _wordsCorrect == _testingWords.size()) {
+			message = "You have completed this level!\nWhat would you like to do?";
+			heading = "Congratulations!";
+		} else {
+			message = "You didn't complete the level.\nTo complete a level, you must get at most one word incorrect. "
+					+ "What would you like to do?";
+			heading = "Unfortunate my friend";
+			options = new String[] {options[0], options[2]};
 		}
-		if (option == 1)
-			selectFilterAndPlay();
-		spellingAid.returnToMenu();
+		endQuizOptions(message, heading, options, options.length-1);
 	}
-
+	
 	/**
 	 * Gives user options as level ends.
+	 * @param message - the message to display in the JOptionPane
+	 * @param heading - the heading to display in the JOptionPane
+	 * @param options - the options to display in the JOptionPane
+	 * @param menuOption - index of the option which returns the user to the menu
 	 */
-	protected void levelIncompleteAction() {
-		String[] options = new String[] {"Repeat level","Return to Main Menu"};
-		int option = JOptionPane.showOptionDialog(this, "You didn't complete the level.\nTo complete a level, you must get 9 out of the 10 words correct. What would you like to do?",
-				"Unfortunate my friend", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+	protected void endQuizOptions(String message, String heading, String[] options, int menuOption) {
+		// Give option for video reward.
+		int option = JOptionPane.showOptionDialog(this, message, heading, JOptionPane.DEFAULT_OPTION, 
+				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			startQuiz(_wordlist);
-		} else {
+		} else if (option == menuOption){
 			spellingAid.returnToMenu();
+		} else {
+			selectFilterAndPlay();
+			options = new String[] {options[0], options[2]};
+			endQuizOptions(message, heading, options, 1);
 		}
 	}
 
