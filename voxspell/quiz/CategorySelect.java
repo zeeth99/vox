@@ -91,13 +91,14 @@ public class CategorySelect extends Card implements ActionListener{
 			try {
 				Scanner sc = new Scanner(f);
 				String str;
+				// Check each line for a category.
 				while (sc.hasNextLine()) {
 					str = sc.nextLine();
 					if (str.startsWith("%")) {
 						if (listModel.contains(str.substring(1))) {
 							String message = "The file, "+f+", contains multiple categories "
 									+"with same name./nOnly the first category with the name: "
-									+str.substring(1)+"will be useable.";
+									+str.substring(1)+"will be used.";
 							JOptionPane.showMessageDialog(new JFrame(), message, "Category Naming Conflict", JOptionPane.ERROR_MESSAGE);
 						} else {
 							listModel.addElement(new WordList(f, str.substring(1)));
