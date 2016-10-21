@@ -3,6 +3,8 @@ package voxspell.quiz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -47,7 +49,14 @@ public class CategorySelect extends Card implements ActionListener{
 		listModel = new SortedListModel<WordList>();
 		setupListModel(listModel);
 		list = new JList<WordList>(listModel);
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addKeyListener(new KeyAdapter(){ // Use enter to start a quiz
+			public void keyPressed(KeyEvent e){
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					if (list.getSelectedValue() != null)
+						spellingAid.startQuiz(list.getSelectedValue());
+			}
+		});
 		
 		// List of categories
 		scrollPane = new JScrollPane(list);
@@ -108,7 +117,8 @@ public class CategorySelect extends Card implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
 		if (e.getSource() == startQuiz) {
-			spellingAid.startQuiz(list.getSelectedValue());
+			if (list.getSelectedValue() != null)
+				spellingAid.startQuiz(list.getSelectedValue());
 		} else if (e.getSource() == fileSelect) {
 			FileAccess.addWordList();
 			setupListModel(listModel);
