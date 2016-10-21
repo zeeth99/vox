@@ -30,7 +30,7 @@ public class ReviewSelect extends CategorySelect {
 		twoStar.setName("2");
 		twoStar.setBounds(12,320,238,30);
 
-		JToggleButton threeStar = new JToggleButton("All word without three stars");
+		JToggleButton threeStar = new JToggleButton("All words without three stars");
 		threeStar.setName("3");
 		threeStar.setBounds(250,320,238,30);
 
