@@ -4,7 +4,6 @@ import java.io.File;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 import voxspell.quiz.StatsList;
 import javax.swing.JSplitPane;
@@ -32,7 +31,7 @@ public class Stats extends Card {
 
 		// List of all attempted categories
 		list = new JList<StatsList>(new SortedListModel<StatsList>());
-		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		list.setSelectionModel(new ToggleListSelectionModel(list));
 		list.addListSelectionListener(statsPanel);
 		addFolderToList(FileAccess.STATSFOLDER, (SortedListModel<StatsList>)list.getModel());
 		((SortedListModel<StatsList>) list.getModel()).sort();
