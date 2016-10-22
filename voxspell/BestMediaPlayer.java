@@ -1,14 +1,14 @@
 package voxspell;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
@@ -24,6 +24,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private EmbeddedMediaPlayer _video;
+	private Filter _filter;
 
 	/**
 	 * Filters for the video.
@@ -46,9 +47,13 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	/**
 	 * Sets up the video player GUI.
 	 */
+	@SuppressWarnings("serial")
 	public BestMediaPlayer(Filter filter) {
+		_filter = filter;
 
-		JFrame frame = new JFrame("The Awesome Mediaplayer");
+		JDialog frame = new JDialog() {{
+			setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		}};
 
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 
@@ -88,31 +93,21 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 			}
 		});
 
-		frame.setLocation(100, 100);
-		frame.setSize(1050, 600);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setVisible(true);
 
 		// Stop the video from playing when the window is closed
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				cancel(true);
-				_video.stop();
-				mediaPlayerComponent.release();
-			}
-		});
+
 
 		screen.add(controls, BorderLayout.SOUTH);
 		frame.setContentPane(screen);
+		frame.setLocation(100, 100);
+		frame.setSize(1050, 600);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		// Play the video
-		if (filter == Filter.NORMAL) {
-			video.playMedia(NORMAL_VIDEO);
-		} else {
-			this.execute();
-		}
-
+		execute();
+		frame.setVisible(true);
+		cancel(true);
+		_video.stop();
+		mediaPlayerComponent.release();
 	}
 
 	/**
@@ -120,19 +115,22 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 */
 	@Override
 	protected Void doInBackground() throws Exception {
-		if (!negativeExists()) {
-			String cmd = "ffmpeg -y -i "+NORMAL_VIDEO+" -vf negate "+NEGATIVE_VIDEO;
-			ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
-			try {
-				Process process = pb.start();
-				process.waitFor();
-				if (isCancelled()) {
-					process.destroy();
-					return null;
+		if (_filter == Filter.NORMAL) {
+			_video.playMedia(NORMAL_VIDEO);
+		} else {
+			if (!negativeExists()) {
+				String cmd = "ffmpeg -y -i "+NORMAL_VIDEO+" -vf negate "+NEGATIVE_VIDEO;
+				ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
+				try {
+					Process process = pb.start();
+					process.waitFor();
+					if (isCancelled())
+						process.destroy();
+				} catch (IOException e) {
+					new ErrorMessage(e);
 				}
-			} catch (IOException e) {
-				new ErrorMessage(e);
 			}
+			_video.playMedia(NEGATIVE_VIDEO);
 		}
 		return null;
 	}
@@ -142,8 +140,6 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 */
 	@Override
 	protected void done() {
-		if (!isCancelled())
-			_video.playMedia(NEGATIVE_VIDEO);
 	}
 
 	/**

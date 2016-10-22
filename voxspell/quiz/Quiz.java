@@ -149,7 +149,7 @@ public class Quiz extends Card implements ActionListener {
 			endQuiz();
 		} else {
 			// Test next word
-			sayMessage(festivalMessage+"Please spell "+_testingWords.get(_wordNumber));
+			sayMessage(festivalMessage + "Spell" + _testingWords.get(_wordNumber));
 			wordCountLabel.setText("Word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
 	}
@@ -235,10 +235,10 @@ public class Quiz extends Card implements ActionListener {
 		// Give option for video reward.
 		int option = JOptionPane.showOptionDialog(this, message, heading, JOptionPane.DEFAULT_OPTION, 
 				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-		if (option == 0) {
-			startQuiz(_wordlist);
-		} else if (option == menuOption){
+		if (option == menuOption || option == JOptionPane.CLOSED_OPTION){
 			spellingAid.returnToMenu();
+		} else if (option == 0) {
+			startQuiz(_wordlist);
 		} else {
 			selectFilterAndPlay();
 			options = new String[] {options[0], options[2]};
