@@ -47,7 +47,7 @@ public class CategorySelect extends Card implements ActionListener{
 		super(sp, "Select Your WordList");
 
 		listModel = new SortedListModel<WordList>();
-		setupListModel(listModel);
+		setupListModel();
 		list = new JList<WordList>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addKeyListener(new KeyAdapter(){ // Use enter to start a quiz
@@ -85,7 +85,7 @@ public class CategorySelect extends Card implements ActionListener{
 	 * Add all categories in the word list directory to the list.
 	 * @param listModel - ListModel to add categories to
 	 */
-	protected void setupListModel(SortedListModel<WordList> listModel) {
+	public void setupListModel() {
 		listModel.clear();
 		for (File f : FileAccess.WORDFOLDER.listFiles()) {
 			try {
@@ -122,7 +122,7 @@ public class CategorySelect extends Card implements ActionListener{
 				spellingAid.startQuiz(list.getSelectedValue());
 		} else if (e.getSource() == fileSelect) {
 			FileAccess.addWordList();
-			setupListModel(listModel);
+			setupListModel();
 		}
 	}
 

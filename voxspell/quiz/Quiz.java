@@ -208,7 +208,7 @@ public class Quiz extends Card implements ActionListener {
 	protected void endQuiz() {
 		// If the word list is 1 or 2 words long, the user needs to get full marks to 'pass'
 		// Otherwise they need to get at most one word wrong.
-		String[] options = {"Repeat Level", "Play Video", "Return to Main Menu"};
+		String[] options = {"Repeat Level", "Play Victory Video", "Return to Main Menu"};
 		String message;
 		String heading;
 		if ((_wordsCorrect == _testingWords.size()-1 && _testingWords.size() > 2) 

@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import voxspell.FileAccess;
-import voxspell.SortedListModel;
 import voxspell.SpellingAid;
 
 import javax.swing.JToggleButton;
@@ -42,7 +41,7 @@ public class ReviewSelect extends CategorySelect {
 				threeStar.setSelected(false);
 				buttonPressed.setSelected(true);
 				_maximumScore = Integer.parseInt(buttonPressed.getName());
-				setupListModel(listModel);
+				setupListModel();
 			}
 		};
 
@@ -54,7 +53,8 @@ public class ReviewSelect extends CategorySelect {
 		twoStar.doClick();
 	}
 
-	protected void setupListModel(SortedListModel<WordList> listModel) {
+	@Override
+	public void setupListModel() {
 		listModel.clear();
 		for (File f : FileAccess.STATSFOLDER.listFiles())
 			for (File f1 : f.listFiles())
