@@ -33,8 +33,7 @@ public class Stats extends Card {
 		list = new JList<StatsList>(new SortedListModel<StatsList>());
 		list.setSelectionModel(new ToggleListSelectionModel(list));
 		list.addListSelectionListener(statsPanel);
-		addFolderToList(FileAccess.STATSFOLDER, (SortedListModel<StatsList>)list.getModel());
-		((SortedListModel<StatsList>) list.getModel()).sort();
+		setup();
 
 		// Splits the screen with the category list on the left and statistics for selected categories on the right
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), statsPanel);
@@ -43,6 +42,18 @@ public class Stats extends Card {
 		add(splitPane);
 	}
 
+	/**
+	 * Adds all attempted categories to the list and sorts it
+	 */
+	public void setup() {
+		list.removeListSelectionListener(statsPanel);
+		SortedListModel<StatsList> listModel = (SortedListModel<StatsList>)list.getModel();
+		listModel.clear();
+		list.addListSelectionListener(statsPanel);
+		addFolderToList(FileAccess.STATSFOLDER, listModel);
+		listModel.sort();
+	}
+	
 	/**
 	 * Add statistics from all files in the directory. Recursive.
 	 * @param directory - The directory to look for stats files in
