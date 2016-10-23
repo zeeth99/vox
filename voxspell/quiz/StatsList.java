@@ -60,7 +60,7 @@ public class StatsList extends ArrayList<WordStats> implements Comparable<StatsL
 			String score = "";
 			for (int i : ws._recent)
 				if (i == 1)
-					score += "★ ";
+					score += "\u2605 ";
 			String[] s = {ws._word, score, String.valueOf(ws._successes), String.valueOf(ws._attempts)};
 			list.add(s);
 		}
