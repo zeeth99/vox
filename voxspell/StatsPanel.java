@@ -2,6 +2,7 @@ package voxspell;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -9,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import voxspell.quiz.StatsList;
 
@@ -33,7 +35,17 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 		table = new JTable(model);
 		table.setAutoCreateRowSorter(true);
 		table.setEnabled(false);
-		this.setViewportView(table);
+		// Sort Successes and Attempts columns as integers.
+		Comparator<String> stringIntegerComparator = new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return Integer.compare(Integer.parseInt(o1), Integer.parseInt(o2));
+			}
+		};
+		((TableRowSorter<?>) table.getRowSorter()).setComparator(2, stringIntegerComparator);
+		((TableRowSorter<?>) table.getRowSorter()).setComparator(3, stringIntegerComparator);
+		
+		setViewportView(table);
 		listOfDisplayedCategories = new ArrayList<StatsList>();
 	}
 
