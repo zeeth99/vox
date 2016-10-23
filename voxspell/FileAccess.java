@@ -194,6 +194,7 @@ public class FileAccess {
 
 	public static void clearStats() {
 		for (File f : STATSFOLDER.listFiles())
-			f.delete();
+			for (File f1 : f.listFiles())
+				f1.delete();
 	}
 }
