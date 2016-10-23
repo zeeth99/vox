@@ -66,12 +66,14 @@ public class CategorySelect extends Card implements ActionListener{
 		// Button to start quiz with currently selected category
 		startQuiz = new JButton("Start Quiz");
 		startQuiz.setBounds(383, 15, 105, 30);
+		startQuiz.setToolTipText("Start a quiz with the selected category.");
 		startQuiz.addActionListener(this);
 		add(startQuiz);
 		
 		// Button to add an external file to the list of wordlists.
 		fileSelect = new JButton("Select Other File");
 		fileSelect.setBounds(12, 320, 200, 30);
+		fileSelect.setToolTipText("Import an external word list.");
 		fileSelect.addActionListener(this);
 		add(fileSelect);
 		

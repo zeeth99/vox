@@ -51,6 +51,7 @@ public class Settings extends Card implements ActionListener {
 		voiceSettings.addItem("Default");
 		voiceSettings.addItem("New Zealand");
 		voiceSettings.setBounds(100, 100, 300, 20);
+		voiceSettings.setToolTipText("Change the voice VOXSPELL uses in quizzes.");
 		voiceSettings.setSelectedIndex(0);
 		voiceSettings.addActionListener(new ActionListener()	{
 			public void actionPerformed(ActionEvent e){
@@ -72,6 +73,7 @@ public class Settings extends Card implements ActionListener {
 		clearStatistics = new JButton("Clear Statistics");
 		clearStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 		clearStatistics.setBounds(100, 270, 300, 50);
+		clearStatistics.setToolTipText("Delete all spelling statistics.");
 		clearStatistics.addActionListener(this);
 		
 		ImageIcon clearStatisticsIcon = new ImageIcon("media/Delete_2x.png");
@@ -82,6 +84,7 @@ public class Settings extends Card implements ActionListener {
 		addNewWord = new JButton("Add New Word List");
 		addNewWord.setFont(new Font("Dialog", Font.BOLD, 16));
 		addNewWord.setBounds(100, 210, 300, 50);
+		addNewWord.setToolTipText("Import an external word list.");
 		addNewWord.addActionListener(this);
 		
 		ImageIcon addNewWordIcon = new ImageIcon("media/Add_List_2x.png");

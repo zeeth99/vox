@@ -61,20 +61,22 @@ public class Quiz extends Card implements ActionListener {
 		// Button used to hear the word to spell again
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
+		repeatWord.setToolTipText("Hear the word again. Alternate: ctrl-space");
 		repeatWord.addActionListener(this);
 		repeatWord.setFocusable(false);
 		
 		// Button to submit a proposed spelling of the word
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
+		submitWord.setToolTipText("Submit spelling attempt. Alternate: enter");
 		submitWord.addActionListener(this);
 		submitWord.setFocusable(false);
 		
 		// Box to type the word to spell
 		inputBox = new JFormattedTextField();
-		inputBox.setToolTipText("Type here.");
-		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
 		inputBox.setBounds(125, 120, 250, 30);
+		inputBox.setFont(new Font("Dialog", Font.PLAIN, 16));
+		inputBox.setToolTipText("Type here.");
 		inputBox.addActionListener(this);
 		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
