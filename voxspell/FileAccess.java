@@ -26,6 +26,7 @@ public class FileAccess {
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
 	final public static File MEDIAFOLDER = new File("media");
+	final private static String NL = System.getProperty("line.separator");
 
 	/**
 	 * Updates the statistics files for a given word
@@ -57,17 +58,17 @@ public class FileAccess {
 					int timesAttempted = Integer.parseInt(brokenLine[2]) + 1;
 					if (correct)
 						timesCorrect++;
-					writer.write(brokenLine[0]+" "+timesCorrect+" "+timesAttempted+System.getProperty("line.separator"));
+					writer.write(brokenLine[0]+" "+timesCorrect+" "+timesAttempted+NL);
 					wordFound = true;
 				} else {
-					writer.write(currentLine + System.getProperty("line.separator"));
+					writer.write(currentLine + NL);
 				}
 			}
 			if (!wordFound)
 				if (correct) {
-					writer.write(word + " 1 1" + System.getProperty("line.separator"));
+					writer.write(word + " 1 1" + NL);
 				} else {
-					writer.write(word + " 0 1" + System.getProperty("line.separator"));
+					writer.write(word + " 0 1" + NL);
 				}
 			reader.close();
 			writer.close();
@@ -107,16 +108,16 @@ public class FileAccess {
 					int i = 0;
 					if (correct) 
 						i = 1;
-					writer.write(brokenLine[0] + " " + brokenLine[2] + " " + brokenLine[3] + " " + i + System.getProperty("line.separator"));
+					writer.write(brokenLine[0] + " " + brokenLine[2] + " " + brokenLine[3] + " " + i + NL);
 					wordFound = true;
 				} else {
-					writer.write(currentLine + System.getProperty("line.separator"));
+					writer.write(currentLine + NL);
 				}
 			}
 			if (!wordFound && correct)
-				writer.write(word + " 0 1 1" + System.getProperty("line.separator"));
+				writer.write(word + " 0 1 1" + NL);
 			if (!wordFound && !correct) 
-				writer.write(word + " 0 0 0" + System.getProperty("line.separator"));
+				writer.write(word + " 0 0 0" + NL);
 			
 			reader.close();
 			writer.close();
@@ -182,7 +183,7 @@ public class FileAccess {
 
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null)
-				writer.write(currentLine + System.getProperty("line.separator"));
+				writer.write(currentLine + NL);
 
 			reader.close();
 			writer.close();
