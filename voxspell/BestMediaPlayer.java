@@ -23,20 +23,26 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
  */
 public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
-	private EmbeddedMediaPlayer _video;
-	private Filter _filter;
+	final private EmbeddedMediaPlayer _video;
+	private Video _filter;
 
 	/**
 	 * Filters for the video.
 	 * @author Ray Akau'ola
 	 * @author Max McLaren
 	 */
-	public enum Filter {
-		NORMAL, NEGATIVE
-	}
+	public enum Video {
+		NORMAL("media/reward.avi"), NEGATIVE("media/negative_reward.avi");
+		String _file;
 
-	public static final String NORMAL_VIDEO = "media/reward.avi";
-	public static final String NEGATIVE_VIDEO = "media/negative_reward.avi";
+		Video(String file) {
+			_file = file;
+		}
+
+		public String toString() {
+			return _file;
+		}
+	}
 
 	private JButton play;
 	private JButton stop;
@@ -48,35 +54,26 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 * Sets up the video player GUI.
 	 */
 	@SuppressWarnings("serial")
-	public BestMediaPlayer(Filter filter) {
+	public BestMediaPlayer(Video filter) {
 		_filter = filter;
 
-		JDialog frame = new JDialog() {{
-			setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-		}};
-
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-
-		final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
-		_video = video;
+		_video = mediaPlayerComponent.getMediaPlayer();
 
 		screen = new JPanel();
-		controls = new JPanel();
-
 		screen.setLayout(new BorderLayout());
 		screen.add(mediaPlayerComponent, BorderLayout.CENTER);
 
 		// Button to play and pause the video.
 		play = new JButton("PAUSE");
-		controls.add(play);
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (video.isPlaying()) {
-					video.pause();
+				if (_video.isPlaying()) {
+					_video.pause();
 					play.setText("PLAY");
 				} else {
-					video.play();
+					_video.play();
 					play.setText("PAUSE");
 				}
 			}
@@ -84,20 +81,23 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 
 		// Button to stop the playing video.
 		stop = new JButton("STOP");
-		controls.add(stop);
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				video.stop();
+				_video.stop();
 				play.setText("PLAY");
 			}
 		});
 
+		JDialog frame = new JDialog() {{
+			setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		}};
 
-		// Stop the video from playing when the window is closed
-
-
+		controls = new JPanel();
+		controls.add(play);
+		controls.add(stop);
 		screen.add(controls, BorderLayout.SOUTH);
+
 		frame.setContentPane(screen);
 		frame.setLocation(100, 100);
 		frame.setSize(1050, 600);
@@ -105,48 +105,40 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 
 		execute();
 		frame.setVisible(true);
+		// The following code is executed once the window is closed.
+		// It stops the video from playing.
 		cancel(true);
 		_video.stop();
 		mediaPlayerComponent.release();
 	}
 
 	/**
-	 * Create a negative variant of the video
+	 * Decides which variant to display, then plays it.
+	 * Create a negative variant of the video if it doesn't exist.
 	 */
 	@Override
 	protected Void doInBackground() throws Exception {
-		if (_filter == Filter.NORMAL) {
-			_video.playMedia(NORMAL_VIDEO);
-		} else {
-			if (!negativeExists()) {
-				String cmd = "ffmpeg -y -i "+NORMAL_VIDEO+" -vf negate "+NEGATIVE_VIDEO;
-				ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
-				try {
-					Process process = pb.start();
-					process.waitFor();
-					if (isCancelled())
-						process.destroy();
-				} catch (IOException e) {
-					new ErrorMessage(e);
-				}
+		if (!negativeExists()) {
+			String cmd = "ffmpeg -y -i "+Video.NORMAL+" -vf negate "+Video.NEGATIVE;
+			ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
+			try {
+				Process process = pb.start();
+				process.waitFor();
+				if (isCancelled())
+					process.destroy();
+			} catch (IOException e) {
+				new ErrorMessage(e);
 			}
-			_video.playMedia(NEGATIVE_VIDEO);
 		}
+		_video.playMedia(_filter.toString());
 		return null;
-	}
-
-	/**
-	 * Play the negative video.
-	 */
-	@Override
-	protected void done() {
 	}
 
 	/**
 	 * @return whether or not negative reward exists
 	 */
 	private boolean negativeExists() {
-		File f = new File(NEGATIVE_VIDEO);
+		File f = new File(Video.NEGATIVE.toString());
 		if (f.exists() && !f.isDirectory())
 			return true;
 		return false;

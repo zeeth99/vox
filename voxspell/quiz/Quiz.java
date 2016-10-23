@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 
 import voxspell.SpellingAid;
 import voxspell.BestMediaPlayer;
+import voxspell.BestMediaPlayer.Video;
 import voxspell.Card;
 import voxspell.FileAccess;
 
@@ -251,8 +252,8 @@ public class Quiz extends Card implements ActionListener {
 	 */
 	private void selectFilterAndPlay() {
 		if (!videoExists()) {
-			JOptionPane.showMessageDialog(this, BestMediaPlayer.NORMAL_VIDEO+" does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath()+"\n"
-					+ "If you ran VOXSPELL without using the runVoxspell.sh script, then "+BestMediaPlayer.NORMAL_VIDEO+" doesn't exist within your home directory\n"
+			JOptionPane.showMessageDialog(this, Video.NORMAL+" does not exist within "+ClassLoader.getSystemClassLoader().getResource(".").getPath()+"\n"
+					+ "If you ran VOXSPELL without using the runVoxspell.sh script, then "+Video.NORMAL+" doesn't exist within your home directory\n"
 					+ "Please make sure this file exists in the correct directory as to enable the video to be played");
 			return;
 		}
@@ -260,9 +261,9 @@ public class Quiz extends Card implements ActionListener {
 		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#AllNatural#NoFilter#IWokeUpLikeThis",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == 0) {
-			new BestMediaPlayer(BestMediaPlayer.Filter.NORMAL);
+			new BestMediaPlayer(Video.NORMAL);
 		} else {
-			new BestMediaPlayer(BestMediaPlayer.Filter.NEGATIVE);
+			new BestMediaPlayer(Video.NEGATIVE);
 		}
 	}
 
@@ -270,7 +271,7 @@ public class Quiz extends Card implements ActionListener {
 	 * @return true if video reward file exists
 	 */
 	private boolean videoExists() {
-		return new File(BestMediaPlayer.NORMAL_VIDEO).exists();
+		return new File(Video.NORMAL.toString()).exists();
 	}
 
 	public String cardName() {
