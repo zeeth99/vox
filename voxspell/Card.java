@@ -3,10 +3,13 @@ package voxspell;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 /**
@@ -27,6 +30,15 @@ public abstract class Card extends JPanel implements ActionListener {
 	 */
 	public Card(SpellingAid sp, String str) {
 		spellingAid = sp;
+		
+		// Use the 'Esc' button to return to menu.
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Esc");
+		getActionMap().put("Esc", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuButton.doClick();
+			}
+		});
 
 		setLayout(null);
 
