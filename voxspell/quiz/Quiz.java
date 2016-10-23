@@ -258,7 +258,7 @@ public class Quiz extends Card implements ActionListener {
 			return;
 		}
 		String[] options = new String[] {"Normal","Negative"};
-		int option = JOptionPane.showOptionDialog(this, "Select a filter", "#AllNatural#NoFilter#IWokeUpLikeThis",
+		int option = JOptionPane.showOptionDialog(this, "Select a filter", "Video Filter",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new BestMediaPlayer(Video.NORMAL);
