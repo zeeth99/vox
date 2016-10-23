@@ -51,7 +51,7 @@ public class FileAccess {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 			while ((currentLine = reader.readLine()) != null) {
 				// Update stats line with current word.
-				if (!wordFound && currentLine.contains(word)) {
+				if (!wordFound && currentLine.contains(word+" ")) {
 					String[] brokenLine = currentLine.split(" ");
 					int timesCorrect = Integer.parseInt(brokenLine[1]);
 					int timesAttempted = Integer.parseInt(brokenLine[2]) + 1;
@@ -102,7 +102,7 @@ public class FileAccess {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 			while ((currentLine = reader.readLine()) != null) {
 				// Update recent stats line with the current word.
-				if (!wordFound && currentLine.contains(word)) {
+				if (!wordFound && currentLine.contains(word+" ")) {
 					String[] brokenLine = currentLine.split(" ");
 					int i = 0;
 					if (correct) 
