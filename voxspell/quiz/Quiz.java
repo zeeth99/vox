@@ -61,14 +61,14 @@ public class Quiz extends Card implements ActionListener {
 		// Button used to hear the word to spell again
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
-		repeatWord.setToolTipText("Hear the word again. Alternate: ctrl-space");
+		repeatWord.setToolTipText("Hear the word again. Alternate: Ctrl-Space");
 		repeatWord.addActionListener(this);
 		repeatWord.setFocusable(false);
 		
 		// Button to submit a proposed spelling of the word
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
-		submitWord.setToolTipText("Submit spelling attempt. Alternate: enter");
+		submitWord.setToolTipText("Submit spelling attempt. Alternate: Enter");
 		submitWord.addActionListener(this);
 		submitWord.setFocusable(false);
 		
