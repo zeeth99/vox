@@ -1,6 +1,5 @@
 package voxspell.quiz;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,7 +52,7 @@ public class Quiz extends Card implements ActionListener {
 	 */
 	public Quiz(SpellingAid sp) {
 		super(sp, "New Quiz");
-
+		
 		wordCountLabel = new JLabel("Word 0 out of 0");
 		wordCountLabel.setBounds(125, 90, 150, 15);
 		feedbackPanel = new JLabel("0 out of 0 correct");
@@ -63,11 +62,13 @@ public class Quiz extends Card implements ActionListener {
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
 		repeatWord.addActionListener(this);
+		repeatWord.setFocusable(false);
 		
 		// Button to submit a proposed spelling of the word
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
 		submitWord.addActionListener(this);
+		submitWord.setFocusable(false);
 		
 		// Box to type the word to spell
 		inputBox = new JFormattedTextField();
@@ -77,6 +78,9 @@ public class Quiz extends Card implements ActionListener {
 		inputBox.addActionListener(this);
 		inputBox.addKeyListener(new KeyAdapter(){ // Only letters and apostrophes can be inputed
 			public void keyTyped(KeyEvent e){
+				// ctrl-space repeats word.
+				if (e.isControlDown() && e.getKeyChar() == ' ')
+					repeatWord.doClick();
 				char ch = e.getKeyChar();
 				if(!(Character.isLetter(ch) || ch=='\'' || ch==' ' || ch=='-'))
 					e.consume();
@@ -194,11 +198,6 @@ public class Quiz extends Card implements ActionListener {
 	 * @param b - true to enable the buttons, false otherwise
 	 */
 	public void setButtonsEnabled(boolean b) {
-		Color c = Color.GRAY;
-		if (b)
-			c = Color.WHITE;
-		repeatWord.setBackground(c);
-		submitWord.setBackground(c);
 		repeatWord.setEnabled(b);
 		submitWord.setEnabled(b);
 	}

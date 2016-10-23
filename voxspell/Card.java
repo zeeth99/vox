@@ -37,6 +37,8 @@ public abstract class Card extends JPanel implements ActionListener {
 		menuButton = new JButton("Menu");
 		menuButton.setBounds(12, 15, 73, 30);
 		menuButton.addActionListener(this);
+		menuButton.setFocusable(false);
+
 
 		add(menuButton);
 
