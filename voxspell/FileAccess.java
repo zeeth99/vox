@@ -133,12 +133,10 @@ public class FileAccess {
 	 * Create all necessary folders and 
 	 */
 	public static void createFiles() {
-		if (!WORDFOLDER.isDirectory())
-			WORDFOLDER.mkdir();
-		if (!STATSFOLDER.isDirectory())
-			STATSFOLDER.mkdir();
-		if (!FESTIVALFOLDER.isDirectory())
-			FESTIVALFOLDER.mkdir();
+		File[] folders = {WORDFOLDER, STATSFOLDER, FESTIVALFOLDER, MEDIAFOLDER};
+		for (File f : folders)
+			if (!f.isDirectory())
+				f.mkdir();
 		try {
 			if (Festival.SCHEME_FILE.createNewFile()) {
 				List<String> linesToWrite = new ArrayList<>();
