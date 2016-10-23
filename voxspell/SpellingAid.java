@@ -159,6 +159,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 		if (cardName.equals(stats.cardName()))
 			((Stats) c).setup();
 		layout.show(cards, c.cardName());
+		c.transferFocus();
 	}
 
 	/**
@@ -189,7 +190,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 	 */
 	public void returnToMenu() {
 		viewCard(menu);
-		menu.transferFocus();
 	}
 
 	public static void main(String[] args) {
