@@ -51,7 +51,6 @@ public class Stats extends Card {
 		SortedListModel<StatsList> listModel = (SortedListModel<StatsList>)list.getModel();
 		listModel.clear();
 		addFolderToList(FileAccess.STATSFOLDER, listModel);
-		listModel.sort();
 		list.addListSelectionListener(statsPanel);
 	}
 	

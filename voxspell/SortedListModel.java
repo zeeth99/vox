@@ -38,8 +38,8 @@ public class SortedListModel<E extends Comparable<? super E>> extends AbstractLi
 	public void addElement(E e) {
 		list.add(e);
 		fireIntervalAdded(this, getSize()-1, getSize()-1);
+		sort();
 	}
-	
 	
 	public boolean contains(Object o) {
 		return list.contains(o);
@@ -48,7 +48,7 @@ public class SortedListModel<E extends Comparable<? super E>> extends AbstractLi
 	/**
 	 *  Sort list
 	 */
-	public void sort() {
+	private void sort() {
 		Collections.sort(list);
 		this.fireContentsChanged(this, 0, getSize());
 	}

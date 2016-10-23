@@ -113,7 +113,6 @@ public class CategorySelect extends Card implements ActionListener{
 				continue;
 			}
 		}
-		listModel.sort();
 	}
 
 	@Override

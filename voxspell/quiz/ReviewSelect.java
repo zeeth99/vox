@@ -66,6 +66,5 @@ public class ReviewSelect extends CategorySelect {
 					if (reviewList.size() > 0)
 						listModel.addElement(reviewList);
 				}
-		listModel.sort();
 	}
 }
