@@ -47,11 +47,12 @@ public class Stats extends Card {
 	 */
 	public void setup() {
 		list.removeListSelectionListener(statsPanel);
+		statsPanel.model.setRowCount(0);
 		SortedListModel<StatsList> listModel = (SortedListModel<StatsList>)list.getModel();
 		listModel.clear();
-		list.addListSelectionListener(statsPanel);
 		addFolderToList(FileAccess.STATSFOLDER, listModel);
 		listModel.sort();
+		list.addListSelectionListener(statsPanel);
 	}
 	
 	/**

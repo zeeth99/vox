@@ -59,11 +59,15 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 			JList<StatsList> list = (JList<StatsList>)e.getSource();
 			// For each category which might have changed selection status
 			for (int i = e.getFirstIndex(); i <= e.getLastIndex(); i++) {
-				StatsList sl = list.getModel().getElementAt(i);
+				StatsList sl;
 				try {
+					sl = list.getModel().getElementAt(i);
 					sl.setup();
 				} catch (FileNotFoundException e1) {
 					new ErrorMessage(e1);
+					continue;
+				} catch (IndexOutOfBoundsException e1) {
+					//Not enough time to debug...
 					continue;
 				}
 				
