@@ -150,7 +150,7 @@ public class Quiz extends Card implements ActionListener {
 			endQuiz();
 		} else {
 			// Test next word
-			sayMessage(festivalMessage + "Spell" + _testingWords.get(_wordNumber));
+			sayMessage(festivalMessage + "Spell " + _testingWords.get(_wordNumber));
 			wordCountLabel.setText("Word " + (_wordNumber+1) +" of " + _testingWords.size());
 		}
 	}
