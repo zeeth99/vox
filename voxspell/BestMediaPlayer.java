@@ -32,7 +32,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 * @author Max McLaren
 	 */
 	public enum Video {
-		NORMAL(FileAccess.MEDIAFOLDER+"/reward.avi"), NEGATIVE(FileAccess.MEDIAFOLDER+"/negative_reward.avi");
+		NORMAL(FileAccess.VIDEOFOLDER+"/reward.avi"), NEGATIVE(FileAccess.VIDEOFOLDER+"/negative_reward.avi");
 		String _file;
 
 		Video(String file) {

@@ -75,7 +75,7 @@ public class CategorySelect extends Card implements ActionListener{
 		fileSelect.addActionListener(this);
 		add(fileSelect);
 		
-		ImageIcon fileSelectIcon = new ImageIcon(FileAccess.MEDIAFOLDER+"/Add_List.png");
+		ImageIcon fileSelectIcon = new ImageIcon(FileAccess.getMedia("Add_List.png"));
 		fileSelect.setLayout(new BorderLayout());
 		fileSelect.add(new JLabel(fileSelectIcon), BorderLayout.WEST);
 

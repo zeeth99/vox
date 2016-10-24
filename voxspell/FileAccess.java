@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class FileAccess {
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
 	final public static File MEDIAFOLDER = new File(".media");
+	final public static String MEDIA = ".media";
 	final private static String NL = System.getProperty("line.separator");
 
 	/**
@@ -133,7 +135,7 @@ public class FileAccess {
 	 * Create all necessary folders and 
 	 */
 	public static void createFiles() {
-		File[] folders = {WORDFOLDER, STATSFOLDER, FESTIVALFOLDER, MEDIAFOLDER};
+		File[] folders = {WORDFOLDER, STATSFOLDER, FESTIVALFOLDER};
 		for (File f : folders)
 			if (!f.isDirectory())
 				f.mkdir();
@@ -191,6 +193,10 @@ public class FileAccess {
 		return true;
 	}
 
+	public static URL getMedia(String media) {
+		return FileAccess.class.getResource(MEDIA+"/"+media);
+	}
+	
 	public static void clearStats() {
 		for (File f : STATSFOLDER.listFiles())
 			for (File f1 : f.listFiles())
