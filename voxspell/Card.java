@@ -48,7 +48,7 @@ public abstract class Card extends JPanel implements ActionListener {
 		heading.setBounds(0, 0, 500, 60);
 		menuButton = new JButton("Menu");
 		menuButton.setBounds(12, 15, 73, 30);
-		menuButton.setToolTipText("Return to the menu. Alternate: Esc");
+		menuButton.setToolTipText("<html>Return to the menu.<br>Alternate: Esc</html>");
 		menuButton.addActionListener(this);
 		menuButton.setFocusable(false);
 
