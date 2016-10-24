@@ -50,7 +50,7 @@ public class Stats extends Card {
 		statsPanel.model.setRowCount(0);
 		SortedListModel<StatsList> listModel = (SortedListModel<StatsList>)list.getModel();
 		listModel.clear();
-		addFolderToList(FileAccess.STATSFOLDER, listModel);
+		addFolderToList(new File(FileAccess.STATSFOLDER), listModel);
 		list.addListSelectionListener(statsPanel);
 	}
 	

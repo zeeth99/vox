@@ -87,7 +87,7 @@ public class CategorySelect extends Card implements ActionListener{
 	 */
 	public void setupListModel() {
 		listModel.clear();
-		for (File f : FileAccess.WORDFOLDER.listFiles()) {
+		for (File f : new File(FileAccess.WORDFOLDER).listFiles()) {
 			try {
 				Scanner sc = new Scanner(f);
 				String str;

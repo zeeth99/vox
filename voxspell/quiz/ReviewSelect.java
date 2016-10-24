@@ -58,7 +58,7 @@ public class ReviewSelect extends CategorySelect {
 	@Override
 	public void setupListModel() {
 		listModel.clear();
-		for (File f : FileAccess.STATSFOLDER.listFiles())
+		for (File f : new File(FileAccess.STATSFOLDER).listFiles())
 			for (File f1 : f.listFiles())
 				if (f1.getName().endsWith(".recent") && f1.length() > 0){
 					ReviewList reviewList = new ReviewList(f1);

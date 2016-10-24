@@ -23,11 +23,11 @@ import voxspell.quiz.WordList;
  */
 public class FileAccess {
 
-	final public static File WORDFOLDER = new File("wordlists");
-	final public static File STATSFOLDER = new File(".history");
-	final public static File FESTIVALFOLDER = new File(".festival");
-	final public static File MEDIAFOLDER = new File(".media");
-	final public static String MEDIA = ".media";
+	final public static String WORDFOLDER = "wordlists/";
+	final public static String STATSFOLDER = ".history/";
+	final public static String FESTIVALFOLDER = ".festival/";
+	final public static String VIDEOFOLDER = ".reward_videos/";
+	final public static String MEDIA = ".media/";
 	final private static String NL = System.getProperty("line.separator");
 
 	/**
@@ -42,11 +42,11 @@ public class FileAccess {
 		// a folder is created for the stats for each wordlist file.
 		try {
 			boolean wordFound = false;
-			File folder = new File(".history/"+w.file());
+			File folder = new File(STATSFOLDER+w.file());
 			if (!folder.isDirectory())
 				folder.mkdir();
-			File tempFile = new File(".history/.tempFile");
-			File inputFile = new File(".history/"+w+".stats");
+			File tempFile = new File(STATSFOLDER+".tempFile");
+			File inputFile = new File(STATSFOLDER+w+".stats");
 			inputFile.createNewFile();
 			String currentLine;
 
@@ -96,8 +96,8 @@ public class FileAccess {
 		// The rightmost number represents the most recent attempt. 
 		try {
 			boolean wordFound = false;
-			File tempFile = new File(".history/.tempFile");
-			File inputFile = new File(".history/"+w+".recent");
+			File tempFile = new File(STATSFOLDER+".tempFile");
+			File inputFile = new File(STATSFOLDER+w+".recent");
 			inputFile.createNewFile();
 			String currentLine;
 
@@ -135,10 +135,12 @@ public class FileAccess {
 	 * Create all necessary folders and 
 	 */
 	public static void createFiles() {
-		File[] folders = {WORDFOLDER, STATSFOLDER, FESTIVALFOLDER};
-		for (File f : folders)
+		String[] folders = {WORDFOLDER, STATSFOLDER, FESTIVALFOLDER};
+		for (String string : folders) {
+			File f = new File(string);
 			if (!f.isDirectory())
 				f.mkdir();
+		}
 		try {
 			if (Festival.SCHEME_FILE.createNewFile()) {
 				List<String> linesToWrite = new ArrayList<>();
@@ -158,7 +160,7 @@ public class FileAccess {
 		int returnValue = chooser.showOpenDialog(chooser);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File fromFile = chooser.getSelectedFile();
-			File toFile = new File(WORDFOLDER+"/"+fromFile.getName());
+			File toFile = new File(WORDFOLDER+fromFile.getName());
 			copyFile(fromFile, toFile);
 		}
 	}
@@ -194,11 +196,11 @@ public class FileAccess {
 	}
 
 	public static URL getMedia(String media) {
-		return FileAccess.class.getResource(MEDIA+"/"+media);
+		return FileAccess.class.getResource(MEDIA+media);
 	}
 	
 	public static void clearStats() {
-		for (File f : STATSFOLDER.listFiles())
+		for (File f : new File(STATSFOLDER).listFiles())
 			for (File f1 : f.listFiles())
 				f1.delete();
 	}
