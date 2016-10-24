@@ -56,10 +56,7 @@ public class WordList extends ArrayList<String> implements Comparable<WordList>{
 	}
 
 	public String toString() {
-		String s = _file+"/"+_category;
-		if (_file.toString().startsWith("wordlists"))
-			s = s.substring(10);
-		return s;
+		return (_file+"/"+_category).substring(10);
 	}
 
 	public String category() {
