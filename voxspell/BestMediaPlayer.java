@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -55,6 +57,13 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 */
 	@SuppressWarnings("serial")
 	public BestMediaPlayer(Video filter) {
+		// Stop messages from VLCJ.
+		PrintStream err = System.err;
+		System.setErr(new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+			}
+		}));
 		_filter = filter;
 
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
@@ -110,6 +119,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 		cancel(true);
 		_video.stop();
 		mediaPlayerComponent.release();
+		System.setErr(err);
 	}
 
 	/**
