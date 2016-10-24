@@ -44,7 +44,7 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 		};
 		((TableRowSorter<?>) table.getRowSorter()).setComparator(2, stringIntegerComparator);
 		((TableRowSorter<?>) table.getRowSorter()).setComparator(3, stringIntegerComparator);
-		
+
 		setViewportView(table);
 		listOfDisplayedCategories = new ArrayList<StatsList>();
 	}
@@ -70,7 +70,7 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 					//Not enough time to debug...
 					continue;
 				}
-				
+
 				// If category is selected and wasn't previously
 				// Add all words from this category
 				if (list.isSelectedIndex(i) && !listOfDisplayedCategories.contains(sl)) {
@@ -78,13 +78,13 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 					for (String[] s : sl.statsInfo())
 						model.addRow(s);
 				}
-				
+
 				// If category isn't selected and was previously
 				// Remove all rows for words in this category
 				if (!list.isSelectedIndex(i) && listOfDisplayedCategories.contains(sl)) {
 					listOfDisplayedCategories.remove(sl);
 					for (String word : sl.wordList())
-						for (int row = 0; row < model.getRowCount(); row++) 
+						for (int row = 0; row < model.getRowCount(); row++)
 							if (word.equals(model.getValueAt(row, 0)))
 								model.removeRow(row);
 				}

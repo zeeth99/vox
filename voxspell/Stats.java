@@ -53,7 +53,7 @@ public class Stats extends Card {
 		addFolderToList(new File(FileAccess.STATSFOLDER), listModel);
 		list.addListSelectionListener(statsPanel);
 	}
-	
+
 	/**
 	 * Add statistics from all files in the directory. Recursive.
 	 * @param directory - The directory to look for stats files in

@@ -7,13 +7,13 @@ import java.util.Scanner;
 import voxspell.ErrorMessage;
 
 /**
- * 
+ *
  * @author Max McLaren
  *
  */
 @SuppressWarnings("serial")
 public class ReviewList extends WordList {
-	
+
 	int _maximumScore;
 
 	public ReviewList(File f, String category) {
@@ -41,7 +41,7 @@ public class ReviewList extends WordList {
 			new ErrorMessage(e);
 		}
 	}
-	
+
 	public void setup(int i) {
 		_maximumScore = i;
 		setup();

@@ -5,11 +5,11 @@ import java.io.FileNotFoundException;
 import javax.swing.JOptionPane;
 
 /**
- * This class creates error message using the Swing JOptionPane class. 
+ * This class creates error message using the Swing JOptionPane class.
  * @author Max McLaren
  */
 public class ErrorMessage {
-	
+
 	/**
 	 * Creates an error message with the given message and title.
 	 * @param message - The message to be displayed in the error message

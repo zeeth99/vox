@@ -53,7 +53,7 @@ public class Quiz extends Card implements ActionListener {
 	 */
 	public Quiz(SpellingAid sp) {
 		super(sp, "New Quiz");
-		
+
 		wordCountLabel = new JLabel("Word 0 out of 0");
 		wordCountLabel.setBounds(125, 90, 150, 15);
 		feedbackPanel = new JLabel("0 out of 0 correct");
@@ -65,14 +65,14 @@ public class Quiz extends Card implements ActionListener {
 		repeatWord.setToolTipText("<html>Hear the word again.<br>Alternate: Ctrl-Space</html>");
 		repeatWord.addActionListener(this);
 		repeatWord.setFocusable(false);
-		
+
 		// Button to submit a proposed spelling of the word
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
 		submitWord.setToolTipText("<html>Submit spelling attempt.<br>Alternate: Enter</html>");
 		submitWord.addActionListener(this);
 		submitWord.setFocusable(false);
-		
+
 		// Box to type the word to spell
 		inputBox = new JFormattedTextField();
 		inputBox.setBounds(125, 120, 250, 30);
@@ -89,11 +89,11 @@ public class Quiz extends Card implements ActionListener {
 					e.consume();
 			}
 		});
-		
+
 		// Shows a tick or a cross after attempting a word
 		correctIncorrect = new JLabel("");
 		correctIncorrect.setBounds(375, 111, 48, 48);
-		
+
 		add(correctIncorrect);
 		add(inputBox);
 		add(repeatWord);
@@ -143,7 +143,7 @@ public class Quiz extends Card implements ActionListener {
 				_firstAttempt = false;
 				sayMessage(festivalMessage+"The word is " + word + ":.:" + word);
 				return;
-			} 
+			}
 		}
 		FileAccess.updateStats(correct, word, _wordlist);
 
@@ -215,7 +215,7 @@ public class Quiz extends Card implements ActionListener {
 		String[] options = {"Repeat Level", "Play Victory Video", "Return to Main Menu"};
 		String message;
 		String heading;
-		if ((_wordsCorrect == _testingWords.size()-1 && _testingWords.size() > 2) 
+		if ((_wordsCorrect == _testingWords.size()-1 && _testingWords.size() > 2)
 				|| _wordsCorrect == _testingWords.size()) {
 			message = "You have completed this level!\nWhat would you like to do?";
 			heading = "Congratulations!";
@@ -227,7 +227,7 @@ public class Quiz extends Card implements ActionListener {
 		}
 		endQuizOptions(message, heading, options, options.length-1);
 	}
-	
+
 	/**
 	 * Gives user options as level ends.
 	 * @param message - the message to display in the JOptionPane
@@ -237,7 +237,7 @@ public class Quiz extends Card implements ActionListener {
 	 */
 	protected void endQuizOptions(String message, String heading, String[] options, int menuOption) {
 		// Give option for video reward.
-		int option = JOptionPane.showOptionDialog(this, message, heading, JOptionPane.DEFAULT_OPTION, 
+		int option = JOptionPane.showOptionDialog(this, message, heading, JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == menuOption || option == JOptionPane.CLOSED_OPTION){
 			spellingAid.returnToMenu();
