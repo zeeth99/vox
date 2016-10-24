@@ -18,6 +18,7 @@ import voxspell.SpellingAid;
 import voxspell.BestMediaPlayer;
 import voxspell.BestMediaPlayer.Video;
 import voxspell.Card;
+import voxspell.ErrorMessage;
 import voxspell.FileAccess;
 
 /**
@@ -173,8 +174,9 @@ public class Quiz extends Card implements ActionListener {
 
 		_testingWords = _wordlist.randomWords(QUIZ_SIZE);
 
-		if (_testingWords == null) {
+		if (_testingWords.size() == 0) {
 			spellingAid.returnToMenu();
+			new ErrorMessage("The category chosen is empty.\nYou will be returned to the menu.", "Empty Quiz");
 			return;
 		}
 

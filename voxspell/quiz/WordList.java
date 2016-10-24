@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import voxspell.ErrorMessage;
+
 @SuppressWarnings("serial")
 public class WordList extends ArrayList<String> implements Comparable<WordList>{
 	protected String _category;
@@ -26,9 +28,9 @@ public class WordList extends ArrayList<String> implements Comparable<WordList>{
 				break;
 			}
 		}
-		if (!categoryExists) {
-			//TODO: category not found !!
-		}
+		if (!categoryExists)
+			new ErrorMessage("One or more word list files have been altered and a category has gone missing.\n"
+					+"The "+ _category + "category cannot be quizzed.", "Category Missing");
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line.charAt(0) == '%')
