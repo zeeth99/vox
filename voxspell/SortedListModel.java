@@ -14,7 +14,7 @@ import javax.swing.AbstractListModel;
 public class SortedListModel<E extends Comparable<? super E>> extends AbstractListModel<E> {
 
 	private List<E> list;
-	
+
 	public SortedListModel() {
 		super();
 		list = new ArrayList<E>();
@@ -29,18 +29,18 @@ public class SortedListModel<E extends Comparable<? super E>> extends AbstractLi
 	public int getSize() {
 		return list.size();
 	}
-	
+
 	public void clear() {
 		fireIntervalRemoved(this, 0, getSize());
 		list.clear();
 	}
-	
+
 	public void addElement(E e) {
 		list.add(e);
 		fireIntervalAdded(this, getSize()-1, getSize()-1);
 		sort();
 	}
-	
+
 	public boolean contains(Object o) {
 		return list.contains(o);
 	}

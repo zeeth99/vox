@@ -25,7 +25,7 @@ import voxspell.quiz.Festival;
 @SuppressWarnings("serial")
 public class Settings extends Card implements ActionListener {
 
-	public static final String DEFAULT_VOICE = "(voice_kal_diphone)"; 
+	public static final String DEFAULT_VOICE = "(voice_kal_diphone)";
 	public static final String NZ_VOICE = "(voice_akl_nz_jdt_diphone)";
 
 	private JButton clearStatistics;
@@ -42,10 +42,10 @@ public class Settings extends Card implements ActionListener {
 
 		voiceSettingsLabel = new JLabel("Select a voice setting:");
 		voiceSettingsLabel.setBounds(100, 80, 300, 20);
-		
+
 		ImageIcon voiceSettingsIcon = new ImageIcon(FileAccess.getMedia("Microphone.png"));
 		voiceSettingsLabel.setIcon(voiceSettingsIcon);
-		
+
 		// Drop down menu to select the voice for Festival to use
 		voiceSettings = new JComboBox<String>();
 		voiceSettings.addItem("Default");
@@ -75,22 +75,22 @@ public class Settings extends Card implements ActionListener {
 		clearStatistics.setBounds(100, 270, 300, 50);
 		clearStatistics.setToolTipText("Delete all spelling statistics.");
 		clearStatistics.addActionListener(this);
-		
+
 		ImageIcon clearStatisticsIcon = new ImageIcon(FileAccess.getMedia("Delete_2x.png"));
 		clearStatistics.setLayout(new BorderLayout());
 		clearStatistics.add(new JLabel(clearStatisticsIcon), BorderLayout.WEST);
-		
+
 		// Button to add a new word list
 		addNewWord = new JButton("Add New Word List");
 		addNewWord.setFont(new Font("Dialog", Font.BOLD, 16));
 		addNewWord.setBounds(100, 210, 300, 50);
 		addNewWord.setToolTipText("Import an external word list.");
 		addNewWord.addActionListener(this);
-		
+
 		ImageIcon addNewWordIcon = new ImageIcon(FileAccess.getMedia("Add_List_2x.png"));
 		addNewWord.setLayout(new BorderLayout());
 		addNewWord.add(new JLabel(addNewWordIcon), BorderLayout.WEST);
-		
+
 		add(clearStatistics);
 		add(voiceSettings);
 		add(voiceSettingsLabel);
@@ -110,12 +110,12 @@ public class Settings extends Card implements ActionListener {
 	 * Changes the voice to use in quizzes to setting.
 	 * @param setting - The voice to be used
 	 */
-	private void changeVoiceSetting(String setting) { 
-		try { 
-			List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath()); 
-			lines.set(0, setting); 
-			Files.write(Festival.SCHEME_FILE.toPath(), lines); 
-		} catch (IOException e) { 
+	private void changeVoiceSetting(String setting) {
+		try {
+			List<String> lines = Files.readAllLines(Festival.SCHEME_FILE.toPath());
+			lines.set(0, setting);
+			Files.write(Festival.SCHEME_FILE.toPath(), lines);
+		} catch (IOException e) {
 			new ErrorMessage(e);
 		}
 	}

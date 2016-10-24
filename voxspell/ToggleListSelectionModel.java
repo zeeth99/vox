@@ -4,7 +4,7 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.JList;
 
 /**
- * This ListSelectionModel allows the user to click on an element in the list to select or 
+ * This ListSelectionModel allows the user to click on an element in the list to select or
  * deselect it without affecting the selection state of the other elements in the list.
  * @author Max McLaren
  */
@@ -30,5 +30,5 @@ public class ToggleListSelectionModel extends DefaultListSelectionModel {
 		} else {
 			_list.removeSelectionInterval(i1, i1);
 		}
-	}  
+	}
 }

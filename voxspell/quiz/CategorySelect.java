@@ -55,7 +55,7 @@ public class CategorySelect extends Card implements ActionListener{
 						spellingAid.startQuiz(list.getSelectedValue());
 			}
 		});
-		
+
 		// List of categories
 		scrollPane = new JScrollPane(list);
 		scrollPane.setBounds(12, 55, 476, 265);
@@ -67,14 +67,14 @@ public class CategorySelect extends Card implements ActionListener{
 		startQuiz.setToolTipText("Start a quiz with the selected category.");
 		startQuiz.addActionListener(this);
 		add(startQuiz);
-		
+
 		// Button to add an external file to the list of wordlists.
 		fileSelect = new JButton("Select Other File");
 		fileSelect.setBounds(12, 320, 200, 30);
 		fileSelect.setToolTipText("Import an external word list.");
 		fileSelect.addActionListener(this);
 		add(fileSelect);
-		
+
 		ImageIcon fileSelectIcon = new ImageIcon(FileAccess.getMedia("Add_List.png"));
 		fileSelect.setLayout(new BorderLayout());
 		fileSelect.add(new JLabel(fileSelectIcon), BorderLayout.WEST);

@@ -91,7 +91,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			UIManager.setLookAndFeel(LookAndFeel);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {}
-		
+
 		setResizable(false);
 		setTitle("VOXSPELL");
 		setSize(500, 400);
@@ -132,7 +132,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			addCard(quiz);
 			addCard(categorySelect);
 			viewCard(categorySelect);
-		} 
+		}
 		// Review Quiz
 		if (source == menu.reviewQuiz) {
 			quiz = new ReviewQuiz(this);

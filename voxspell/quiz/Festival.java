@@ -32,9 +32,9 @@ public class Festival extends SwingWorker<Void,Void> {
 	 */
 	@Override
 	protected Void doInBackground() throws Exception {
-		String[] messageParts = _message.split(":"); 
-		addMessageToScheme(messageParts); 
-		String cmd = "festival -b "+ SCHEME_FILE; 
+		String[] messageParts = _message.split(":");
+		addMessageToScheme(messageParts);
+		String cmd = "festival -b "+ SCHEME_FILE;
 		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
 		try {
 			Process process = pb.start();
@@ -54,20 +54,20 @@ public class Festival extends SwingWorker<Void,Void> {
 	}
 
 	/**
-	 * Adds the provided message parts to the scheme file. 
-	 * The scheme file contains the words to speak as well as configuration for Festival. 
+	 * Adds the provided message parts to the scheme file.
+	 * The scheme file contains the words to speak as well as configuration for Festival.
 	 * @param message - A String representing the message to be spoken
 	 */
-	private void addMessageToScheme(String[] message) { 
-		try {   
-			List<String> linesToWrite = new ArrayList<>(); 
+	private void addMessageToScheme(String[] message) {
+		try {
+			List<String> linesToWrite = new ArrayList<>();
 			String firstLine = Files.readAllLines(SCHEME_FILE.toPath()).get(0);
-			linesToWrite.add(firstLine); 
+			linesToWrite.add(firstLine);
 			for (String s : message)
-				linesToWrite.add("(SayText \""+s+"\")"); 
-			Files.write(SCHEME_FILE.toPath(), linesToWrite); 
+				linesToWrite.add("(SayText \""+s+"\")");
+			Files.write(SCHEME_FILE.toPath(), linesToWrite);
 		} catch (IOException e) {
 			new ErrorMessage(e);
-		} 
-	} 
+		}
+	}
 }

@@ -19,7 +19,7 @@ public class StatsList extends ArrayList<WordStats> implements Comparable<StatsL
 
 	public void setup() throws FileNotFoundException {
 		if (size() > 0) return;
-		
+
 		Scanner sc = new Scanner(_stats);
 		while (sc.hasNextLine()) {
 			WordStats w = new WordStats(sc.next());
@@ -45,7 +45,7 @@ public class StatsList extends ArrayList<WordStats> implements Comparable<StatsL
 	public String toString() {
 		return _name;
 	}
-	
+
 	public ArrayList<String> wordList() {
 		ArrayList<String> list = new ArrayList<String>();
 		for (WordStats ws : this)

@@ -93,7 +93,7 @@ public class FileAccess {
 		// Recent stats are stored in the following format:
 		// {word} {0|1} {0|1} {0|1}
 		// 1 represents a successful attempt on the word, 0 represents a failed attempt
-		// The rightmost number represents the most recent attempt. 
+		// The rightmost number represents the most recent attempt.
 		try {
 			boolean wordFound = false;
 			File tempFile = new File(STATSFOLDER+".tempFile");
@@ -108,7 +108,7 @@ public class FileAccess {
 				if (!wordFound && currentLine.contains(word+" ")) {
 					String[] brokenLine = currentLine.split(" ");
 					int i = 0;
-					if (correct) 
+					if (correct)
 						i = 1;
 					writer.write(brokenLine[0] + " " + brokenLine[2] + " " + brokenLine[3] + " " + i + NL);
 					wordFound = true;
@@ -118,9 +118,9 @@ public class FileAccess {
 			}
 			if (!wordFound && correct)
 				writer.write(word + " 0 1 1" + NL);
-			if (!wordFound && !correct) 
+			if (!wordFound && !correct)
 				writer.write(word + " 0 0 0" + NL);
-			
+
 			reader.close();
 			writer.close();
 			tempFile.renameTo(inputFile);
@@ -132,7 +132,7 @@ public class FileAccess {
 	}
 
 	/**
-	 * Create all necessary folders and 
+	 * Create all necessary folders and
 	 */
 	public static void createFiles() {
 		String[] folders = {WORDFOLDER, STATSFOLDER, FESTIVALFOLDER};
@@ -145,11 +145,11 @@ public class FileAccess {
 			if (Festival.SCHEME_FILE.createNewFile()) {
 				List<String> linesToWrite = new ArrayList<>();
 				linesToWrite.add(Settings.DEFAULT_VOICE);
-				Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite); 				
+				Files.write(Festival.SCHEME_FILE.toPath(), linesToWrite);
 			}
 		} catch (IOException e) {
 			new ErrorMessage(e);
-		} 
+		}
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class FileAccess {
 	 * @return true if the file was successfully copied, false otherwise
 	 */
 	private static boolean copyFile(File from, File to) {
-		if (!from.isFile()) 
+		if (!from.isFile())
 			return false;
 
 		try {
@@ -198,7 +198,7 @@ public class FileAccess {
 	public static URL getMedia(String media) {
 		return FileAccess.class.getResource(MEDIA+media);
 	}
-	
+
 	public static void clearStats() {
 		for (File f : new File(STATSFOLDER).listFiles())
 			for (File f1 : f.listFiles())

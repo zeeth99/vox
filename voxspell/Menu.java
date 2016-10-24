@@ -48,19 +48,19 @@ public class Menu extends Card implements ActionListener {
 		newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 		newSpellingQuiz.setBounds(100, 90, 300, 50);
 		newSpellingQuiz.addActionListener((ActionListener) sp);
-				
+
 		// Button to review mistakes
 		reviewQuiz = new JButton("Review Mistakes");
 		reviewQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 		reviewQuiz.setBounds(100, 150, 300, 50);
 		reviewQuiz.addActionListener((ActionListener) sp);
-		
+
 		// Button to go to stats screen
 		viewStatistics = new JButton("View Statistics");
 		viewStatistics.setFont(new Font("Dialog", Font.BOLD, 16));
 		viewStatistics.setBounds(100, 210, 300, 50);
 		viewStatistics.addActionListener(sp);
-		
+
 		// Button to go to settings screen
 		settings = new JButton("Settings");
 		settings.setFont(new Font("Dialog", Font.BOLD, 16));

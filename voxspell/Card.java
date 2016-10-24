@@ -30,7 +30,7 @@ public abstract class Card extends JPanel implements ActionListener {
 	 */
 	public Card(SpellingAid sp, String str) {
 		spellingAid = sp;
-		
+
 		// Use the 'Esc' button to return to menu.
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Esc");
 		getActionMap().put("Esc", new AbstractAction() {
