@@ -30,7 +30,7 @@ public class WordList extends ArrayList<String> implements Comparable<WordList>{
 		}
 		if (!categoryExists)
 			new ErrorMessage("One or more word list files have been altered and a category has gone missing.\n"
-					+"The "+ _category + "category cannot be quizzed.", "Category Missing");
+					+"The "+ _category + " category cannot be quizzed.", "Category Missing");
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line.charAt(0) == '%')
