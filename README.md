@@ -32,5 +32,5 @@ Ray Akau'ola
 Open source icons from:
 	design.google.com/icons
 	icons8.com
-
-
+Default reward video:
+	(c) copyright 2008, Blender Foundation / www.bigbuckbunny.org
