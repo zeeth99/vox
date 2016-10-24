@@ -43,7 +43,7 @@ public class Settings extends Card implements ActionListener {
 		voiceSettingsLabel = new JLabel("Select a voice setting:");
 		voiceSettingsLabel.setBounds(100, 80, 300, 20);
 		
-		ImageIcon voiceSettingsIcon = new ImageIcon("media/Microphone.png");
+		ImageIcon voiceSettingsIcon = new ImageIcon(FileAccess.MEDIAFOLDER+"/Microphone.png");
 		voiceSettingsLabel.setIcon(voiceSettingsIcon);
 		
 		// Drop down menu to select the voice for Festival to use
@@ -76,7 +76,7 @@ public class Settings extends Card implements ActionListener {
 		clearStatistics.setToolTipText("Delete all spelling statistics.");
 		clearStatistics.addActionListener(this);
 		
-		ImageIcon clearStatisticsIcon = new ImageIcon("media/Delete_2x.png");
+		ImageIcon clearStatisticsIcon = new ImageIcon(FileAccess.MEDIAFOLDER+"/Delete_2x.png");
 		clearStatistics.setLayout(new BorderLayout());
 		clearStatistics.add(new JLabel(clearStatisticsIcon), BorderLayout.WEST);
 		
@@ -87,7 +87,7 @@ public class Settings extends Card implements ActionListener {
 		addNewWord.setToolTipText("Import an external word list.");
 		addNewWord.addActionListener(this);
 		
-		ImageIcon addNewWordIcon = new ImageIcon("media/Add_List_2x.png");
+		ImageIcon addNewWordIcon = new ImageIcon(FileAccess.MEDIAFOLDER+"/Add_List_2x.png");
 		addNewWord.setLayout(new BorderLayout());
 		addNewWord.add(new JLabel(addNewWordIcon), BorderLayout.WEST);
 		

@@ -25,7 +25,7 @@ public class FileAccess {
 	final public static File WORDFOLDER = new File("wordlists");
 	final public static File STATSFOLDER = new File(".history");
 	final public static File FESTIVALFOLDER = new File(".festival");
-	final public static File MEDIAFOLDER = new File("media");
+	final public static File MEDIAFOLDER = new File(".media");
 	final private static String NL = System.getProperty("line.separator");
 
 	/**

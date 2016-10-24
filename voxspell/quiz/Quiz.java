@@ -30,8 +30,8 @@ import voxspell.FileAccess;
 public class Quiz extends Card implements ActionListener {
 
 	private static final int QUIZ_SIZE = 10;
-	private static final ImageIcon CORRECT = new ImageIcon("media/Correct.png");
-	private static final ImageIcon INCORRECT = new ImageIcon("media/Incorrect.png");
+	private static final ImageIcon CORRECT = new ImageIcon(FileAccess.MEDIAFOLDER+"/Correct.png");
+	private static final ImageIcon INCORRECT = new ImageIcon(FileAccess.MEDIAFOLDER+"/Incorrect.png");
 
 	private JLabel wordCountLabel;
 	protected JFormattedTextField inputBox;
