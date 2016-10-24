@@ -26,7 +26,7 @@ public class FileAccess {
 	final public static String WORDFOLDER = "wordlists/";
 	final public static String STATSFOLDER = ".history/";
 	final public static String FESTIVALFOLDER = ".festival/";
-	final public static String VIDEOFOLDER = ".reward_videos/";
+	final public static String VIDEOFOLDER = "reward_videos/";
 	final public static String MEDIA = ".media/";
 	final private static String NL = System.getProperty("line.separator");
 
