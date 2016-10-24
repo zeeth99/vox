@@ -34,7 +34,7 @@ public class Quiz extends Card implements ActionListener {
 	private static final ImageIcon INCORRECT = new ImageIcon("media/Incorrect.png");
 
 	private JLabel wordCountLabel;
-	private JFormattedTextField inputBox;
+	protected JFormattedTextField inputBox;
 	private JLabel correctIncorrect;
 	private JLabel feedbackPanel;
 	private JButton repeatWord;
@@ -191,7 +191,7 @@ public class Quiz extends Card implements ActionListener {
 	 * Makes a text to speech call with Festival.
 	 * @param message - A string representing the message for Festival to say
 	 */
-	private void sayMessage(String message) {
+	protected void sayMessage(String message) {
 		setButtonsEnabled(false);
 		(new Festival(message, this)).execute();
 	}

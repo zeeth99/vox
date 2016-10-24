@@ -1,5 +1,7 @@
 package voxspell.quiz;
 
+import javax.swing.JOptionPane;
+
 import voxspell.SpellingAid;
 
 /**
@@ -19,14 +21,13 @@ public class ReviewQuiz extends Quiz {
 	}
 
 	/**
-	 * TODO
+	 * Shows the user how to spell the word if they spelled it wrong twice.
+	 * @param input - The attempted spelling of the word.
 	 */
 	protected void checkWord(String input) {
-		if (!input.equalsIgnoreCase(_testingWords.get(_wordNumber)) && !_firstAttempt) {
-			// spell it out? 
-			// write it out?
-			// both?
-		}
+		String word = _testingWords.get(_wordNumber);
+		if (!input.equalsIgnoreCase(word) && !_firstAttempt)
+			JOptionPane.showMessageDialog(null, "The word was: "+word, "\""+word+"\"", JOptionPane.PLAIN_MESSAGE);
 		super.checkWord(input);
 	}
 
