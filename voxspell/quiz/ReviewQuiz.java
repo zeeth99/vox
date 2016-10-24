@@ -1,8 +1,5 @@
 package voxspell.quiz;
 
-import java.io.File;
-import javax.swing.JOptionPane;
-
 import voxspell.SpellingAid;
 
 /**
@@ -33,22 +30,13 @@ public class ReviewQuiz extends Quiz {
 		super.checkWord(input);
 	}
 
-	protected void levelCompleteAction() {
-		File f = new File(".history/"+_wordlist+".review");
-		if (f.length() > 0) {
-			String[] options = new String[] {"Repeat level","Return to Main Menu"};
-			int option = JOptionPane.showOptionDialog(this, "There are still some words left to review on this level\nTo progress to further levels"
-					+ ", all words on this level must be cleared", "But wait.. there's more", 
-					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			if (option == 0) {
-				startQuiz(_wordlist);
-			} else {
-				spellingAid.returnToMenu();
-			}
-		} else {
-			JOptionPane.showMessageDialog(this, "You have completed review mode", "Congratulations!", JOptionPane.PLAIN_MESSAGE);
-			spellingAid.returnToMenu();
-		}
+	protected void endQuiz() {
+		// If the word list is 1 or 2 words long, the user needs to get full marks to 'pass'
+		// Otherwise they need to get at most one word wrong.
+		String[] options = {"Return to Main Menu"};
+		String message = "You have finished this review Quiz.";
+		String heading = "End of Review Quiz";
+		endQuizOptions(message, heading, options, options.length-1);
 	}
 
 }
