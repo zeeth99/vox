@@ -54,7 +54,8 @@ public class Festival extends SwingWorker<Void,Void> {
 	}
 
 	/**
-	 * TODO document this
+	 * Adds the provided message parts to the scheme file. 
+	 * The scheme file contains the words to speak as well as configuration for Festival. 
 	 * @param message - A String representing the message to be spoken
 	 */
 	private void addMessageToScheme(String[] message) { 
