@@ -118,7 +118,7 @@ public class BestMediaPlayer extends SwingWorker<Void,Void> {
 	 */
 	@Override
 	protected Void doInBackground() throws Exception {
-		if (!negativeExists()) {
+		if (!negativeExists() && _filter == Video.NEGATIVE) {
 			String cmd = "ffmpeg -y -i "+Video.NORMAL+" -vf negate "+Video.NEGATIVE;
 			ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
 			try {
