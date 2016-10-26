@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 @SuppressWarnings("serial")
-public class StatsList extends ArrayList<WordStats> implements Comparable<StatsList> {
+public class StatsCategory extends ArrayList<WordStats> implements Comparable<StatsCategory> {
 	private File _stats;
 	private File _recent;
 	private String _name;
 
-	public StatsList(File directory, String name) {
+	public StatsCategory(File directory, String name) {
 		_name = name;
 		_stats = new File(directory+"/"+name+".stats");
 		_recent = new File(directory+"/"+name+".recent");
@@ -68,7 +68,7 @@ public class StatsList extends ArrayList<WordStats> implements Comparable<StatsL
 	}
 
 	@Override
-	public int compareTo(StatsList arg0) {
+	public int compareTo(StatsCategory arg0) {
 		return _name.compareTo(arg0._name);
 	}
 

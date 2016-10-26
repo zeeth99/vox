@@ -10,10 +10,10 @@ import voxspell.SortedListModel;
 import voxspell.ToggleListSelectionModel;
 
 @SuppressWarnings("serial")
-public class StatsCategoryList extends JList<StatsList> {
+public class StatsCategoryList extends JList<StatsCategory> {
 
 	public StatsCategoryList() {
-		super(new SortedListModel<StatsList>());
+		super(new SortedListModel<StatsCategory>());
 		setSelectionModel(new ToggleListSelectionModel(this));
 		setup();
 	}
@@ -26,7 +26,7 @@ public class StatsCategoryList extends JList<StatsList> {
 		for (ListSelectionListener l : listeners)
 			removeListSelectionListener(l);
 		
-		SortedListModel<StatsList> listModel = (SortedListModel<StatsList>)getModel();
+		SortedListModel<StatsCategory> listModel = (SortedListModel<StatsCategory>)getModel();
 		listModel.clear();
 		addFolderToList(new File(FileAccess.STATSFOLDER), listModel);
 		
@@ -39,14 +39,14 @@ public class StatsCategoryList extends JList<StatsList> {
 	 * @param directory - The directory to look for stats files in
 	 * @param listModel - The ListModel to add stats to
 	 */
-	private void addFolderToList(File directory, SortedListModel<StatsList> listModel) {
+	private void addFolderToList(File directory, SortedListModel<StatsCategory> listModel) {
 		for (File f : directory.listFiles()) {
 			if (f.isDirectory()) {
 				addFolderToList(f, listModel);
 			} else {
 				String s = f.getName();
 				if (s.endsWith(".stats") && f.length() > 0)
-					listModel.addElement(new StatsList(directory, s.substring(0, s.length()-6)));
+					listModel.addElement(new StatsCategory(directory, s.substring(0, s.length()-6)));
 			}
 		}
 	}

@@ -14,7 +14,7 @@ import voxspell.SpellingAid;
 public class Stats extends Card {
 
 	private StatsCategoryList list;
-	private StatsPanel statsPanel;
+	private StatsTable statsTable;
 	private JSplitPane splitPane;
 
 	/**
@@ -25,15 +25,15 @@ public class Stats extends Card {
 		super(sp, "Spelling Statistics");
 
 		// The panel with word statistics
-		statsPanel = new StatsPanel();
+		statsTable = new StatsTable();
 
 		// List of all attempted categories
 		list = new StatsCategoryList();
-		list.addListSelectionListener(statsPanel);
+		list.addListSelectionListener(statsTable);
 		setDefaultFocusComponent(list);
 
 		// Splits the screen with the category list on the left and statistics for selected categories on the right
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), new JScrollPane(statsPanel));
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), new JScrollPane(statsTable));
 		splitPane.setBounds(15, 55, 465, 290);
 		splitPane.setDividerLocation(120);
 		add(splitPane);

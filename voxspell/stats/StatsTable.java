@@ -18,15 +18,15 @@ import voxspell.ErrorMessage;
  * @author Max McLaren
  */
 @SuppressWarnings("serial")
-public class StatsPanel extends JTable implements ListSelectionListener {
+public class StatsTable extends JTable implements ListSelectionListener {
 
 	DefaultTableModel model;
-	ArrayList<StatsList> listOfDisplayedCategories;
+	ArrayList<StatsCategory> listOfDisplayedCategories;
 
 	/**
 	 * Set up the GUI
 	 */
-	public StatsPanel() {
+	public StatsTable() {
 		super();
 		String[] columnNames = {"Word", "Score", "Successes", "Attempts"};
 		model = new DefaultTableModel(columnNames, 0);
@@ -34,7 +34,7 @@ public class StatsPanel extends JTable implements ListSelectionListener {
 		setAutoCreateRowSorter(true);
 		setEnabled(false);
 		setupSorting();
-		listOfDisplayedCategories = new ArrayList<StatsList>();
+		listOfDisplayedCategories = new ArrayList<StatsCategory>();
 	}
 
 	private void setupSorting() {
@@ -68,10 +68,10 @@ public class StatsPanel extends JTable implements ListSelectionListener {
 	public void valueChanged(ListSelectionEvent e) {
 		if (!e.getValueIsAdjusting()) {
 			@SuppressWarnings("unchecked")
-			JList<StatsList> list = (JList<StatsList>)e.getSource();
+			JList<StatsCategory> list = (JList<StatsCategory>)e.getSource();
 			// For each category which might have changed selection status
 			for (int i = e.getFirstIndex(); i <= e.getLastIndex(); i++) {
-				StatsList sl;
+				StatsCategory sl;
 				try {
 					sl = list.getModel().getElementAt(i);
 					sl.setup();
