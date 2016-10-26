@@ -175,7 +175,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 			viewCard(quiz);
 			quiz.startQuiz(w);
 		} catch (FileNotFoundException e) {
-			layout.show(cards, menu.toString());
+			viewCard(menu);
 			new ErrorMessage(e);
 		}
 	}
