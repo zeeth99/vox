@@ -88,7 +88,6 @@ public class CategorySelect extends Card implements ActionListener{
 	 * @param listModel - ListModel to add categories to
 	 */
 	public void setupListModel() {
-		listModel.clear();
 		for (File f : new File(FileAccess.WORDFOLDER).listFiles()) {
 			try {
 				Scanner sc = new Scanner(f);
@@ -129,6 +128,10 @@ public class CategorySelect extends Card implements ActionListener{
 	@Override
 	public void onCardShown() {
 		setupListModel();
+	}
+	
+	public void onCardHidden() {
+		listModel.clear();
 	}
 	
 	public String cardName() {
