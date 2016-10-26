@@ -51,8 +51,7 @@ public class CategorySelect extends Card implements ActionListener{
 		list.addKeyListener(new KeyAdapter(){ // Use enter to start a quiz
 			public void keyPressed(KeyEvent e){
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					if (list.getSelectedValue() != null)
-						cardManager.startQuiz(list.getSelectedValue());
+					startQuiz.doClick();
 			}
 		});
 		setDefaultFocusComponent(list);
