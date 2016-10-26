@@ -48,6 +48,7 @@ public class Menu extends Card implements ActionListener {
 		newSpellingQuiz.setFont(new Font("Dialog", Font.BOLD, 16));
 		newSpellingQuiz.setBounds(100, 90, 300, 50);
 		newSpellingQuiz.addActionListener((ActionListener) sp);
+		setDefaultFocusComponent(newSpellingQuiz);
 
 		// Button to review mistakes
 		reviewQuiz = new JButton("Review Mistakes");

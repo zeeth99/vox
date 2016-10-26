@@ -29,11 +29,13 @@ public class ReviewSelect extends CategorySelect {
 		twoStar.setName("2");
 		twoStar.setBounds(12,320,238,30);
 		twoStar.setToolTipText("Change review mode word criterion.");
+		twoStar.setFocusable(false);
 
 		JToggleButton threeStar = new JToggleButton("All words without three stars");
 		threeStar.setName("3");
 		threeStar.setBounds(250,320,238,30);
 		threeStar.setToolTipText("Change review mode word criterion.");
+		threeStar.setFocusable(false);
 
 		listener = new ActionListener() {
 			@Override

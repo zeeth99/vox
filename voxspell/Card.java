@@ -3,10 +3,13 @@ package voxspell;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
@@ -22,6 +25,8 @@ public abstract class Card extends JPanel implements ActionListener {
 
 	protected JLabel heading;
 	protected JButton menuButton;
+	
+	private JComponent defaultFocus;
 
 	/**
 	 * Creates the default screen GUI
@@ -38,6 +43,26 @@ public abstract class Card extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				menuButton.doClick();
 			}
+		});
+		
+		// Give focus to defaultFocus when the Card is shown.
+		addComponentListener(new ComponentListener() {
+
+			@Override
+			public void componentHidden(ComponentEvent arg0) {}
+
+			@Override
+			public void componentMoved(ComponentEvent arg0) {}
+
+			@Override
+			public void componentResized(ComponentEvent arg0) {}
+
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				if (defaultFocus != null)
+					defaultFocus.requestFocusInWindow();
+			}
+			
 		});
 
 		setLayout(null);
@@ -65,6 +90,14 @@ public abstract class Card extends JPanel implements ActionListener {
 			spellingAid.returnToMenu();
 	}
 
+	/**
+	 * Set the component which should be focused on when the card is displayed
+	 * @param arg The JComponent to get the focus
+	 */
+	protected void setDefaultFocusComponent(JComponent arg) {
+		defaultFocus = arg;
+	}
+	
 	/**
 	 * @return A String representing the card subclass
 	 */
