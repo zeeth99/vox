@@ -34,6 +34,7 @@ public class Stats extends Card {
 		list.setSelectionModel(new ToggleListSelectionModel(list));
 		list.addListSelectionListener(statsPanel);
 		setup();
+		setDefaultFocusComponent(list);
 
 		// Splits the screen with the category list on the left and statistics for selected categories on the right
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(list), statsPanel);
