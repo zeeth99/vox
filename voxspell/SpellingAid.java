@@ -154,11 +154,7 @@ public class SpellingAid extends JFrame implements ActionListener {
 	 * @param c - The Card to view
 	 */
 	private void viewCard(Card c) {
-		String cardName = c.cardName();
-		if (cardName.equals(categorySelect.cardName()))
-			((CategorySelect) c).setupListModel();
 		layout.show(cards, c.cardName());
-		//c.transferFocus();
 	}
 
 	/**

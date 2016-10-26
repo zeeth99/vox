@@ -126,6 +126,11 @@ public class CategorySelect extends Card implements ActionListener{
 		}
 	}
 
+	@Override
+	public void onCardShown() {
+		setupListModel();
+	}
+	
 	public String cardName() {
 		return "Category Select";
 	}
