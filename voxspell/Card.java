@@ -3,8 +3,8 @@ package voxspell;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -36,6 +36,7 @@ public abstract class Card extends JPanel implements ActionListener {
 	public Card(SpellingAid sp, String str) {
 		spellingAid = sp;
 
+
 		// Use the 'Esc' button to return to menu.
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Esc");
 		getActionMap().put("Esc", new AbstractAction() {
@@ -46,21 +47,18 @@ public abstract class Card extends JPanel implements ActionListener {
 		});
 		
 		// Give focus to defaultFocus when the Card is shown.
-		addComponentListener(new ComponentListener() {
+		addComponentListener(new ComponentAdapter() {
 
 			@Override
-			public void componentHidden(ComponentEvent arg0) {}
-
-			@Override
-			public void componentMoved(ComponentEvent arg0) {}
-
-			@Override
-			public void componentResized(ComponentEvent arg0) {}
-
-			@Override
-			public void componentShown(ComponentEvent arg0) {
+			public void componentShown(ComponentEvent e) {
+				onCardShown();
 				if (defaultFocus != null)
 					defaultFocus.requestFocusInWindow();
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				onCardHidden();
 			}
 			
 		});
@@ -82,6 +80,20 @@ public abstract class Card extends JPanel implements ActionListener {
 
 		add(heading);
 	}
+
+	/**
+	 * Method for child classes to execute code when the Card is shown.
+	 */
+	protected void onCardShown() {}
+	
+	/**
+	 * Method for child classes to execute code when the Card is hidden.
+	 */
+	protected void onCardHidden() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

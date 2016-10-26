@@ -1,28 +1,26 @@
-package voxspell;
+package voxspell.stats;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import voxspell.quiz.StatsList;
+import voxspell.ErrorMessage;
 
 /**
  * A panel which shows the user statistics on the words they have attempted
  * @author Max McLaren
  */
 @SuppressWarnings("serial")
-public class StatsPanel extends JScrollPane implements ListSelectionListener {
+public class StatsPanel extends JTable implements ListSelectionListener {
 
 	DefaultTableModel model;
-	JTable table;
 	ArrayList<StatsList> listOfDisplayedCategories;
 
 	/**
@@ -32,21 +30,35 @@ public class StatsPanel extends JScrollPane implements ListSelectionListener {
 		super();
 		String[] columnNames = {"Word", "Score", "Successes", "Attempts"};
 		model = new DefaultTableModel(columnNames, 0);
-		table = new JTable(model);
-		table.setAutoCreateRowSorter(true);
-		table.setEnabled(false);
+		setModel(model);
+		setAutoCreateRowSorter(true);
+		setEnabled(false);
+		setupSorting();
+		listOfDisplayedCategories = new ArrayList<StatsList>();
+	}
+
+	private void setupSorting() {
+		TableRowSorter<?> rowSorter = ((TableRowSorter<?>)getRowSorter());
+
+		// Sort Score so that the highest score is at the top with default order.
+		Comparator<String> scoreComparator = new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return Integer.compare(o2.length(), o1.length());
+			}
+		};
+		rowSorter.setComparator(1, scoreComparator);
+
 		// Sort Successes and Attempts columns as integers.
 		Comparator<String> stringIntegerComparator = new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				return Integer.compare(Integer.parseInt(o1), Integer.parseInt(o2));
+				return Integer.compare(Integer.parseInt(o2), Integer.parseInt(o1));
 			}
 		};
-		((TableRowSorter<?>) table.getRowSorter()).setComparator(2, stringIntegerComparator);
-		((TableRowSorter<?>) table.getRowSorter()).setComparator(3, stringIntegerComparator);
+		rowSorter.setComparator(2, stringIntegerComparator);
+		rowSorter.setComparator(3, stringIntegerComparator);
 
-		setViewportView(table);
-		listOfDisplayedCategories = new ArrayList<StatsList>();
 	}
 
 	/**

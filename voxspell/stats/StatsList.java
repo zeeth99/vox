@@ -1,4 +1,4 @@
-package voxspell.quiz;
+package voxspell.stats;
 
 import java.io.File;
 import java.io.FileNotFoundException;

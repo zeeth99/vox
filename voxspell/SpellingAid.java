@@ -45,6 +45,7 @@ import voxspell.quiz.Quiz;
 import voxspell.quiz.ReviewQuiz;
 import voxspell.quiz.ReviewSelect;
 import voxspell.quiz.WordList;
+import voxspell.stats.Stats;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -156,8 +157,6 @@ public class SpellingAid extends JFrame implements ActionListener {
 		String cardName = c.cardName();
 		if (cardName.equals(categorySelect.cardName()))
 			((CategorySelect) c).setupListModel();
-		if (cardName.equals(stats.cardName()))
-			((Stats) c).setup();
 		layout.show(cards, c.cardName());
 		//c.transferFocus();
 	}
