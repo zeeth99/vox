@@ -14,15 +14,15 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import voxspell.SpellingAid;
 import voxspell.BestMediaPlayer;
 import voxspell.BestMediaPlayer.Video;
 import voxspell.Card;
+import voxspell.CardManager;
 import voxspell.ErrorMessage;
 import voxspell.FileAccess;
 
 /**
- * Screen to test the user on a list of up to {@value #QUIZ_SIZE} words.
+ * Screen to test the user on a list of up to 10 words.
  * @author Ray Akau'ola
  * @author Max McLaren
  */
@@ -49,10 +49,10 @@ public class Quiz extends Card implements ActionListener {
 
 	/**
 	 * Set up the GUI
-	 * @param sp - The SpellingAid that created this
+	 * @param cm - The CardManager that created this
 	 */
-	public Quiz(SpellingAid sp) {
-		super(sp, "New Quiz");
+	public Quiz(CardManager cm) {
+		super(cm, "New Quiz");
 
 		wordCountLabel = new JLabel("Word 0 out of 0");
 		wordCountLabel.setBounds(125, 90, 150, 15);
@@ -113,7 +113,7 @@ public class Quiz extends Card implements ActionListener {
 		if (source == menuButton) {
 			int option = JOptionPane.showConfirmDialog(this, "If you go to the menu you will lose your progress in your current quiz. \nAre you sure you want to go to the menu?", "Are You Sure?", JOptionPane.OK_CANCEL_OPTION);
 			if (option == JOptionPane.OK_OPTION)
-				spellingAid.returnToMenu();
+				cardManager.returnToMenu();
 		}
 	}
 
@@ -175,7 +175,7 @@ public class Quiz extends Card implements ActionListener {
 		_testingWords = _wordlist.randomWords(QUIZ_SIZE);
 
 		if (_testingWords.size() == 0) {
-			spellingAid.returnToMenu();
+			cardManager.returnToMenu();
 			new ErrorMessage("The category chosen is empty.\nYou will be returned to the menu.", "Empty Quiz");
 			return;
 		}
@@ -240,7 +240,7 @@ public class Quiz extends Card implements ActionListener {
 		int option = JOptionPane.showOptionDialog(this, message, heading, JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (option == menuOption || option == JOptionPane.CLOSED_OPTION){
-			spellingAid.returnToMenu();
+			cardManager.returnToMenu();
 		} else if (option == 0) {
 			startQuiz(_wordlist);
 		} else {

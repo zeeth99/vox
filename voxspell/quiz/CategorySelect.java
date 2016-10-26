@@ -16,10 +16,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import voxspell.Card;
+import voxspell.CardManager;
 import voxspell.ErrorMessage;
 import voxspell.FileAccess;
 import voxspell.SortedListModel;
-import voxspell.SpellingAid;
 
 import javax.swing.JList;
 
@@ -39,10 +39,10 @@ public class CategorySelect extends Card implements ActionListener{
 
 	/**
 	 * Set up GUI
-	 * @param sp - The SpellingAid that created this
+	 * @param cm - The CardManager that created this
 	 */
-	public CategorySelect(SpellingAid sp) {
-		super(sp, "Select Your WordList");
+	public CategorySelect(CardManager cm) {
+		super(cm, "Select Your WordList");
 
 		listModel = new SortedListModel<WordList>();
 		setupListModel();
@@ -52,7 +52,7 @@ public class CategorySelect extends Card implements ActionListener{
 			public void keyPressed(KeyEvent e){
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					if (list.getSelectedValue() != null)
-						spellingAid.startQuiz(list.getSelectedValue());
+						cardManager.startQuiz(list.getSelectedValue());
 			}
 		});
 		setDefaultFocusComponent(list);
@@ -118,7 +118,7 @@ public class CategorySelect extends Card implements ActionListener{
 		super.actionPerformed(e);
 		if (e.getSource() == startQuiz) {
 			if (list.getSelectedValue() != null)
-				spellingAid.startQuiz(list.getSelectedValue());
+				cardManager.startQuiz(list.getSelectedValue());
 		} else if (e.getSource() == fileSelect) {
 			FileAccess.addWordList();
 			setupListModel();

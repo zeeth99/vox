@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
  */
 @SuppressWarnings("serial")
 public abstract class Card extends JPanel implements ActionListener {
-	protected SpellingAid spellingAid;
+	protected CardManager cardManager;
 
 	protected JLabel heading;
 	protected JButton menuButton;
@@ -33,8 +33,8 @@ public abstract class Card extends JPanel implements ActionListener {
 	 * @param sp - The SpellingAid that created this
 	 * @param str - The text for the heading label
 	 */
-	public Card(SpellingAid sp, String str) {
-		spellingAid = sp;
+	public Card(CardManager cm, String str) {
+		cardManager = cm;
 
 
 		// Use the 'Esc' button to return to menu.
@@ -84,22 +84,19 @@ public abstract class Card extends JPanel implements ActionListener {
 	/**
 	 * Method for child classes to execute code when the Card is shown.
 	 */
-	protected void onCardShown() {}
+	protected void onCardShown() { }
 	
 	/**
 	 * Method for child classes to execute code when the Card is hidden.
 	 */
-	protected void onCardHidden() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void onCardHidden() { }
 	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Returns the user to the main menu
 		if (e.getSource() == menuButton)
-			spellingAid.returnToMenu();
+			cardManager.returnToMenu();
 	}
 
 	/**

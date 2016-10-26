@@ -2,7 +2,7 @@ package voxspell.quiz;
 
 import javax.swing.JOptionPane;
 
-import voxspell.SpellingAid;
+import voxspell.CardManager;
 
 /**
  * Screen to test the user on words they answered incorrectly in a category.
@@ -13,10 +13,10 @@ public class ReviewQuiz extends Quiz {
 
 	/**
 	 * Set up GUI.
-	 * @param sp - The SpellingAid that created this
+	 * @param cm - The CardManager that created this
 	 */
-	public ReviewQuiz(SpellingAid sp) {
-		super(sp);
+	public ReviewQuiz(CardManager cm) {
+		super(cm);
 		heading.setText("Review Quiz");
 	}
 

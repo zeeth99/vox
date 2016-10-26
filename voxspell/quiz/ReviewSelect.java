@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import voxspell.CardManager;
 import voxspell.FileAccess;
-import voxspell.SpellingAid;
 
 import javax.swing.JToggleButton;
 
@@ -17,10 +17,10 @@ public class ReviewSelect extends CategorySelect {
 
 	/**
 	 * Set up GUI.
-	 * @param sp - The SpellingAid that created this
+	 * @param cm - The CardManager that created this
 	 */
-	public ReviewSelect(SpellingAid sp) {
-		super(sp);
+	public ReviewSelect(CardManager cm) {
+		super(cm);
 		fileSelect.setEnabled(false);
 		fileSelect.setVisible(false);
 

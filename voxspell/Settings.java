@@ -35,10 +35,10 @@ public class Settings extends Card implements ActionListener {
 
 	/**
 	 * Set up the GUI
-	 * @param sp - The SpellingAid that created this
+	 * @param cm - The CardManager that created this
 	 */
-	public Settings(SpellingAid sp) {
-		super(sp, "Settings");
+	public Settings(CardManager cm) {
+		super(cm, "Settings");
 
 		voiceSettingsLabel = new JLabel("Select a voice setting:");
 		voiceSettingsLabel.setBounds(100, 80, 300, 20);

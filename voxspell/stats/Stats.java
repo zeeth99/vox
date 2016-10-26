@@ -4,7 +4,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import voxspell.Card;
-import voxspell.SpellingAid;
+import voxspell.CardManager;
 
 /**
  * A screen which shows statistics on the user's quizzes.
@@ -19,10 +19,10 @@ public class Stats extends Card {
 
 	/**
 	 * Sets up the GUI
-	 * @param sp - The SpellingAid that created this
+	 * @param cm - The CardManager that created this
 	 */
-	public Stats(SpellingAid sp) {
-		super(sp, "Spelling Statistics");
+	public Stats(CardManager cm) {
+		super(cm, "Spelling Statistics");
 
 		// The panel with word statistics
 		statsTable = new StatsTable();
