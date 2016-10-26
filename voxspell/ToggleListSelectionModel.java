@@ -61,7 +61,8 @@ public class ToggleListSelectionModel extends DefaultListSelectionModel {
 						ToggleListSelectionModel.this.moveLeadSelectionIndex(currentIndex+1);
 				} else if (keyCode == KeyEvent.VK_UP) {
 					// Move up without changing selection state
-					ToggleListSelectionModel.this.moveLeadSelectionIndex(currentIndex-1);
+					if (currentIndex > 0)
+						ToggleListSelectionModel.this.moveLeadSelectionIndex(currentIndex-1);
 				} else {
 					return;
 				}
