@@ -3,15 +3,13 @@ package voxspell;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 
 import javax.swing.JPanel;
 
 import voxspell.quiz.CategorySelect;
-import voxspell.quiz.Quiz;
+import voxspell.quiz.QuizCard;
 import voxspell.quiz.ReviewQuiz;
 import voxspell.quiz.ReviewSelect;
-import voxspell.quiz.WordList;
 import voxspell.stats.Stats;
 
 @SuppressWarnings("serial")
@@ -22,15 +20,17 @@ public class CardManager extends JPanel implements ActionListener {
 	private Settings settings;
 	private CategorySelect categorySelect;
 	private ReviewSelect reviewSelect;
-	private Quiz quiz;
+	private QuizCard quiz;
+	private ReviewQuiz review;
 	private Stats stats;
 	
 	public CardManager() {
 		setLayout(new CardLayout());
 		// Set up cards
-		categorySelect = new CategorySelect(this);
-		reviewSelect = new ReviewSelect(this);
-		quiz = new Quiz(this);
+		quiz = new QuizCard(this);
+		review = new ReviewQuiz(this);
+		categorySelect = new CategorySelect(this, quiz);
+		reviewSelect = new ReviewSelect(this, review);
 
 		menu = new Menu(this);
 		settings = new Settings(this);
@@ -65,21 +65,6 @@ public class CardManager extends JPanel implements ActionListener {
 	public void returnToMenu() {
 		viewCard(menu);
 	}
-	
-	/**
-	 * Start a Quiz with the specified WordList.
-	 * @param w - The WordList be quizzed on
-	 */
-	public void startQuiz(WordList w) {
-		try {
-			w.setup();
-			viewCard(quiz);
-			quiz.startQuiz(w);
-		} catch (FileNotFoundException e) {
-			viewCard(menu);
-			new ErrorMessage(e);
-		}
-	}
 
 	/**
 	 * Display one a screen depending on what button was pressed.
@@ -87,17 +72,19 @@ public class CardManager extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
+		// Start Quiz
+		if (source == categorySelect.startQuiz) {
+			viewCard(quiz);
+		}
 		// New Quiz
 		if (source == menu.newSpellingQuiz) {
-			quiz = new Quiz(this);
 			addCard(quiz);
 			addCard(categorySelect);
 			viewCard(categorySelect);
 		}
 		// Review Quiz
 		if (source == menu.reviewQuiz) {
-			quiz = new ReviewQuiz(this);
-			addCard(quiz);
+			addCard(review);
 			addCard(reviewSelect);
 			viewCard(reviewSelect);
 		}

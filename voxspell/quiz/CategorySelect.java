@@ -22,19 +22,22 @@ import voxspell.SortedListModel;
  * @author Max McLaren
  */
 @SuppressWarnings("serial")
-public class CategorySelect extends Card implements ActionListener{
+public class CategorySelect extends Card {
 
 	protected JButton fileSelect;
 	public JButton startQuiz;
 	protected JScrollPane scrollPane;
 	protected CategoryList list;
+	
+	protected Quizzer _renameThis;
 
 	/**
 	 * Set up GUI
 	 * @param cm - The CardManager that created this
 	 */
-	public CategorySelect(CardManager cm) {
+	public CategorySelect(CardManager cm, QuizCard quiz) {
 		super(cm, "Select Your WordList");
+		_renameThis = quiz.quizzer;
 
 		createList();
 		list.addKeyListener(new KeyAdapter(){ // Use enter to start a quiz
@@ -54,7 +57,13 @@ public class CategorySelect extends Card implements ActionListener{
 		startQuiz = new JButton("Start Quiz");
 		startQuiz.setBounds(383, 15, 105, 30);
 		startQuiz.setToolTipText("Start a quiz with the selected category.");
-		startQuiz.addActionListener(cardManager);
+		startQuiz.addActionListener(getCardManager());
+		startQuiz.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_renameThis.setWordlist(list.getSelectedValue());
+			}
+		});
 		startQuiz.setFocusable(false);
 		add(startQuiz);
 
@@ -88,11 +97,11 @@ public class CategorySelect extends Card implements ActionListener{
 	public void onCardShown() {
 		list.setupListModel();
 	}
-	
+
 	public void onCardHidden() {
 		((SortedListModel<?>) list.getModel()).clear();
 	}
-	
+
 	public String cardName() {
 		return "Category Select";
 	}

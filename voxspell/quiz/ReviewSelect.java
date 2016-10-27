@@ -16,8 +16,8 @@ public class ReviewSelect extends CategorySelect {
 	 * Set up GUI.
 	 * @param cm - The CardManager that created this
 	 */
-	public ReviewSelect(CardManager cm) {
-		super(cm);
+	public ReviewSelect(CardManager cm, QuizCard quiz) {
+		super(cm, quiz);
 		
 		fileSelect.setEnabled(false);
 		fileSelect.setVisible(false);

@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
  */
 @SuppressWarnings("serial")
 public abstract class Card extends JPanel implements ActionListener {
-	protected CardManager cardManager;
+	private CardManager cardManager;
 
 	protected JLabel heading;
 	protected JButton menuButton;
@@ -96,7 +96,7 @@ public abstract class Card extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Returns the user to the main menu
 		if (e.getSource() == menuButton)
-			cardManager.returnToMenu();
+			getCardManager().returnToMenu();
 	}
 
 	/**
@@ -111,5 +111,9 @@ public abstract class Card extends JPanel implements ActionListener {
 	 * @return A String representing the card subclass
 	 */
 	public abstract String cardName();
+
+	public CardManager getCardManager() {
+		return cardManager;
+	}
 
 }

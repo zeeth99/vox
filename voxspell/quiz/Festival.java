@@ -20,10 +20,10 @@ public class Festival extends SwingWorker<Void,Void> {
 	public static final File SCHEME_FILE = new File(".festival/message.scm");
 
 	private String _message;
-	private Quiz _quiz;
+	private Quizzer _renameThis;
 
-	public Festival(String message, Quiz quiz) {
-		_quiz = quiz;
+	public Festival(String message, Quizzer quizzer) {
+		_renameThis = quizzer;
 		_message = message;
 	}
 
@@ -50,7 +50,7 @@ public class Festival extends SwingWorker<Void,Void> {
 	 */
 	@Override
 	protected void done() {
-		_quiz.setButtonsEnabled(true);
+		_renameThis.enableButtons();
 	}
 
 	/**
