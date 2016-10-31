@@ -1,4 +1,4 @@
-package voxspell;
+package voxspell.resource;
 
 import java.io.FileNotFoundException;
 

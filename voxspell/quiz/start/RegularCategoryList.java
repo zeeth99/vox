@@ -1,20 +1,21 @@
-package voxspell.quiz; 
+package voxspell.quiz.start; 
  
 import java.io.File; 
 import java.io.FileNotFoundException; 
 import java.util.Scanner; 
  
 import javax.swing.JList; 
-import javax.swing.ListSelectionModel; 
- 
-import voxspell.ErrorMessage; 
-import voxspell.FileAccess; 
-import voxspell.SortedListModel; 
+import javax.swing.ListSelectionModel;
+
+import voxspell.quiz.WordList;
+import voxspell.resource.ErrorMessage;
+import voxspell.resource.FileAccess;
+import voxspell.resource.SortedListModel; 
  
 @SuppressWarnings("serial") 
-public class CategoryList extends JList<WordList> { 
+public class RegularCategoryList extends JList<WordList> { 
    
-  public CategoryList() { 
+  public RegularCategoryList() { 
     super(new SortedListModel<WordList>()); 
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     setupListModel(); 

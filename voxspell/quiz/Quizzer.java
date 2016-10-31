@@ -8,10 +8,10 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import voxspell.BestMediaPlayer;
-import voxspell.ErrorMessage;
-import voxspell.FileAccess;
-import voxspell.BestMediaPlayer.Video;
+import voxspell.resource.BestMediaPlayer;
+import voxspell.resource.ErrorMessage;
+import voxspell.resource.FileAccess;
+import voxspell.resource.BestMediaPlayer.Video;
 
 public class Quizzer implements ActionListener {
 	
@@ -29,7 +29,6 @@ public class Quizzer implements ActionListener {
 	public Quizzer(QuizCard quiz) {
 		_quiz = quiz;
 	}
-
 
 	/**
 	 * Starts the quiz with the specified WordList.
@@ -191,7 +190,7 @@ public class Quizzer implements ActionListener {
 		if (source == _quiz.getRepeatButton())
 			sayMessage(_testingWords.get(_wordNumber));
 		if (source == _quiz.getSubmitButton())
-			checkWord(_quiz.inputBox.getText());
+			checkWord(_quiz.getText());
 	}
 
 }

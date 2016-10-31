@@ -1,4 +1,4 @@
-package voxspell;
+package voxspell.resource;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;

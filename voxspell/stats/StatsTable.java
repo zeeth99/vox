@@ -11,7 +11,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import voxspell.ErrorMessage;
+import voxspell.resource.ErrorMessage;
 
 /**
  * A panel which shows the user statistics on the words they have attempted

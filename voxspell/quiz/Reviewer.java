@@ -5,9 +5,8 @@ import javax.swing.JOptionPane;
 public class Reviewer extends Quizzer {
 
 
-	public Reviewer(ReviewQuiz quiz) {
+	public Reviewer(QuizCard quiz) {
 		super(quiz);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import voxspell.ErrorMessage;
+import voxspell.resource.ErrorMessage;
 
 @SuppressWarnings("serial")
 public class WordList extends ArrayList<String> implements Comparable<WordList>{

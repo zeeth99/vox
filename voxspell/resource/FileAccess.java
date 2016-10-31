@@ -1,4 +1,4 @@
-package voxspell;
+package voxspell.resource;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import voxspell.Settings;
 import voxspell.quiz.Festival;
 import voxspell.quiz.WordList;
 

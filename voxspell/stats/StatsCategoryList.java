@@ -5,9 +5,9 @@ import java.io.File;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
 
-import voxspell.FileAccess;
-import voxspell.SortedListModel;
-import voxspell.ToggleListSelectionModel;
+import voxspell.resource.FileAccess;
+import voxspell.resource.SortedListModel;
+import voxspell.resource.ToggleListSelectionModel;
 
 @SuppressWarnings("serial")
 public class StatsCategoryList extends JList<StatsCategory> {

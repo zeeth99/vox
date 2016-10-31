@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import voxspell.ErrorMessage;
+import voxspell.resource.ErrorMessage;
 
 /**
  *

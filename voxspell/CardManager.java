@@ -6,10 +6,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import voxspell.quiz.CategorySelect;
 import voxspell.quiz.QuizCard;
-import voxspell.quiz.ReviewQuiz;
-import voxspell.quiz.ReviewSelect;
+import voxspell.quiz.start.RegularCategorySelect;
+import voxspell.quiz.start.ReviewCategorySelect;
 import voxspell.stats.Stats;
 
 @SuppressWarnings("serial")
@@ -18,27 +17,26 @@ public class CardManager extends JPanel implements ActionListener {
 	// Cards
 	private Menu menu;
 	private Settings settings;
-	private CategorySelect categorySelect;
-	private ReviewSelect reviewSelect;
+	private RegularCategorySelect regularCategorySelect;
+	private ReviewCategorySelect reviewCategorySelect;
 	private QuizCard quiz;
-	private ReviewQuiz review;
 	private Stats stats;
 	
 	public CardManager() {
 		setLayout(new CardLayout());
 		// Set up cards
-		quiz = new QuizCard(this);
-		review = new ReviewQuiz(this);
-		categorySelect = new CategorySelect(this, quiz);
-		reviewSelect = new ReviewSelect(this, review);
-
 		menu = new Menu(this);
 		settings = new Settings(this);
 		stats = new Stats(this);
+		quiz = new QuizCard(this);
+		
+		regularCategorySelect = new RegularCategorySelect(this, quiz);
+		reviewCategorySelect = new ReviewCategorySelect(this, quiz);
 
 		addCard(menu);
 		addCard(settings);
 		addCard(stats);
+		addCard(quiz);
 		
 		returnToMenu();
 	}
@@ -73,20 +71,18 @@ public class CardManager extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		// Start Quiz
-		if (source == categorySelect.startQuiz) {
+		if (source == regularCategorySelect.startQuiz || source == reviewCategorySelect.startQuiz) {
 			viewCard(quiz);
 		}
 		// New Quiz
 		if (source == menu.newSpellingQuiz) {
-			addCard(quiz);
-			addCard(categorySelect);
-			viewCard(categorySelect);
+			addCard(regularCategorySelect);
+			viewCard(regularCategorySelect);
 		}
 		// Review Quiz
 		if (source == menu.reviewQuiz) {
-			addCard(review);
-			addCard(reviewSelect);
-			viewCard(reviewSelect);
+			addCard(reviewCategorySelect);
+			viewCard(reviewCategorySelect);
 		}
 		// Statistics
 		if (source == menu.viewStatistics)

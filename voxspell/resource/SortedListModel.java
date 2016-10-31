@@ -1,4 +1,4 @@
-package voxspell;
+package voxspell.resource;
 
 import java.util.ArrayList;
 import java.util.Collections;

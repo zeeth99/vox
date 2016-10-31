@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import voxspell.resource.FileAccess;
+
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**

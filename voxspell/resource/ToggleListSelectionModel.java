@@ -1,4 +1,4 @@
-package voxspell;
+package voxspell.resource;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;

@@ -1,4 +1,4 @@
-package voxspell.quiz;
+package voxspell.quiz.start;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,11 +6,13 @@ import java.io.File;
 
 import javax.swing.JToggleButton;
 
-import voxspell.FileAccess;
-import voxspell.SortedListModel;
+import voxspell.quiz.ReviewList;
+import voxspell.quiz.WordList;
+import voxspell.resource.FileAccess;
+import voxspell.resource.SortedListModel;
 
 @SuppressWarnings("serial")
-public class ReviewCategoryList extends CategoryList implements ActionListener {
+public class ReviewCategoryList extends RegularCategoryList implements ActionListener {
 
 	private int _maximumScore;
 	

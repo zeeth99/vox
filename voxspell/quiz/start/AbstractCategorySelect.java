@@ -1,43 +1,34 @@
-package voxspell.quiz;
+package voxspell.quiz.start;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import voxspell.Card;
 import voxspell.CardManager;
-import voxspell.FileAccess;
-import voxspell.SortedListModel;
+import voxspell.quiz.QuizCard;
+import voxspell.resource.SortedListModel;
 
-/**
- * Screen to select a category to be tested on.
- * @author Ray Akau'ola
- * @author Max McLaren
- */
 @SuppressWarnings("serial")
-public class CategorySelect extends Card {
+public abstract class AbstractCategorySelect extends Card {
 
-	protected JButton fileSelect;
 	public JButton startQuiz;
 	protected JScrollPane scrollPane;
-	protected CategoryList list;
+	protected RegularCategoryList list;
 	
-	protected Quizzer _renameThis;
-
+	protected QuizCard _quiz;
+	
 	/**
 	 * Set up GUI
 	 * @param cm - The CardManager that created this
 	 */
-	public CategorySelect(CardManager cm, QuizCard quiz) {
+	public AbstractCategorySelect(CardManager cm, QuizCard quiz) {
 		super(cm, "Select Your WordList");
-		_renameThis = quiz.quizzer;
+		_quiz = quiz;
 
 		createList();
 		list.addKeyListener(new KeyAdapter(){ // Use enter to start a quiz
@@ -61,37 +52,18 @@ public class CategorySelect extends Card {
 		startQuiz.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				_renameThis.setWordlist(list.getSelectedValue());
+				setReviewMode();
+				_quiz.quizzer.setWordlist(list.getSelectedValue());
 			}
 		});
 		startQuiz.setFocusable(false);
 		add(startQuiz);
 
-		// Button to add an external file to the list of wordlists.
-		fileSelect = new JButton("Select Other File");
-		fileSelect.setBounds(12, 320, 200, 30);
-		fileSelect.setToolTipText("Import an external word list.");
-		fileSelect.addActionListener(this);
-		fileSelect.setFocusable(false);
-		add(fileSelect);
-
-		ImageIcon fileSelectIcon = new ImageIcon(FileAccess.getMedia("Add_List.png"));
-		fileSelect.setLayout(new BorderLayout());
-		fileSelect.add(new JLabel(fileSelectIcon), BorderLayout.WEST);
 	}
 
-	protected void createList() {
-		list = new CategoryList();
-	}
+	protected abstract void setReviewMode();
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		super.actionPerformed(e);
-		if (e.getSource() == fileSelect) {
-			FileAccess.addWordList();
-			list.setupListModel();
-		}
-	}
+	protected abstract void createList();
 
 	@Override
 	public void onCardShown() {

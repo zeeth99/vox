@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 import voxspell.Card;
 import voxspell.CardManager;
-import voxspell.FileAccess;
+import voxspell.resource.FileAccess;
 
 /**
  * Screen to test the user on a list of up to 10 words.
@@ -25,17 +25,17 @@ import voxspell.FileAccess;
 public class QuizCard extends Card {
 
 	public Quizzer quizzer;
+	public Reviewer reviewer;
 	
 	public static final ImageIcon CORRECT = new ImageIcon(FileAccess.getMedia("Correct.png"));
 	public static final ImageIcon INCORRECT = new ImageIcon(FileAccess.getMedia("Incorrect.png"));
 
 	private JLabel wordCountLabel;
-	protected JFormattedTextField inputBox;
+	private JFormattedTextField inputBox;
 	private JLabel correctIncorrect;
 	private JLabel feedbackPanel;
 	private JButton repeatWord;
 	private JButton submitWord;
-
 
 	/**
 	 * Set up the GUI
@@ -43,9 +43,7 @@ public class QuizCard extends Card {
 	 */
 	public QuizCard(CardManager cm) {
 		super(cm, "New Quiz");
-		
-		quizzer = new Quizzer(this);
-
+				
 		wordCountLabel = new JLabel("Word 0 out of 0");
 		wordCountLabel.setBounds(125, 90, 150, 15);
 		feedbackPanel = new JLabel("0 out of 0 correct");
@@ -55,14 +53,12 @@ public class QuizCard extends Card {
 		repeatWord = new JButton("Repeat");
 		repeatWord.setBounds(135, 175, 85, 25);
 		repeatWord.setToolTipText("<html>Hear the word again.<br>Alternate: Ctrl-Space</html>");
-		repeatWord.addActionListener(quizzer);
 		repeatWord.setFocusable(false);
 
 		// Button to submit a proposed spelling of the word
 		submitWord = new JButton("Submit");
 		submitWord.setBounds(280, 175, 85, 25);
 		submitWord.setToolTipText("<html>Submit spelling attempt.<br>Alternate: Enter</html>");
-		submitWord.addActionListener(quizzer);
 		submitWord.setFocusable(false);
 
 		// Box to type the word to spell
@@ -73,7 +69,6 @@ public class QuizCard extends Card {
 		inputBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				submitWord.doClick();
 			}
 		});
@@ -90,6 +85,7 @@ public class QuizCard extends Card {
 					e.consume();
 			}
 		});
+		setDefaultFocusComponent(inputBox);
 
 		// Shows a tick or a cross after attempting a word
 		correctIncorrect = new JLabel("");
@@ -132,35 +128,44 @@ public class QuizCard extends Card {
 		if (current != size) current++;
 			wordCountLabel.setText("Word " + current +" of " + size);
 
-
 		if (b) correctIncorrect.setIcon(CORRECT);
 		else correctIncorrect.setIcon(INCORRECT);
-	}
-
-	public void clearInputBox() {
-		inputBox.setText("");
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == menuButton) {
+		Object source = e.getSource();
+		if (source == menuButton) {
 			int option = JOptionPane.showConfirmDialog(this, "If you go to the menu you will lose your progress in your current quiz. \nAre you sure you want to go to the menu?", "Are You Sure?", JOptionPane.OK_CANCEL_OPTION);
 			if (option == JOptionPane.OK_OPTION)
 				super.actionPerformed(e);
 		}
 	}
-	
-	@Override
-	public void onCardShown() {
-		quizzer.startQuiz();
+
+	public void setReviewMode(boolean b) {
+		repeatWord.removeActionListener(quizzer);
+		submitWord.removeActionListener(quizzer);
+		if (b)
+			quizzer = new Reviewer(this);
+		else
+			quizzer = new Quizzer(this);
+		repeatWord.addActionListener(quizzer);
+		submitWord.addActionListener(quizzer);
 	}
 	
 	@Override
-	public String cardName() {
-		return "Quiz";
-	}
+	public void onCardShown() { quizzer.startQuiz(); }
 	
-	public JButton getRepeatButton() { return repeatWord; };
+	public JButton getRepeatButton() { return repeatWord; }
 	
-	public JButton getSubmitButton() { return submitWord; };
+	public JButton getSubmitButton() { return submitWord; }
+	
+	public String getText() { return inputBox.getText(); }
+	
+	public void clearInputBox() { inputBox.setText(""); }
+	
+	@Override
+	public String cardName() { return "Quiz"; }
+	
+	
 }

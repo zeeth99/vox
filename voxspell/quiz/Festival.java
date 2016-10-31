@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import voxspell.ErrorMessage;
+import voxspell.resource.ErrorMessage;
 
 /**
  * This class is used to call a festival text to speech command through Java.

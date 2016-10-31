@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import voxspell.quiz.Festival;
+import voxspell.resource.ErrorMessage;
+import voxspell.resource.FileAccess;
 
 /**
  * Screen for changing the program's settings

@@ -1,26 +1,22 @@
-package voxspell.quiz;
+package voxspell.quiz.start;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import voxspell.CardManager;
+import voxspell.quiz.QuizCard;
 
 import javax.swing.JToggleButton;
 
 @SuppressWarnings("serial")
-public class ReviewSelect extends CategorySelect {
-
-	private ActionListener listener;
+public class ReviewCategorySelect extends AbstractCategorySelect {
 
 	/**
 	 * Set up GUI.
 	 * @param cm - The CardManager that created this
 	 */
-	public ReviewSelect(CardManager cm, QuizCard quiz) {
+	public ReviewCategorySelect(CardManager cm, QuizCard quiz) {
 		super(cm, quiz);
-		
-		fileSelect.setEnabled(false);
-		fileSelect.setVisible(false);
 
 		// The following buttons dictate the number of stars a word can have to be considered reviewable.
 		JToggleButton twoStar = new JToggleButton("Least known words");
@@ -35,7 +31,7 @@ public class ReviewSelect extends CategorySelect {
 		threeStar.setToolTipText("Change review mode word criterion.");
 		threeStar.setFocusable(false);
 
-		listener = new ActionListener() {
+		ActionListener listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				twoStar.setSelected(false);
@@ -58,5 +54,11 @@ public class ReviewSelect extends CategorySelect {
 	protected void createList() {
 		list = new ReviewCategoryList();
 	}
+
+	@Override
+	protected void setReviewMode() {
+		_quiz.setReviewMode(true);
+	}
+	
 }
 
